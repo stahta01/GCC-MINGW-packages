@@ -47,18 +47,18 @@ options=('staticlibs' '!emptydirs') # '!strip' 'debug')
 source=("https://ftp.gnu.org/gnu/gcc/${_realname}-${pkgver%%+*}/${_realname}-${pkgver}.tar.xz"{,.sig}
         #https://www.mirrorservice.org/sites/sourceware.org/pub/gcc/snapshots/${_majorver}-${_snapshot}/gcc-${_majorver}-${_snapshot}.tar.xz
         "gdbinit"
-        0002-Relocate-libintl.patch
-        0003-Windows-Follow-Posix-dir-exists-semantics-more-close.patch
-        0004-Windows-Use-not-in-progpath-and-leave-case-as-is.patch
-        0005-Windows-Don-t-ignore-native-system-header-dir.patch
-        0006-Windows-New-feature-to-allow-overriding.patch
-        0007-Build-EXTRA_GNATTOOLS-for-Ada.patch
-        0008-Prettify-linking-no-undefined.patch
-        0009-gcc-make-xmmintrin-header-cplusplus-compatible-depre.patch
-        0010-Fix-using-large-PCH.patch
-        0011-Enable-shared-gnat-implib.patch
+        002-Relocate-libintl.patch
+        003-Windows-Follow-Posix-dir-exists-semantics-more-close.patch
+        004-Windows-Use-not-in-progpath-and-leave-case-as-is.patch
+        005-Windows-Don-t-ignore-native-system-header-dir.patch
+        006-Windows-New-feature-to-allow-overriding.patch
+        007-Build-EXTRA_GNATTOOLS-for-Ada.patch
+        008-Prettify-linking-no-undefined.patch
+        009-gcc-make-xmmintrin-header-cplusplus-compatible-depre.patch
+        010-Fix-using-large-PCH.patch
+        011-Enable-shared-gnat-implib.patch
         0012-Handle-spaces-in-path-for-default-manifest.patch
-        0014-gcc-9-branch-clone_function_name_1-Retain-any-stdcall-suffix.patch
+        014-gcc-9-branch-clone_function_name_1-Retain-any-stdcall-suffix.patch
         0130-libstdc++-in-out.patch
         0140-gcc-8.2.0-diagnostic-color.patch)
 sha256sums=('71e197867611f6054aa1119b13a0c0abac12834765fe2d81f35ac57f84f742d1'
@@ -105,18 +105,18 @@ prepare() {
     intl/relocatex.c intl/relocatex.h
 
   apply_patch_with_msg \
-    0002-Relocate-libintl.patch \
-    0003-Windows-Follow-Posix-dir-exists-semantics-more-close.patch \
-    0004-Windows-Use-not-in-progpath-and-leave-case-as-is.patch \
-    0005-Windows-Don-t-ignore-native-system-header-dir.patch \
-    0006-Windows-New-feature-to-allow-overriding.patch \
-    0007-Build-EXTRA_GNATTOOLS-for-Ada.patch \
-    0008-Prettify-linking-no-undefined.patch \
-    0009-gcc-make-xmmintrin-header-cplusplus-compatible-depre.patch \
-    0010-Fix-using-large-PCH.patch \
-    0011-Enable-shared-gnat-implib.patch \
+    002-Relocate-libintl.patch \
+    003-Windows-Follow-Posix-dir-exists-semantics-more-close.patch \
+    004-Windows-Use-not-in-progpath-and-leave-case-as-is.patch \
+    005-Windows-Don-t-ignore-native-system-header-dir.patch \
+    006-Windows-New-feature-to-allow-overriding.patch \
+    007-Build-EXTRA_GNATTOOLS-for-Ada.patch \
+    008-Prettify-linking-no-undefined.patch \
+    009-gcc-make-xmmintrin-header-cplusplus-compatible-depre.patch \
+    010-Fix-using-large-PCH.patch \
+    011-Enable-shared-gnat-implib.patch \
     0012-Handle-spaces-in-path-for-default-manifest.patch \
-    0014-gcc-9-branch-clone_function_name_1-Retain-any-stdcall-suffix.patch
+    014-gcc-9-branch-clone_function_name_1-Retain-any-stdcall-suffix.patch
 
   apply_patch_with_msg \
     0130-libstdc++-in-out.patch
