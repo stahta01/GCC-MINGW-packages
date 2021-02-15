@@ -149,14 +149,10 @@ prepare() {
 }
 
 _package_common() {
-  _realpkgver=$(head -n 34 ${srcdir}/${_sourcedir}/gcc/BASE-VER | sed -e 's/.* //' | tr -d '"\n')
-
-  echo "_realpkgver := ${_realpkgver}"
-
-  # --with-gcc-major-version-only
-
+  # use with "with-gcc-major-version-only" configuration option
   #_gcc_driver_version=`eval "sed -e 's/^\([0-9]*\).*/\1/' ${srcdir}/${_sourcedir}/gcc/BASE-VER"`
 
+  # Use without "with-gcc-major-version-only" configuration option
   _gcc_driver_version=`eval "cat ${srcdir}/${_sourcedir}/gcc/BASE-VER"`
 
   echo "_gcc_driver_version := ${_gcc_driver_version}"
