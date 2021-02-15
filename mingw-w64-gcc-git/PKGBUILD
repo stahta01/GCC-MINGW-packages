@@ -75,6 +75,7 @@ source+=(
         "011-Enable-shared-gnat-implib.patch"
         "014-gcc-8-clone_function_name_1-Retain-any-stdcall-suffix.patch"
         "014-gcc-9-clone_function_name_1-Retain-any-stdcall-suffix.patch"
+        "020-libgomp-Don-t-hard-code-MS-printf-attributes.patch"
         "022-gcc-plugin-ada-use-def.patch"
         "gnat1.exe.def")
 sha256sums=('SKIP'
@@ -89,6 +90,7 @@ sha256sums=('SKIP'
             '8faff8e503a617f283270f411399a8bcacda3ab62b4072dedf117e108af4844a'
             '60a58ed41389691a68ef4b7d47a0328df4d28d26e6c680a6b06b31191481ca65'
             '2321c7dce29a600477e481d16d847f05dc8c6d6461ee1eba7814c5bf62c2ef95'
+            '2c9b80eebd42ac85cb4b4134617f7eae02de19cc59cc399e4720c6100db430e2'
             '4a9a2e23539e59d3a0580e7699f1f6904dae0f99b9555f3433b2cbf20f4d26a6'
             '39532dbd998d2e7832e35edbe88a6169ccd78c3e996a5fc7d7e6c5a427995b4b')
 
@@ -128,6 +130,7 @@ prepare() {
   else
     ${GIT_AM} ${srcdir}/014-gcc-9-clone_function_name_1-Retain-any-stdcall-suffix.patch
   fi
+  ${GIT_AM} ${srcdir}/020-libgomp-Don-t-hard-code-MS-printf-attributes.patch
   if [ "$_enable_ada" == "yes" ]; then
     if [ "$_enable_gcc_plugin" == "yes" ]; then
       ${GIT_AM} ${srcdir}/022-gcc-plugin-ada-use-def.patch
