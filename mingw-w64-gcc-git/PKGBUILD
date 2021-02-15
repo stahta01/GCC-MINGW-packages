@@ -75,9 +75,7 @@ source+=(
         "011-Enable-shared-gnat-implib.patch"
         "014-gcc-8-clone_function_name_1-Retain-any-stdcall-suffix.patch"
         "014-gcc-9-clone_function_name_1-Retain-any-stdcall-suffix.patch"
-        "020-libgomp-Don-t-hard-code-MS-printf-attributes.patch"
         "022-gcc-plugin-ada-use-def.patch"
-        "023-gcc-8-ALL_ADAFLAGS-filter-out-Wno-pedantic-ms-format.patch"
         "gnat1.exe.def")
 sha256sums=('SKIP'
             'a5f350f0f417e3968f74d9140b8a076b05f2137f0c4a302b54d01cf445805f79'
@@ -134,13 +132,9 @@ prepare() {
   else
     ${GIT_AM} ${srcdir}/014-gcc-9-clone_function_name_1-Retain-any-stdcall-suffix.patch
   fi
-  ${GIT_AM} ${srcdir}/020-libgomp-Don-t-hard-code-MS-printf-attributes.patch
   if [ "$_enable_ada" == "yes" ]; then
     if [ "$_enable_gcc_plugin" == "yes" ]; then
       ${GIT_AM} ${srcdir}/022-gcc-plugin-ada-use-def.patch
-    fi
-    if [[ ${_gcc_version:1:1} != "." || ${_gcc_version:0:1} > "7" ]]; then
-      ${GIT_AM} ${srcdir}/023-gcc-8-ALL_ADAFLAGS-filter-out-Wno-pedantic-ms-format.patch
     fi
   fi
 
