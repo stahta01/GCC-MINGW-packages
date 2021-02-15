@@ -68,7 +68,6 @@ source+=(
         "003-Windows-Follow-Posix-dir-exists-semantics-more-close.patch"
         "004-Windows-Use-not-in-progpath-and-leave-case-as-is.patch"
         "005-gcc-9-Windows-Don-t-ignore-native-system-header-dir.patch"
-        "006-Windows-New-feature-to-allow-overriding.patch"
         "007-Build-EXTRA_GNATTOOLS-for-Ada.patch"
         "008-Prettify-linking-no-undefined.patch"
         "009-gcc-9-make-xmmintrin-header-cplusplus-compatible-depre.patch"
@@ -76,7 +75,6 @@ source+=(
         "011-Enable-shared-gnat-implib.patch"
         "014-gcc-8-clone_function_name_1-Retain-any-stdcall-suffix.patch"
         "014-gcc-9-clone_function_name_1-Retain-any-stdcall-suffix.patch"
-        "016-Ensure-lmsvcrt-precede-lkernel32.patch"
         "020-libgomp-Don-t-hard-code-MS-printf-attributes.patch"
         "022-gcc-plugin-ada-use-def.patch"
         "023-gcc-8-ALL_ADAFLAGS-filter-out-Wno-pedantic-ms-format.patch"
@@ -124,7 +122,6 @@ prepare() {
   ${GIT_AM} ${srcdir}/003-Windows-Follow-Posix-dir-exists-semantics-more-close.patch
   ${GIT_AM} ${srcdir}/004-Windows-Use-not-in-progpath-and-leave-case-as-is.patch
   ${GIT_AM} ${srcdir}/005-gcc-9-Windows-Don-t-ignore-native-system-header-dir.patch
-  ${GIT_AM} ${srcdir}/006-Windows-New-feature-to-allow-overriding.patch
   ${GIT_AM} ${srcdir}/007-Build-EXTRA_GNATTOOLS-for-Ada.patch
   if [ "$_enable_fortran" == "yes" ]; then
     ${GIT_AM} ${srcdir}/008-Prettify-linking-no-undefined.patch
@@ -137,7 +134,6 @@ prepare() {
   else
     ${GIT_AM} ${srcdir}/014-gcc-9-clone_function_name_1-Retain-any-stdcall-suffix.patch
   fi
-  ${GIT_AM} ${srcdir}/016-Ensure-lmsvcrt-precede-lkernel32.patch
   ${GIT_AM} ${srcdir}/020-libgomp-Don-t-hard-code-MS-printf-attributes.patch
   if [ "$_enable_ada" == "yes" ]; then
     if [ "$_enable_gcc_plugin" == "yes" ]; then
