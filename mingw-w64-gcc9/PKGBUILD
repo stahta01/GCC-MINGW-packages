@@ -136,9 +136,21 @@ prepare() {
   sed -i "s#\\/mingw\\/#${MINGW_NATIVE_PREFIX//\//\\/}\\/#g" gcc/config/i386/mingw32.h
 }
 
+_package_common() {
+  # use with "with-gcc-major-version-only" configuration option
+  #_gcc_driver_version=`eval "sed -e 's/^\([0-9]*\).*/\1/' ${srcdir}/${_sourcedir}/gcc/BASE-VER"`
+
+  # Use without "with-gcc-major-version-only" configuration option
+  _gcc_driver_version=`eval "cat ${srcdir}/${_sourcedir}/gcc/BASE-VER"`
+
+  echo "_gcc_driver_version := ${_gcc_driver_version}"
+}
+
 build() {
   [[ -d ${srcdir}/build-${MINGW_CHOST} ]] && rm -rf ${srcdir}/build-${MINGW_CHOST}
   mkdir -p ${srcdir}/build-${MINGW_CHOST} && cd ${srcdir}/build-${MINGW_CHOST}
+
+  _package_common
 
   declare -a extra_config
   if check_option "debug" "n"; then
@@ -221,7 +233,7 @@ build() {
 
   make -j1 DESTDIR=${srcdir} install
   if [ "$_enable_ada" == "yes" ]; then
-    mv ${srcdir}${MINGW_PREFIX}/lib/gcc/${MINGW_CHOST}/${pkgver%%+*}/adalib/*.dll ${srcdir}${MINGW_PREFIX}/bin/
+    mv ${srcdir}${MINGW_PREFIX}/lib/gcc/${MINGW_CHOST}/${_gcc_driver_version}/adalib/*.dll ${srcdir}${MINGW_PREFIX}/bin/
   fi
 }
 
@@ -438,50 +450,62 @@ package_mingw-w64-gcc-objc() {
 
 # 32-bit wrappers
 package_mingw-w64-i686-gcc-libs() {
+  _package_common
   package_mingw-w64-gcc-libs
 }
 
 package_mingw-w64-i686-gcc() {
+  _package_common
   package_mingw-w64-gcc
 }
 
 package_mingw-w64-i686-gcc-libgfortran() {
+  _package_common
   package_mingw-w64-gcc-libgfortran
 }
 
 package_mingw-w64-i686-gcc-fortran() {
+  _package_common
   package_mingw-w64-gcc-fortran
 }
 
 package_mingw-w64-i686-gcc-ada() {
+  _package_common
   package_mingw-w64-gcc-ada
 }
 
 package_mingw-w64-i686-gcc-objc() {
+  _package_common
   package_mingw-w64-gcc-objc
 }
 
 # 64-bit wrappers
 package_mingw-w64-x86_64-gcc-libs() {
+  _package_common
   package_mingw-w64-gcc-libs
 }
 
 package_mingw-w64-x86_64-gcc() {
+  _package_common
   package_mingw-w64-gcc
 }
 
 package_mingw-w64-x86_64-gcc-libgfortran() {
+  _package_common
   package_mingw-w64-gcc-libgfortran
 }
 
 package_mingw-w64-x86_64-gcc-fortran() {
+  _package_common
   package_mingw-w64-gcc-fortran
 }
 
 package_mingw-w64-x86_64-gcc-ada() {
+  _package_common
   package_mingw-w64-gcc-ada
 }
 
 package_mingw-w64-x86_64-gcc-objc() {
+  _package_common
   package_mingw-w64-gcc-objc
 }
