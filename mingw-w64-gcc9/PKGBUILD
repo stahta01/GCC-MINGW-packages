@@ -184,6 +184,7 @@ build() {
     --build=${MINGW_CHOST} \
     --host=${MINGW_CHOST} \
     --target=${MINGW_CHOST} \
+    --program-suffix=-${_gcc_driver_version} \
     --with-native-system-header-dir=${MINGW_PREFIX}/${MINGW_CHOST}/include \
     --libexecdir=${MINGW_PREFIX}/lib \
     --enable-bootstrap \
