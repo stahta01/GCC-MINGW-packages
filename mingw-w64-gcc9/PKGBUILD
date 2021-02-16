@@ -8,8 +8,8 @@
 _enable_ada=yes
 _enable_objc=yes
 _threads="posix"
-_realname=gcc
-pkgbase=mingw-w64-${_realname}9
+_realname=gcc9
+pkgbase=mingw-w64-${_realname}
 pkgname=("${MINGW_PACKAGE_PREFIX}-${_realname}"
          "${MINGW_PACKAGE_PREFIX}-${_realname}-libs"
          "${MINGW_PACKAGE_PREFIX}-${_realname}-libgfortran"
