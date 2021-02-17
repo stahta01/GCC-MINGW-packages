@@ -6,16 +6,17 @@
 # Contributor: wirx6 <wirx654@gmail.com>
 
 _enable_ada=yes
-_enable_objc=yes
+_enable_fortran=no
+_enable_objc=no
 _threads="posix"
 _basename=gcc
 _depends_basename=${_basename}
 _realname=${_basename}9
 pkgbase=mingw-w64-${_realname}
-pkgname=("${MINGW_PACKAGE_PREFIX}-${_realname}"
-         "${MINGW_PACKAGE_PREFIX}-${_realname}-libs"
-         "${MINGW_PACKAGE_PREFIX}-${_realname}-libgfortran"
-         "${MINGW_PACKAGE_PREFIX}-${_realname}-fortran"
+pkgname=("${MINGW_PACKAGE_PREFIX}-${_realname}-libs"
+         "${MINGW_PACKAGE_PREFIX}-${_realname}"
+         $([[ "$_enable_fortran" == "yes" ]] && echo "${MINGW_PACKAGE_PREFIX}-${_realname}-libgfortran-git")
+         $([[ "$_enable_fortran" == "yes" ]] && echo "${MINGW_PACKAGE_PREFIX}-${_realname}-fortran-git")
          $([[ "$_enable_ada" == "yes" ]] && echo "${MINGW_PACKAGE_PREFIX}-${_realname}-ada")
          $([[ "$_enable_objc" == "yes" ]] && echo "${MINGW_PACKAGE_PREFIX}-${_realname}-objc")
         )
@@ -170,9 +171,12 @@ build() {
     ;;
   esac
 
-  local _languages="c,lto,c++,fortran"
+  local _languages="c,lto,c++"
   if [ "$_enable_ada" == "yes" ]; then
     _languages+=",ada"
+  fi
+  if [ "$_enable_fortran" == "yes" ]; then
+    _languages+=",fortran"
   fi
   if [ "$_enable_objc" == "yes" ]; then
     _languages+=",objc,obj-c++"
