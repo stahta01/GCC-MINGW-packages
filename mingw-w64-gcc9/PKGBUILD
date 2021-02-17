@@ -10,8 +10,9 @@ _enable_fortran=no
 _enable_objc=no
 _threads="posix"
 _basename=gcc
-_depends_basename=${_basename}
-_realname=${_basename}9
+_major_version=9
+_realname=${_basename}${_major_version}
+_dependsname=${_basename}
 pkgbase=mingw-w64-${_realname}
 pkgname=("${MINGW_PACKAGE_PREFIX}-${_realname}-libs"
          "${MINGW_PACKAGE_PREFIX}-${_realname}"
@@ -20,7 +21,7 @@ pkgname=("${MINGW_PACKAGE_PREFIX}-${_realname}-libs"
          $([[ "$_enable_ada" == "yes" ]] && echo "${MINGW_PACKAGE_PREFIX}-${_realname}-ada")
          $([[ "$_enable_objc" == "yes" ]] && echo "${MINGW_PACKAGE_PREFIX}-${_realname}-objc")
         )
-pkgver=9.3.0
+pkgver=${_major_version}.3.0
 _sourcedir=${_basename}-${pkgver}
 pkgrel=1
 pkgdesc="GCC for the MinGW-w64"
@@ -28,8 +29,8 @@ arch=('any')
 url="https://gcc.gnu.org"
 license=('GPL' 'LGPL' 'FDL' 'custom')
 groups=("${MINGW_PACKAGE_PREFIX}-toolchain")
-makedepends=("${MINGW_PACKAGE_PREFIX}-${_depends_basename}"
-             $([[ "$_enable_ada" == "yes" ]] && echo "${MINGW_PACKAGE_PREFIX}-${_depends_basename}-ada")
+makedepends=("${MINGW_PACKAGE_PREFIX}-${_dependsname}"
+             $([[ "$_enable_ada" == "yes" ]] && echo "${MINGW_PACKAGE_PREFIX}-${_dependsname}-ada")
              "${MINGW_PACKAGE_PREFIX}-binutils"
              "${MINGW_PACKAGE_PREFIX}-crt"
              "${MINGW_PACKAGE_PREFIX}-headers"
@@ -58,6 +59,7 @@ source=("https://ftp.gnu.org/gnu/gcc/${_basename}-${pkgver%%+*}/${_basename}-${p
         011-Enable-shared-gnat-implib.patch
         0012-Handle-spaces-in-path-for-default-manifest.patch
         014-gcc-9-branch-clone_function_name_1-Retain-any-stdcall-suffix.patch
+        020-libgomp-Don-t-hard-code-MS-printf-attributes.patch
         0130-libstdc++-in-out.patch
         0140-gcc-8.2.0-diagnostic-color.patch)
 sha256sums=('71e197867611f6054aa1119b13a0c0abac12834765fe2d81f35ac57f84f742d1'
@@ -115,7 +117,8 @@ prepare() {
     010-Fix-using-large-PCH.patch \
     011-Enable-shared-gnat-implib.patch \
     0012-Handle-spaces-in-path-for-default-manifest.patch \
-    014-gcc-9-branch-clone_function_name_1-Retain-any-stdcall-suffix.patch
+    014-gcc-9-branch-clone_function_name_1-Retain-any-stdcall-suffix.patch \
+    020-libgomp-Don-t-hard-code-MS-printf-attributes.patch
 
   apply_patch_with_msg \
     0130-libstdc++-in-out.patch
@@ -137,10 +140,10 @@ prepare() {
 
 _package_common() {
   # use with "with-gcc-major-version-only" configuration option
-  #_gcc_driver_version=`eval "sed -e 's/^\([0-9]*\).*/\1/' ${srcdir}/${_sourcedir}/gcc/BASE-VER"`
+  _gcc_driver_version=`eval "sed -e 's/^\([0-9]*\).*/\1/' ${srcdir}/${_sourcedir}/gcc/BASE-VER"`
 
   # Use without "with-gcc-major-version-only" configuration option
-  _gcc_driver_version=`eval "cat ${srcdir}/${_sourcedir}/gcc/BASE-VER"`
+  #_gcc_driver_version=`eval "cat ${srcdir}/${_sourcedir}/gcc/BASE-VER"`
 
   echo "_gcc_driver_version := ${_gcc_driver_version}"
 }
@@ -188,7 +191,8 @@ build() {
     --build=${MINGW_CHOST} \
     --host=${MINGW_CHOST} \
     --target=${MINGW_CHOST} \
-    --program-suffix=-${_gcc_driver_version} \
+    --with-gcc-major-version-only \
+    --program-suffix=-${_major_version} \
     --with-native-system-header-dir=${MINGW_PREFIX}/${MINGW_CHOST}/include \
     --libexecdir=${MINGW_PREFIX}/lib \
     --enable-bootstrap \
