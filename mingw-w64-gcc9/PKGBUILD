@@ -351,6 +351,9 @@ package_mingw-w64-gcc() {
   #cp lib/gcc/${MINGW_CHOST}/${_gcc_driver_version}/libstdc++*         ${pkgdir}${MINGW_PREFIX}/lib/gcc/${MINGW_CHOST}/${_gcc_driver_version}/
   #cp lib/gcc/${MINGW_CHOST}/${_gcc_driver_version}/libsupc++*         ${pkgdir}${MINGW_PREFIX}/lib/gcc/${MINGW_CHOST}/${_gcc_driver_version}/
 
+  mkdir -p ${pkgdir}${MINGW_PREFIX}/share/gcc-${_gcc_driver_version}/python
+  cp -r share/gcc-${_gcc_driver_version}/python/libstdcxx             ${pkgdir}${MINGW_PREFIX}/share/gcc-${_gcc_driver_version}/python/
+
   mkdir -p ${pkgdir}${MINGW_PREFIX}/share/{doc,info,locale,man}
   #cp -r share/doc/gcc-${_gcc_driver_version} ${pkgdir}${MINGW_PREFIX}/share/doc/
   cp share/info/cpp.info*                                ${pkgdir}${MINGW_PREFIX}/share/info/
@@ -363,8 +366,6 @@ package_mingw-w64-gcc() {
   cp share/info/libquadmath.info*                        ${pkgdir}${MINGW_PREFIX}/share/info/
 
   #cp share/locale/* ${pkgdir}${MINGW_PREFIX}/share/locale/
-  mkdir -p ${pkgdir}${MINGW_PREFIX}/share/gcc-${_gcc_driver_version}/python
-  cp -r share/gcc-${_gcc_driver_version}/python/libstdcxx             ${pkgdir}${MINGW_PREFIX}/share/gcc-${_gcc_driver_version}/python/
   mkdir -p ${pkgdir}${MINGW_PREFIX}/share/man/man1
   cp share/man/man1/cpp.1*                               ${pkgdir}${MINGW_PREFIX}/share/man/man1/
   cp share/man/man1/gcc.1*                               ${pkgdir}${MINGW_PREFIX}/share/man/man1/
