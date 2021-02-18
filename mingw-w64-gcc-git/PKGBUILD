@@ -138,13 +138,8 @@ prepare() {
   fi
 
   # do not expect $prefix/mingw symlink - this should be superceded by
-  # 0004-Windows-Don-t-ignore-native-system-header-dir.patch .. but isn't!
+  # Windows-Don-t-ignore-native-system-header-dir.patch .. but isn't!
   sed -i 's/${prefix}\/mingw\//${prefix}\//g' configure
-
-  # change hardcoded /mingw prefix to the real prefix .. isn't this rubbish?
-  # it might work at build time and could be important there but beyond that?!
-  local MINGW_NATIVE_PREFIX=$(cygpath -am ${MINGW_PREFIX}/${MINGW_CHOST})
-  sed -i "s#\\/mingw\\/#${MINGW_NATIVE_PREFIX//\//\\/}\\/#g" gcc/config/i386/mingw32.h
 }
 
 _package_common() {
@@ -155,6 +150,11 @@ _package_common() {
   #_gcc_driver_version=`eval "cat ${srcdir}/${_sourcedir}/gcc/BASE-VER"`
 
   echo "_gcc_driver_version := ${_gcc_driver_version}"
+
+  _pkg_prefix=${MINGW_PREFIX}
+  #_pkg_prefix=/opt${MINGW_PREFIX}/${_realname}
+
+  echo "_pkg_prefix := ${_pkg_prefix}"
 }
 
 build() {
@@ -162,6 +162,11 @@ build() {
   mkdir -p ${srcdir}/build-${MINGW_CHOST} && cd ${srcdir}/build-${MINGW_CHOST}
 
   _package_common
+
+  # change hardcoded /mingw prefix to the real prefix .. isn't this rubbish?
+  # it might work at build time and could be important there but beyond that?!
+  local MINGW_NATIVE_PREFIX=$(cygpath -am ${_pkg_prefix}/${MINGW_CHOST})
+  sed -i "s#\\/mingw\\/#${MINGW_NATIVE_PREFIX//\//\\/}\\/#g" ${srcdir}/${_sourcedir}/gcc/config/i386/mingw32.h
 
   ${MINGW_PREFIX}/bin/gcc --version
   ${MINGW_PREFIX}/bin/ld  --version
