@@ -247,7 +247,7 @@ build() {
 
   make -j1 DESTDIR=${srcdir} install
   if [ "$_enable_ada" == "yes" ]; then
-    mv ${srcdir}/install-${CARCH} /lib/gcc/${MINGW_CHOST}/${_gcc_driver_version}/adalib/*.dll ${srcdir}/install-${CARCH} /bin/
+    mv ${srcdir}/install-${CARCH}/lib/gcc/${MINGW_CHOST}/${_gcc_driver_version}/adalib/*.dll ${srcdir}/install-${CARCH}/bin/
   fi
 }
 
@@ -349,7 +349,7 @@ package_mingw-w64-gcc() {
   cp lib/libsupc++*                                      ${pkgdir}${_pkg_prefix}/lib/gcc/${MINGW_CHOST}/${_gcc_driver_version}/
 
   #mkdir -p ${pkgdir}${_pkg_prefix}/lib/gcc/${MINGW_CHOST}/lib
-  #cp ${srcdir}/install-${CARCH} /lib/gcc/${MINGW_CHOST}/lib/libgcc_s.a ${pkgdir}${_pkg_prefix}/lib/gcc/${MINGW_CHOST}/${_gcc_driver_version}/
+  #cp ${srcdir}/install-${CARCH}/lib/gcc/${MINGW_CHOST}/lib/libgcc_s.a ${pkgdir}${_pkg_prefix}/lib/gcc/${MINGW_CHOST}/${_gcc_driver_version}/
   #cp lib/gcc/${MINGW_CHOST}/lib/libgcc_s.a                ${pkgdir}${_pkg_prefix}/lib/gcc/${MINGW_CHOST}/lib/
 
   #cp -r lib/gcc/${MINGW_CHOST}/${_gcc_driver_version}/include/c++      ${pkgdir}${_pkg_prefix}/lib/gcc/${MINGW_CHOST}/${_gcc_driver_version}/include/
