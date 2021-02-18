@@ -135,7 +135,7 @@ prepare() {
 
   # change hardcoded /mingw prefix to the real prefix .. isn't this rubbish?
   # it might work at build time and could be important there but beyond that?!
-  local MINGW_NATIVE_PREFIX=$(cygpath -am ${MINGW_PREFIX}/${MINGW_CHOST})
+  local MINGW_NATIVE_PREFIX=$(cygpath -am ${_pkg_prefix}/${MINGW_CHOST})
   sed -i "s#\\/mingw\\/#${MINGW_NATIVE_PREFIX//\//\\/}\\/#g" gcc/config/i386/mingw32.h
 }
 
@@ -199,7 +199,7 @@ build() {
     --target=${MINGW_CHOST} \
     --with-gcc-major-version-only \
     --program-suffix=-${_major_version} \
-    --with-native-system-header-dir=${MINGW_PREFIX}/${MINGW_CHOST}/include \
+    --with-native-system-header-dir=${_pkg_prefix}/${MINGW_CHOST}/include \
     --libexecdir=${MINGW_PREFIX}/lib \
     --enable-bootstrap \
     --with-arch=${_arch} \
