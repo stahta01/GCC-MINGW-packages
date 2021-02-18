@@ -243,7 +243,8 @@ build() {
 
   make V=1 all
 
-  rm -rf ${srcdir}/install-${CARCH} 
+  rm -rf ${srcdir}/install-${CARCH}
+  mkdir -p ${srcdir}/install-${CARCH}
 
   make -j1 DESTDIR=${srcdir}/install-${CARCH} install
   if [ "$_enable_ada" == "yes" ]; then
