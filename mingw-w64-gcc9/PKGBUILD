@@ -14,6 +14,7 @@ _major_version=9
 _realname=${_basename}${_major_version}
 _makedependsname=${_basename}
 _make_program_suffix=
+_build_program_suffix=-${_major_version}
 pkgbase=mingw-w64-${_realname}
 pkgname=("${MINGW_PACKAGE_PREFIX}-${_realname}-libs"
          "${MINGW_PACKAGE_PREFIX}-${_realname}"
@@ -303,24 +304,24 @@ package_mingw-w64-gcc() {
 
   mkdir -p ${pkgdir}${_pkg_prefix}/{bin,include,lib,share}
 
-  cd ${srcdir}/install-${CARCH} 
-  cp bin/cpp.exe                                        ${pkgdir}${_pkg_prefix}/bin/
-  cp bin/gcc.exe                                        ${pkgdir}${_pkg_prefix}/bin/
-  cp bin/gcc.exe                                        ${pkgdir}${_pkg_prefix}/bin/cc.exe
-  cp bin/gcc-ar.exe                                     ${pkgdir}${_pkg_prefix}/bin/
-  cp bin/gcc-nm.exe                                     ${pkgdir}${_pkg_prefix}/bin/
-  cp bin/gcc-ranlib.exe                                 ${pkgdir}${_pkg_prefix}/bin/
-  cp bin/gcov.exe                                       ${pkgdir}${_pkg_prefix}/bin/
-  cp bin/gcov-tool.exe                                  ${pkgdir}${_pkg_prefix}/bin/
-  cp bin/c++.exe                                        ${pkgdir}${_pkg_prefix}/bin/
-  cp bin/g++.exe                                        ${pkgdir}${_pkg_prefix}/bin/
-  cp bin/${MINGW_CHOST}-c++.exe                         ${pkgdir}${_pkg_prefix}/bin/
-  cp bin/${MINGW_CHOST}-g++.exe                         ${pkgdir}${_pkg_prefix}/bin/
-  cp bin/${MINGW_CHOST}-gcc-${_gcc_driver_version}.exe               ${pkgdir}${_pkg_prefix}/bin/
-  cp bin/${MINGW_CHOST}-gcc.exe                         ${pkgdir}${_pkg_prefix}/bin/
-  cp bin/${MINGW_CHOST}-gcc-ar.exe                      ${pkgdir}${_pkg_prefix}/bin/
-  cp bin/${MINGW_CHOST}-gcc-nm.exe                      ${pkgdir}${_pkg_prefix}/bin/
-  cp bin/${MINGW_CHOST}-gcc-ranlib.exe                  ${pkgdir}${_pkg_prefix}/bin/
+  cd ${srcdir}/install-${CARCH}
+  cp bin/cpp${_build_program_suffix}.exe                            ${pkgdir}${_pkg_prefix}/bin/
+  cp bin/gcc${_build_program_suffix}.exe                            ${pkgdir}${_pkg_prefix}/bin/
+  cp bin/gcc${_build_program_suffix}.exe                            ${pkgdir}${_pkg_prefix}/bin/cc${_build_program_suffix}.exe
+  cp bin/gcc-ar${_build_program_suffix}.exe                         ${pkgdir}${_pkg_prefix}/bin/
+  cp bin/gcc-nm${_build_program_suffix}.exe                         ${pkgdir}${_pkg_prefix}/bin/
+  cp bin/gcc-ranlib${_build_program_suffix}.exe                     ${pkgdir}${_pkg_prefix}/bin/
+  cp bin/gcov${_build_program_suffix}.exe                           ${pkgdir}${_pkg_prefix}/bin/
+  cp bin/gcov-tool${_build_program_suffix}.exe                      ${pkgdir}${_pkg_prefix}/bin/
+  cp bin/c++${_build_program_suffix}.exe                            ${pkgdir}${_pkg_prefix}/bin/
+  cp bin/g++${_build_program_suffix}.exe                            ${pkgdir}${_pkg_prefix}/bin/
+  cp bin/${MINGW_CHOST}-c++${_build_program_suffix}.exe             ${pkgdir}${_pkg_prefix}/bin/
+  cp bin/${MINGW_CHOST}-g++${_build_program_suffix}.exe             ${pkgdir}${_pkg_prefix}/bin/
+  cp bin/${MINGW_CHOST}-gcc-${_gcc_driver_version}.exe              ${pkgdir}${_pkg_prefix}/bin/
+  cp bin/${MINGW_CHOST}-gcc${_build_program_suffix}.exe             ${pkgdir}${_pkg_prefix}/bin/
+  cp bin/${MINGW_CHOST}-gcc-ar${_build_program_suffix}.exe          ${pkgdir}${_pkg_prefix}/bin/
+  cp bin/${MINGW_CHOST}-gcc-nm${_build_program_suffix}.exe          ${pkgdir}${_pkg_prefix}/bin/
+  cp bin/${MINGW_CHOST}-gcc-ranlib${_build_program_suffix}.exe      ${pkgdir}${_pkg_prefix}/bin/
 
   #cp bin/{libgcc*,libgomp*,libquadmath*,libssp*,libstdc*}.dll ${pkgdir}${_pkg_prefix}/bin/
   mkdir -p ${pkgdir}${_pkg_prefix}/lib/gcc/${MINGW_CHOST}/${_gcc_driver_version}/include
@@ -350,7 +351,7 @@ package_mingw-w64-gcc() {
   cp lib/libsupc++*                                      ${pkgdir}${_pkg_prefix}/lib/gcc/${MINGW_CHOST}/${_gcc_driver_version}/
 
   #mkdir -p ${pkgdir}${_pkg_prefix}/lib/gcc/${MINGW_CHOST}/lib
-  #cp ${srcdir}/install-${CARCH}/lib/gcc/${MINGW_CHOST}/lib/libgcc_s.a ${pkgdir}${_pkg_prefix}/lib/gcc/${MINGW_CHOST}/${_gcc_driver_version}/
+  #cp ${srcdir}/install-${CARCH}${_pkg_prefix}/lib/gcc/${MINGW_CHOST}/lib/libgcc_s.a ${pkgdir}${_pkg_prefix}/lib/gcc/${MINGW_CHOST}/${_gcc_driver_version}/
   #cp lib/gcc/${MINGW_CHOST}/lib/libgcc_s.a                ${pkgdir}${_pkg_prefix}/lib/gcc/${MINGW_CHOST}/lib/
 
   #cp -r lib/gcc/${MINGW_CHOST}/${_gcc_driver_version}/include/c++      ${pkgdir}${_pkg_prefix}/lib/gcc/${MINGW_CHOST}/${_gcc_driver_version}/include/
