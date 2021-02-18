@@ -247,7 +247,7 @@ build() {
 
   make -j1 DESTDIR=${srcdir}/install-${CARCH} install
   if [ "$_enable_ada" == "yes" ]; then
-    mv ${srcdir}/install-${CARCH}/lib/gcc/${MINGW_CHOST}/${_gcc_driver_version}/adalib/*.dll ${srcdir}/install-${CARCH}/bin/
+    mv ${srcdir}/install-${CARCH}${_pkg_prefix}/lib/gcc/${MINGW_CHOST}/${_gcc_driver_version}/adalib/*.dll ${srcdir}/install-${CARCH}${_pkg_prefix}/bin/
   fi
 }
 
