@@ -200,7 +200,7 @@ build() {
     --with-gcc-major-version-only \
     --program-suffix=-${_major_version} \
     --with-native-system-header-dir=${_pkg_prefix}/${MINGW_CHOST}/include \
-    --libexecdir=${MINGW_PREFIX}/lib \
+    --libexecdir=${_pkg_prefix}/lib \
     --enable-bootstrap \
     --with-arch=${_arch} \
     --with-tune=generic \
