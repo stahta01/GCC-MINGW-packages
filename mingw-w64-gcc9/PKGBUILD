@@ -12,7 +12,7 @@ _threads="posix"
 _basename=gcc
 _major_version=9
 _realname=${_basename}${_major_version}
-_dependsname=${_basename}
+_makedependsname=${_basename}
 pkgbase=mingw-w64-${_realname}
 pkgname=("${MINGW_PACKAGE_PREFIX}-${_realname}-libs"
          "${MINGW_PACKAGE_PREFIX}-${_realname}"
@@ -29,8 +29,8 @@ arch=('any')
 url="https://gcc.gnu.org"
 license=('GPL' 'LGPL' 'FDL' 'custom')
 groups=("${MINGW_PACKAGE_PREFIX}-toolchain")
-makedepends=("${MINGW_PACKAGE_PREFIX}-${_dependsname}"
-             $([[ "$_enable_ada" == "yes" ]] && echo "${MINGW_PACKAGE_PREFIX}-${_dependsname}-ada")
+makedepends=("${MINGW_PACKAGE_PREFIX}-${_makedependsname}"
+             $([[ "$_enable_ada" == "yes" ]] && echo "${MINGW_PACKAGE_PREFIX}-${_makedependsname}-ada")
              "${MINGW_PACKAGE_PREFIX}-binutils"
              "${MINGW_PACKAGE_PREFIX}-crt"
              "${MINGW_PACKAGE_PREFIX}-headers"
