@@ -375,13 +375,13 @@ package_mingw-w64-gcc() {
 
   #cp share/locale/* ${pkgdir}${_pkg_prefix}/share/locale/
   mkdir -p ${pkgdir}${_pkg_prefix}/share/man/man1
-  cp share/man/man1/cpp.1*                               ${pkgdir}${_pkg_prefix}/share/man/man1/
-  cp share/man/man1/gcc.1*                               ${pkgdir}${_pkg_prefix}/share/man/man1/
-  cp share/man/man1/gcov.1*                              ${pkgdir}${_pkg_prefix}/share/man/man1/
+  cp share/man/man1/cpp${_build_program_suffix}.1*       ${pkgdir}${_pkg_prefix}/share/man/man1/
+  cp share/man/man1/gcc${_build_program_suffix}.1*       ${pkgdir}${_pkg_prefix}/share/man/man1/
+  cp share/man/man1/gcov${_build_program_suffix}.1*      ${pkgdir}${_pkg_prefix}/share/man/man1/
   cp share/man/man7/fsf-funding.7*                       ${pkgdir}${_pkg_prefix}/share/man/man1/
   cp share/man/man7/gfdl.7*                              ${pkgdir}${_pkg_prefix}/share/man/man1/
   cp share/man/man7/gpl.7*                               ${pkgdir}${_pkg_prefix}/share/man/man1/
-  cp share/man/man1/g++.1*                               ${pkgdir}${_pkg_prefix}/share/man/man1/
+  cp share/man/man1/g++${_build_program_suffix}.1*       ${pkgdir}${_pkg_prefix}/share/man/man1/
 
   # install plugins for binutils
   mkdir -p ${pkgdir}${_pkg_prefix}/lib/bfd-plugins
