@@ -280,11 +280,12 @@ build() {
 
   make -j1 all
 
-  rm -rf ${srcdir}${MINGW_PREFIX}
+  rm -rf ${srcdir}/install-${CARCH}${_pkg_prefix}
+  mkdir -p ${srcdir}/install-${CARCH}
 
   make -j1 DESTDIR=${srcdir} install
   if [ "$_enable_ada" == "yes" ]; then
-    mv ${srcdir}${MINGW_PREFIX}/lib/gcc/${MINGW_CHOST}/${_gcc_driver_version}/adalib/*.dll ${srcdir}${MINGW_PREFIX}/bin/
+    mv ${srcdir}/install-${CARCH}${_pkg_prefix}/lib/gcc/${MINGW_CHOST}/${_gcc_driver_version}/adalib/*.dll ${srcdir}/install-${CARCH}${_pkg_prefix}/bin/
   fi
 }
 
@@ -330,7 +331,7 @@ ENDFILE
 
   mkdir -p ${pkgdir}${MINGW_PREFIX}/bin
 
-  cd ${srcdir}${MINGW_PREFIX}
+  cd ${srcdir}/install-${CARCH}${_pkg_prefix}
   # libitm* and libvtv* are disbled until fixed
   cp bin/{libatomic*,libgcc*,libgomp*,libquadmath*,libssp*,libstdc*}.dll ${pkgdir}${MINGW_PREFIX}/bin/
   if [ "$_enable_jit" == "yes" ]; then
@@ -355,7 +356,7 @@ package_mingw-w64-gcc-git() {
 
   mkdir -p ${pkgdir}${MINGW_PREFIX}/{bin,include,lib,share}
 
-  cd ${srcdir}${MINGW_PREFIX}
+  cd ${srcdir}/install-${CARCH}${_pkg_prefix}
   cp bin/cpp.exe                                        ${pkgdir}${MINGW_PREFIX}/bin/
   cp bin/gcc.exe                                        ${pkgdir}${MINGW_PREFIX}/bin/
   cp bin/gcc.exe                                        ${pkgdir}${MINGW_PREFIX}/bin/cc.exe
@@ -436,7 +437,7 @@ package_mingw-w64-gcc-libgfortran-git() {
   conflicts=("${MINGW_PACKAGE_PREFIX}-${_realname}-libgfortran")
 
   mkdir -p ${pkgdir}${MINGW_PREFIX}/bin
-  cd ${srcdir}${MINGW_PREFIX}
+  cd ${srcdir}/install-${CARCH}${_pkg_prefix}
   cp bin/libgfortran*.dll                                ${pkgdir}${MINGW_PREFIX}/bin/
 }
 
@@ -449,7 +450,7 @@ package_mingw-w64-gcc-fortran-git() {
 
   mkdir -p ${pkgdir}${MINGW_PREFIX}/{bin,lib,share}
 
-  cd ${srcdir}${MINGW_PREFIX}
+  cd ${srcdir}/install-${CARCH}${_pkg_prefix}
   cp bin/gfortran.exe ${pkgdir}${MINGW_PREFIX}/bin/
   cp bin/${MINGW_CHOST}-gfortran.exe ${pkgdir}${MINGW_PREFIX}/bin/
 
@@ -472,7 +473,7 @@ package_mingw-w64-gcc-ada-git() {
 
   mkdir -p ${pkgdir}${MINGW_PREFIX}/{bin,lib,share}
 
-  cd ${srcdir}${MINGW_PREFIX}
+  cd ${srcdir}/install-${CARCH}${_pkg_prefix}
   cp bin/gnat*.exe ${pkgdir}${MINGW_PREFIX}/bin/
 
   cp bin/{libgnarl*,libgnat*}.dll                       ${pkgdir}${MINGW_PREFIX}/bin/
@@ -496,7 +497,7 @@ package_mingw-w64-gcc-objc-git() {
 
   mkdir -p ${pkgdir}${MINGW_PREFIX}/{bin,lib}
 
-  cd ${srcdir}${MINGW_PREFIX}
+  cd ${srcdir}/install-${CARCH}${_pkg_prefix}
   cp bin/libobjc*.dll ${pkgdir}${MINGW_PREFIX}/bin/
 
   mkdir -p ${pkgdir}${MINGW_PREFIX}/lib/gcc/${MINGW_CHOST}/${_gcc_driver_version}/include
