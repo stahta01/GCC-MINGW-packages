@@ -231,14 +231,14 @@ build() {
   echo "LDFLAGS := ${LDFLAGS}"
 
   ../${_sourcedir}/configure \
-    --prefix=${MINGW_PREFIX} \
+    --prefix=${_pkg_prefix} \
     --with-local-prefix=${MINGW_PREFIX}/local \
     --build=${MINGW_CHOST} \
     --host=${MINGW_CHOST} \
     --target=${MINGW_CHOST} \
     --with-gcc-major-version-only \
     --with-native-system-header-dir=${MINGW_PREFIX}/${MINGW_CHOST}/include \
-    --libexecdir=${MINGW_PREFIX}/lib \
+    --libexecdir=${_pkg_prefix}/lib \
     --enable-bootstrap \
     --with-arch=${_arch} \
     --with-tune=generic \
