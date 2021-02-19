@@ -161,6 +161,7 @@ build() {
   # it might work at build time and could be important there but beyond that?!
   local MINGW_NATIVE_PREFIX=$(cygpath -am ${_pkg_prefix}/${MINGW_CHOST})
   sed -i "s#\\/mingw\\/#${MINGW_NATIVE_PREFIX//\//\\/}\\/#g" ${srcdir}/${_sourcedir}/gcc/config/i386/mingw32.h
+  mkdir -p ${_pkg_prefix}/${MINGW_CHOST}/include
 
   declare -a extra_config
   if check_option "debug" "n"; then
