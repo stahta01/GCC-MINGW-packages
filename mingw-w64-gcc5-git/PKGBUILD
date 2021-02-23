@@ -60,10 +60,10 @@ elif [ -n "$_git_commit" ]; then
 else
   source=(${_sourcedir}::"${_git_repo_url}")
 fi
-MPFR_VERSION=mpfr-2.4.2
-GMP_VERSION=gmp-4.3.2
-MPC_VERSION=mpc-0.8.1
-ISL_VERSION=isl-0.15
+MPFR_VERSION=mpfr-3.1.4
+GMP_VERSION=gmp-6.1.0
+MPC_VERSION=mpc-1.0.3
+ISL_VERSION=isl-0.16.1
 noextract=("${MPFR_VERSION}.tar.bz2" "${GMP_VERSION}.tar.bz2" "${MPC_VERSION}.tar.gz" "${ISL_VERSION}.tar.bz2")
 source+=("ftp://gcc.gnu.org/pub/gcc/infrastructure/${MPFR_VERSION}.tar.bz2"
         "ftp://gcc.gnu.org/pub/gcc/infrastructure/${GMP_VERSION}.tar.bz2"
@@ -88,10 +88,10 @@ source+=(
         "405-dwarf-regression.patch"
         "955-4.9.2-apply-hack-so-gcc_s-isnt-stripped.patch")
 sha256sums=('SKIP'
-            'c7e75a08a8d49d2082e4caee1591a05d11b9d5627514e678f02d66a124bcf2ba'
-            '936162c0312886c21581002b79932829aa048cfaf9937c6265aeaa14f1cd1775'
-            'e664603757251fd8a352848276497a4c79b7f8b21fd8aedd5cc0598a38fee3e4'
-            '8ceebbf4d9a81afa2b4449113cee4b7cb14a687d7a549a963deb5e2a41458b6b'
+            'd3103a80cdad2407ed581f3618c4bed04e0c92d1cf771a65ead662cc397f7775'
+            '498449a994efeba527885c10405993427995d3f86b8768d8cdf8d9dd7c6b73e8'
+            '617decc6ea09889fb08ede330917a00b16809b8db88c29c31bfbb49cbf88ecc3'
+            '412538bb65c799ac98e17e8cfcdacbb257a57362acfaaff254b0fcae970126d2'
             '83655a7202f0a0dcce1782d4b365252bf1ad12a522b7ad82ab578ee5ec46433b'
             'afbe4ef53e78ccb2802a04e6c26a24c7890fef68337f926f9b485388690933e2'
             '21191b4fd57ce5f230fcc97b4d9ae31bdc387d7c7c8e39436aa7e4268d278d3d'
