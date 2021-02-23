@@ -180,7 +180,7 @@ prepare() {
   fi
 
   # http://gcc.gnu.org/bugzilla/show_bug.cgi?id=57653
-  patch -p0 -i ${srcdir}/200-gcc-4.8-filename-output.patch
+#  patch -p0 -i ${srcdir}/200-gcc-4.8-filename-output.patch
 
   # Kai's libgomp fix.
   patch -p1 -i ${srcdir}/210-ktietz-libgomp.patch
