@@ -12,8 +12,8 @@ pkgname=(
         "${MINGW_PACKAGE_PREFIX}-${_realname}-ada"
         "${MINGW_PACKAGE_PREFIX}-${_realname}-objc"
         )
-pkgver=4.9.2
-pkgrel=5
+pkgver=4.9.4
+pkgrel=1
 pkgdesc="GCC for the MinGW-w64"
 arch=('any')
 url="http://gcc.gnu.org"
