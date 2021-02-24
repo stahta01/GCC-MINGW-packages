@@ -263,7 +263,7 @@ build() {
     --disable-symvers \
     --with-libiconv \
     --with-system-zlib \
-    --with-pkgversion="Rev${pkgrel}, Built by stahta01 (Tim S)" \
+    --with-pkgversion="Rev${pkgrel}, Built by stahta01 -- Tim S" \
     --with-bugurl="https://github.com/stahta01/GCC-MINGW-packages/issues" \
     --with-gnu-as --with-gnu-ld \
     ${_conf}
