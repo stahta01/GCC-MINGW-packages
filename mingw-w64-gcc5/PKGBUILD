@@ -18,7 +18,7 @@ pkgname=("${MINGW_PACKAGE_PREFIX}-${_realname}"
          $([[ "$_enable_ada" == "yes" ]] && echo "${MINGW_PACKAGE_PREFIX}-${_realname}-ada")
          $([[ "$_enable_objc" == "yes" ]] && echo "${MINGW_PACKAGE_PREFIX}-${_realname}-objc")
 )
-pkgver=5.5.0
+pkgver=5.1.0
 pkgrel=1
 pkgdesc="GCC for the MinGW-w64"
 arch=('any')
@@ -64,7 +64,7 @@ source=("https://ftp.gnu.org/gnu/gcc/${_realname}-${pkgver}/${_realname}-${pkgve
         '210-gcc-4.4-ktietz-libgomp.patch'
         '405-dwarf-regression.patch'
         '955-4.9.2-apply-hack-so-gcc_s-isnt-stripped.patch')
-sha256sums=('3aabce75d6dd206876eced17504b28d47a724c2e430dbd2de176beb948708983'
+sha256sums=('335275817b5ed845fee787e75efd76a6e240bfabbe0a0c20a81a04777e204617'
             'c7e75a08a8d49d2082e4caee1591a05d11b9d5627514e678f02d66a124bcf2ba'
             '936162c0312886c21581002b79932829aa048cfaf9937c6265aeaa14f1cd1775'
             'e664603757251fd8a352848276497a4c79b7f8b21fd8aedd5cc0598a38fee3e4'
