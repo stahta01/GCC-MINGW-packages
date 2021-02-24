@@ -67,6 +67,7 @@ source=("ftp://gcc.gnu.org/pub/gcc/releases/${_realname}-${pkgver}/${_realname}-
         '240-prettify-linking-no-undefined.mingw.patch'
         '300-libgomp-no-static.patch'
         '011-Enable-shared-gnat-implib.patch'
+        '810-gcc-5-intl-Update-to-match-releases-gcc-6.patch'
         '955-4.9.2-apply-hack-so-gcc_s-isnt-stripped.patch')
 sha256sums=('6c11d292cd01b294f9f84c9a59c230d80e9e4a47e5c6355f046bb36d4f358092'
             'c7e75a08a8d49d2082e4caee1591a05d11b9d5627514e678f02d66a124bcf2ba'
@@ -93,6 +94,7 @@ sha256sums=('6c11d292cd01b294f9f84c9a59c230d80e9e4a47e5c6355f046bb36d4f358092'
             'a101c40bd4bda743ee65691959e090a2ee6e01456c394a6f45c21f9a39849d5e'
             '1422dccee79ead90dfc729e325074675758e642e38d4af6d0fc870b364c61a8e'
             '8faff8e503a617f283270f411399a8bcacda3ab62b4072dedf117e108af4844a'
+            '6faf288a2b805950212307be97cfc25d6283e48dec1ab272649e8010a85a0692'
             '9893cd986191de2e761e2ed98ad6ec8fadeab86311dc6ba20a1032f13e478686')
 
 _threads="posix"
@@ -204,6 +206,8 @@ prepare() {
   patch -p1 -i ${srcdir}/240-prettify-linking-no-undefined.mingw.patch
 
   patch -p1 -i ${srcdir}/011-Enable-shared-gnat-implib.patch
+
+  patch -p1 -i ${srcdir}/810-gcc-5-intl-Update-to-match-releases-gcc-6.patch
 
   patch -p1 -i ${srcdir}/955-4.9.2-apply-hack-so-gcc_s-isnt-stripped.patch
 }
