@@ -1,117 +1,60 @@
-diff -r 456550117e63 -r de30972da69d doc/gmp.texi
---- a/doc/gmp.texi	Mon Jan 04 01:31:44 2010 +0100
-+++ b/doc/gmp.texi	Thu Jan 07 14:11:11 2010 +0100
-@@ -5334,40 +5334,47 @@
- negative value if @math{@var{s1} < @var{s2}}.
- @end deftypefun
- 
--@deftypefun mp_size_t mpn_gcd (mp_limb_t *@var{rp}, mp_limb_t *@var{s1p}, mp_size_t @var{s1n}, mp_limb_t *@var{s2p}, mp_size_t @var{s2n})
--Set @{@var{rp}, @var{retval}@} to the greatest common divisor of @{@var{s1p},
--@var{s1n}@} and @{@var{s2p}, @var{s2n}@}.  The result can be up to @var{s2n}
--limbs, the return value is the actual number produced.  Both source operands
--are destroyed.
--
--@{@var{s1p}, @var{s1n}@} must have at least as many bits as @{@var{s2p},
--@var{s2n}@}.  @{@var{s2p}, @var{s2n}@} must be odd.  Both operands must have
--non-zero most significant limbs.  No overlap is permitted between @{@var{s1p},
--@var{s1n}@} and @{@var{s2p}, @var{s2n}@}.
--@end deftypefun
--
--@deftypefun mp_limb_t mpn_gcd_1 (const mp_limb_t *@var{s1p}, mp_size_t @var{s1n}, mp_limb_t @var{s2limb})
--Return the greatest common divisor of @{@var{s1p}, @var{s1n}@} and
--@var{s2limb}.  Both operands must be non-zero.
--@end deftypefun
--
--@deftypefun mp_size_t mpn_gcdext (mp_limb_t *@var{r1p}, mp_limb_t *@var{r2p}, mp_size_t *@var{r2n}, mp_limb_t *@var{s1p}, mp_size_t @var{s1n}, mp_limb_t *@var{s2p}, mp_size_t @var{s2n})
--Calculate the greatest common divisor of @{@var{s1p}, @var{s1n}@} and
--@{@var{s2p}, @var{s2n}@}.  Store the gcd at @{@var{r1p}, @var{retval}@} and
--the first cofactor at @{@var{r2p}, *@var{r2n}@}, with *@var{r2n} negative if
--the cofactor is negative.  @var{r1p} and @var{r2p} should each have room for
--@math{@var{s1n}+1} limbs, but the return value and value stored through
--@var{r2n} indicate the actual number produced.
--
--@math{@{@var{s1p}, @var{s1n}@} @ge{} @{@var{s2p}, @var{s2n}@}} is required,
--and both must be non-zero.  The regions @{@var{s1p}, @math{@var{s1n}+1}@} and
--@{@var{s2p}, @math{@var{s2n}+1}@} are destroyed (i.e.@: the operands plus an
--extra limb past the end of each).
--
--The cofactor @var{r2} will satisfy @m{r_2 s_1 + k s_2 = r_1, @var{r2}*@var{s1}
--+ @var{k}*@var{s2} = @var{r1}}.  The second cofactor @var{k} is not calculated
--but can easily be obtained from @m{(r_1 - r_2 s_1) / s_2, (@var{r1} -
--@var{r2}*@var{s1}) / @var{s2}} (this division will be exact).
-+@deftypefun mp_size_t mpn_gcd (mp_limb_t *@var{rp}, mp_limb_t *@var{xp}, mp_size_t @var{xn}, mp_limb_t *@var{yp}, mp_size_t @var{yn})
-+Set @{@var{rp}, @var{retval}@} to the greatest common divisor of @{@var{xp},
-+@var{xn}@} and @{@var{yp}, @var{yn}@}.  The result can be up to @var{yn} limbs,
-+the return value is the actual number produced.  Both source operands are
-+destroyed.
-+
-+@{@var{xp}, @var{xn}@} must have at least as many bits as @{@var{yp},
-+@var{yn}@}.  @{@var{yp}, @var{yn}@} must be odd.  Both operands must have
-+non-zero most significant limbs.  No overlap is permitted between @{@var{xp},
-+@var{xn}@} and @{@var{yp}, @var{yn}@}.
-+@end deftypefun
-+
-+@deftypefun mp_limb_t mpn_gcd_1 (const mp_limb_t *@var{xp}, mp_size_t @var{xn}, mp_limb_t @var{ylimb})
-+Return the greatest common divisor of @{@var{xp}, @var{xn}@} and @var{ylimb}.
-+Both operands must be non-zero.
-+@end deftypefun
-+
-+@deftypefun mp_size_t mpn_gcdext (mp_limb_t *@var{gp}, mp_limb_t *@var{sp}, mp_size_t *@var{sn}, mp_limb_t *@var{xp}, mp_size_t @var{xn}, mp_limb_t *@var{yp}, mp_size_t @var{yn})
-+Let @m{U,@var{U}} be defined by @{@var{xp}, @var{xn}@} and let @m{V,@var{V}} be
-+defined by @{@var{yp}, @var{yn}@}.
-+
-+Compute the greatest common divisor @math{G} of @math{U} and @math{V}.  Compute
-+a cofactor @math{S} such that @math{G = US + VT}.  The second cofactor @var{T}
-+is not computed but can easily be obtained from @m{(G - US) / V, (@var{G} -
-+@var{U}*@var{S}) / @var{V}} (the division will be exact).  It is required that
-+@math{U @ge V > 0}.
-+
-+@math{S} satisfies @math{S = 1} or @math{@GMPabs{S} < V / (2 G)}. @math{S =
-+0} if and only if @math{V} divides @math{U} (i.e., @math{G = V}).
-+
-+Store @math{G} at @var{gp} and let the return value define its limb count.
-+Store @math{S} at @var{sp} and let |*@var{sn}| define its limb count.  @math{S}
-+can be negative; when this happens *@var{sn} will be negative.  The areas at
-+@var{gp} and @var{sp} should each have room for @math{@var{xn}+1} limbs.
-+
-+The areas @{@var{xp}, @math{@var{xn}+1}@} and @{@var{yp}, @math{@var{yn}+1}@}
-+are destroyed (i.e.@: the input operands plus an extra limb past the end of
-+each).
-+
-+Compatibility note: GMP 4.3.0 and 4.3.1 defined @math{S} less strictly.
-+Earlier as well as later GMP releases define @math{S} as described here.
- @end deftypefun
- 
- @deftypefun mp_size_t mpn_sqrtrem (mp_limb_t *@var{r1p}, mp_limb_t *@var{r2p}, const mp_limb_t *@var{sp}, mp_size_t @var{n})
-# HG changeset patch
-# User Torbjorn Granlund <tege@gmplib.org>
-# Date 1262877403 -3600
-#      Thu Jan 07 16:16:43 2010 +0100
-# Node ID 9d3415ef9dbbc8d04a5163e753a9ad1ab71fdae7
-# Parent  de30972da69d100d523582ba50267646c296433c
-*** empty log message ***
+From 54d18cb41c19c9d90c34e9a9a4150cb002ba30ce Mon Sep 17 00:00:00 2001
+From: Tim Stahlhut <stahta01@gmail.com>
+Date: Wed, 24 Feb 2021 16:49:14 -0500
+Subject: Changes to gmp version 4.3.2 from hg repo
 
-diff -r de30972da69d -r 9d3415ef9dbb ChangeLog
---- a/ChangeLog	Thu Jan 07 14:11:11 2010 +0100
-+++ b/ChangeLog	Thu Jan 07 16:16:43 2010 +0100
-@@ -1,4 +1,4 @@
--2010-01-04  Torbjorn Granlund  <tege@gmplib.org>
-+2010-01-07  Torbjorn Granlund  <tege@gmplib.org>
- 
- 	* Version 4.3.2 released.
- 
-# HG changeset patch
-# User Torbjorn Granlund <tege@gmplib.org>
-# Date 1265533219 -3600
-#      Sun Feb 07 10:00:19 2010 +0100
-# Node ID a7de6127e187a29a36b579c6f760a42bba6b1be4
-# Parent  9d3415ef9dbbc8d04a5163e753a9ad1ab71fdae7
-Fix a typo.
+---
+ ChangeLog                  |  26 ++++
+ acinclude.m4               |   8 +-
+ config.guess               |  12 +-
+ configure.in               |  27 ++--
+ doc/gmp.texi               |  19 +--
+ mpn/x86/atom/gmp-mparam.h  |  65 ++++++++++
+ mpn/x86_64/aorrlsh_n.asm   |   2 +-
+ mpn/x86_64/aors_n.asm      |  77 +++++------
+ mpn/x86_64/atom/aors_n.asm |  23 ++--
+ mpn/x86_64/lshsub_n.asm    |   2 +-
+ tests/devel/addmul_N.c     | 258 +++++++++++++++++++++++++++++++++++++
+ tests/devel/addsub_n.c     | 198 ++++++++++++++++++++++++++++
+ tests/devel/addsub_n_2.c   | 192 +++++++++++++++++++++++++++
+ tests/devel/mul_N.c        | 256 ++++++++++++++++++++++++++++++++++++
+ tune/gcd_accel.c           |  28 ++++
+ tune/gcd_bin.c             |  30 +++++
+ 16 files changed, 1143 insertions(+), 80 deletions(-)
+ create mode 100644 mpn/x86/atom/gmp-mparam.h
+ create mode 100644 tests/devel/addmul_N.c
+ create mode 100644 tests/devel/addsub_n.c
+ create mode 100644 tests/devel/addsub_n_2.c
+ create mode 100644 tests/devel/mul_N.c
+ create mode 100644 tune/gcd_accel.c
+ create mode 100644 tune/gcd_bin.c
 
-diff -r 9d3415ef9dbb -r a7de6127e187 ChangeLog
---- a/ChangeLog	Thu Jan 07 16:16:43 2010 +0100
-+++ b/ChangeLog	Sun Feb 07 10:00:19 2010 +0100
-@@ -1,3 +1,8 @@
+diff --git a/ChangeLog b/ChangeLog
+index f1b91c8..ee4df9d 100644
+--- a/ChangeLog
++++ b/ChangeLog
+@@ -1,3 +1,29 @@
++2010-11-11  Torbjorn Granlund  <tege@gmplib.org>
++
++	* mpn/x86_64/atom/aors_n.asm: Don't rely on ZF after 'bt' insn.
++	Use 64-bit 'test' to support operands of 2^32 limbs and more.
++
++	* doc/gmp.texi (Low-level Functions): Remove documentation for
++	non-existing function mpn_sqr_n.
++
++2010-11-06  Torbjorn Granlund  <tege@gmplib.org>
++
++	* mpn/x86_64/aors_n.asm: Rewrite not to rely on ZF after 'bt' insn.
++
++2010-02-08  Marco Bodrato  <bodrato@mail.dm.unipi.it>
++
++	* mpn/x86/atom/gmp-mparam.h: New file.
++
++	* acinclude.m4 (X86_64_PATTERN): New.
++	* configure.in: Compiler options for atom-32, and use
++	X86_64_PATTERN.
++	* config.guess: Recognise many more Intel processors.
++
 +2010-02-07  Torbjorn Granlund  <tege@gmplib.org>
 +
 +	* mpn/x86_64/aorrlsh_n.asm (cnt): Fix a typo.
@@ -120,53 +63,47 @@ diff -r 9d3415ef9dbb -r a7de6127e187 ChangeLog
  2010-01-07  Torbjorn Granlund  <tege@gmplib.org>
  
  	* Version 4.3.2 released.
-diff -r 9d3415ef9dbb -r a7de6127e187 mpn/x86_64/aorrlsh_n.asm
---- a/mpn/x86_64/aorrlsh_n.asm	Thu Jan 07 16:16:43 2010 +0100
-+++ b/mpn/x86_64/aorrlsh_n.asm	Sun Feb 07 10:00:19 2010 +0100
-@@ -41,7 +41,7 @@
- define(`up',	`%rsi')
- define(`vp',	`%rdx')
- define(`n',	`%rcx')
--define(`cnt'	`%r8')
-+define(`cnt',	`%r8')
+diff --git a/acinclude.m4 b/acinclude.m4
+index f3d6ef0..5fa5d41 100644
+--- a/acinclude.m4
++++ b/acinclude.m4
+@@ -1,8 +1,8 @@
+ dnl  GMP specific autoconf macros
  
- ifdef(`OPERATION_addlsh_n',`
-   define(ADDSUBC,       `adc')
-diff -r 9d3415ef9dbb -r a7de6127e187 mpn/x86_64/lshsub_n.asm
---- a/mpn/x86_64/lshsub_n.asm	Thu Jan 07 16:16:43 2010 +0100
-+++ b/mpn/x86_64/lshsub_n.asm	Sun Feb 07 10:00:19 2010 +0100
-@@ -39,7 +39,7 @@
- define(`up',	`%rsi')
- define(`vp',	`%rdx')
- define(`n',	`%rcx')
--define(`cnt'	`%r8')
-+define(`cnt',	`%r8')
  
- ASM_START()
- 	TEXT
-# HG changeset patch
-# User Marco Bodrato <bodrato@mail.dm.unipi.it>
-# Date 1265614308 -3600
-#      Mon Feb 08 08:31:48 2010 +0100
-# Node ID c44d519435fb4546c26752717ddc9857205f71eb
-# Parent  a7de6127e187a29a36b579c6f760a42bba6b1be4
-Backported Intel processors recognition from 5.0.1 .
-
-diff -r a7de6127e187 -r c44d519435fb ChangeLog
---- a/ChangeLog	Sun Feb 07 10:00:19 2010 +0100
-+++ b/ChangeLog	Mon Feb 08 08:31:48 2010 +0100
-@@ -1,3 +1,7 @@
-+2010-02-08  Marco Bodrato  <bodrato@mail.dm.unipi.it>
-+
-+	* config.guess: Recognise many more Intel processors.
-+
- 2010-02-07  Torbjorn Granlund  <tege@gmplib.org>
+-dnl  Copyright 2000, 2001, 2002, 2003, 2004, 2005, 2006, 2009 Free Software
+-dnl  Foundation, Inc.
++dnl  Copyright 2000, 2001, 2002, 2003, 2004, 2005, 2006, 2009, 2010 Free
++dnl  Software Foundation, Inc.
+ dnl
+ dnl  This file is part of the GNU MP Library.
+ dnl
+@@ -44,8 +44,10 @@ define(POWERPC64_PATTERN,
+ [[powerpc64-*-* | powerpc64le-*-* | powerpc620-*-* | powerpc630-*-* | powerpc970-*-* | power[3-9]-*-*]])
  
- 	* mpn/x86_64/aorrlsh_n.asm (cnt): Fix a typo.
-diff -r a7de6127e187 -r c44d519435fb config.guess
---- a/config.guess	Sun Feb 07 10:00:19 2010 +0100
-+++ b/config.guess	Mon Feb 08 08:31:48 2010 +0100
-@@ -736,8 +736,14 @@
+ define(X86_PATTERN,
+-[[i?86*-*-* | k[5-8]*-*-* | pentium*-*-* | athlon-*-* | viac3*-*-* | geode*-*-*]])
++[[i?86*-*-* | k[5-8]*-*-* | pentium*-*-* | athlon-*-* | viac3*-*-* | geode*-*-* | atom-*-*]])
+ 
++define(X86_64_PATTERN,
++[[athlon64-*-* | atom-*-* | core2-*-* | x86_64-*-* ]])
+ 
+ dnl  GMP_FAT_SUFFIX(DSTVAR, DIRECTORY)
+ dnl  ---------------------------------
+diff --git a/config.guess b/config.guess
+index c64ba97..f449e68 100644
+--- a/config.guess
++++ b/config.guess
+@@ -3,7 +3,7 @@
+ # GMP config.guess wrapper.
+ 
+ 
+-# Copyright 2000, 2001, 2002, 2003, 2004, 2005, 2006, 2008 Free Software
++# Copyright 2000, 2001, 2002, 2003, 2004, 2005, 2006, 2008, 2010 Free Software
+ # Foundation, Inc.
+ #
+ # This file is part of the GNU MP Library.
+@@ -736,8 +736,14 @@ main ()
  	  else if (model <= 14)	modelstr = "pentiumm";
  	  else if (model <= 25)	modelstr = "core2";
  	  else if (model <= 27)	modelstr = "core2"; /* core i5, i7 */
@@ -183,18 +120,20 @@ diff -r a7de6127e187 -r c44d519435fb config.guess
  	  break;
  	case 15:
  	  modelstr = "pentium4";
-# HG changeset patch
-# User Marco Bodrato <bodrato@mail.dm.unipi.it>
-# Date 1265618271 -3600
-#      Mon Feb 08 09:37:51 2010 +0100
-# Node ID 9400582f6b84a1224be68e90baf0c7898a945f41
-# Parent  c44d519435fb4546c26752717ddc9857205f71eb
-Fix typos.
-
-diff -r c44d519435fb -r 9400582f6b84 configure.in
---- a/configure.in	Mon Feb 08 08:31:48 2010 +0100
-+++ b/configure.in	Mon Feb 08 09:37:51 2010 +0100
-@@ -967,7 +967,7 @@
+diff --git a/configure.in b/configure.in
+index d9c7ebb..eb838f7 100644
+--- a/configure.in
++++ b/configure.in
+@@ -4,7 +4,7 @@ dnl  Process this file with autoconf to produce a configure script.
+ define(GMP_COPYRIGHT,[[
+ 
+ Copyright 1996, 1997, 1998, 1999, 2000, 2001, 2002, 2003, 2004, 2005, 2006,
+-2007 Free Software Foundation, Inc.
++2007, 2010 Free Software Foundation, Inc.
+ 
+ This file is part of the GNU MP Library.
+ 
+@@ -967,7 +967,7 @@ case $host in
              # longlong.h macros expect limb operands in a single 64-bit
              # register, not two 32-bit registers as would be given for a
              # long long without -mpowerpc64.  In theory we could detect and
@@ -203,7 +142,35 @@ diff -r c44d519435fb -r 9400582f6b84 configure.in
              # be fastest and are what we really want to use.
              #
  	    # One would think -mpowerpc64 would set the assembler in the right
-@@ -1692,10 +1692,10 @@
+@@ -1281,7 +1281,7 @@ case $host in
+   # mode, in case -m32 has failed not because it's an old gcc, but because
+   # it's a dual 32/64-bit gcc without a 32-bit libc, or whatever.
+   #
+-  X86_PATTERN | athlon64-*-* | atom-*-* | core2-*-* | x86_64-*-*)
++  X86_PATTERN | X86_64_PATTERN)
+     abilist="32"
+     cclist="gcc icc cc"
+     gcc_cflags="$gcc_cflags $fomit_frame_pointer"
+@@ -1409,6 +1409,10 @@ case $host in
+         gcc_cflags_cpu="-mtune=core2 -mtune=k8"
+         gcc_cflags_arch="-march=core2 -march=core2~-mno-sse2 -march=k8 -march=k8~-mno-sse2"
+         ;;
++      atom)
++        gcc_cflags_cpu="-mtune=atom -mtune=pentium3"
++        gcc_cflags_arch="-march=atom -march=pentium3"
++        ;;
+       *)
+         gcc_cflags_cpu="-mtune=i486 -mcpu=i486 -m486"
+         gcc_cflags_arch="-march=i486"
+@@ -1434,6 +1438,7 @@ case $host in
+       # VIA/Centaur processors, sold as CyrixIII and C3.
+       viac32)               path="x86/p6/p3mmx x86/p6/mmx x86/p6 x86";;
+       viac3*)               path="x86/pentium/mmx x86/pentium x86";;
++      atom)                 path="x86/atom x86" ;;
+       *)                    path="x86" ;;
+     esac
+ 
+@@ -1692,10 +1697,10 @@ for abi in $abilist; do
            cflags="$cflags_maybe $cflags"
          fi
  
@@ -216,130 +183,7 @@ diff -r c44d519435fb -r 9400582f6b84 configure.in
                                 eval cppflags=\"\$${ccbase}${abi1}_cppflags\"
          test -n "$cppflags" || eval cppflags=\"\$${ccbase}${abi2}_cppflags\"
          if test "$test_CPPFLAGS" = set; then cppflags=$CPPFLAGS; fi
-@@ -2514,7 +2514,7 @@
- # setup that structure, on a per-directory basis ready for
- # mpn/<cpu>/fat/fat.c.
- #
--# fat.h includes thesholds listed in $fat_thresholds, extracted from
-+# fat.h includes thresholds listed in $fat_thresholds, extracted from
- # gmp-mparam.h in each directory.  An overall maximum for each threshold is
- # established, for use in making fixed size arrays of temporary space.
- # (Eg. MUL_TOOM3_THRESHOLD_LIMIT used by mpn/generic/mul.c.)
-@@ -2565,7 +2565,7 @@
-   echo "
- /* Copy all fields into __gmpn_cpuvec.
-    memcpy is not used because it might operate byte-wise (depending on its
--   implemenation), and we need the function pointer writes to be atomic.
-+   implementation), and we need the function pointer writes to be atomic.
-    "volatile" discourages the compiler from trying to optimize this.  */
- #define CPUVEC_INSTALL(vec) \\
-   do { \\
-@@ -2627,7 +2627,7 @@
-     esac
- 
-     # Extract desired thresholds from gmp-mparam.h file in this directory,
--    # if prsent.
-+    # if present.
-     tmp_mparam=$srcdir/mpn/$tmp_dir/gmp-mparam.h
-     if test -f $tmp_mparam; then
-       for tmp_tn in $fat_thresholds; do
-@@ -3095,7 +3095,7 @@
- # Sizes of some types, needed at preprocessing time.
- #
- # FIXME: The assumption that BITS_PER_MP_LIMB is 8*sizeof(mp_limb_t) might
--# be slightly rash, but it's true everwhere we know of and ought to be true
-+# be slightly rash, but it's true everywhere we know of and ought to be true
- # of any sensible system.  In a generic C build, grepping LONG_BIT out of
- # <limits.h> might be an alternative, for maximum portability.
- #
-# HG changeset patch
-# User Marco Bodrato <bodrato@mail.dm.unipi.it>
-# Date 1265621031 -3600
-#      Mon Feb 08 10:23:51 2010 +0100
-# Node ID 0c87a74fd8af899547b8622bab7dfe0c3f9b9c6e
-# Parent  9400582f6b84a1224be68e90baf0c7898a945f41
-Backport atom-32 options.
-
-diff -r 9400582f6b84 -r 0c87a74fd8af acinclude.m4
---- a/acinclude.m4	Mon Feb 08 09:37:51 2010 +0100
-+++ b/acinclude.m4	Mon Feb 08 10:23:51 2010 +0100
-@@ -1,8 +1,8 @@
- dnl  GMP specific autoconf macros
- 
- 
--dnl  Copyright 2000, 2001, 2002, 2003, 2004, 2005, 2006, 2009 Free Software
--dnl  Foundation, Inc.
-+dnl  Copyright 2000, 2001, 2002, 2003, 2004, 2005, 2006, 2009, 2010 Free
-+dnl  Software Foundation, Inc.
- dnl
- dnl  This file is part of the GNU MP Library.
- dnl
-@@ -44,8 +44,10 @@
- [[powerpc64-*-* | powerpc64le-*-* | powerpc620-*-* | powerpc630-*-* | powerpc970-*-* | power[3-9]-*-*]])
- 
- define(X86_PATTERN,
--[[i?86*-*-* | k[5-8]*-*-* | pentium*-*-* | athlon-*-* | viac3*-*-* | geode*-*-*]])
--
-+[[i?86*-*-* | k[5-8]*-*-* | pentium*-*-* | athlon-*-* | viac3*-*-* | geode*-*-* | atom-*-*]])
-+
-+define(X86_64_PATTERN,
-+[[athlon64-*-* | atom-*-* | core2-*-* | x86_64-*-* ]])
- 
- dnl  GMP_FAT_SUFFIX(DSTVAR, DIRECTORY)
- dnl  ---------------------------------
-diff -r 9400582f6b84 -r 0c87a74fd8af config.guess
---- a/config.guess	Mon Feb 08 09:37:51 2010 +0100
-+++ b/config.guess	Mon Feb 08 10:23:51 2010 +0100
-@@ -3,7 +3,7 @@
- # GMP config.guess wrapper.
- 
- 
--# Copyright 2000, 2001, 2002, 2003, 2004, 2005, 2006, 2008 Free Software
-+# Copyright 2000, 2001, 2002, 2003, 2004, 2005, 2006, 2008, 2010 Free Software
- # Foundation, Inc.
- #
- # This file is part of the GNU MP Library.
-diff -r 9400582f6b84 -r 0c87a74fd8af configure.in
---- a/configure.in	Mon Feb 08 09:37:51 2010 +0100
-+++ b/configure.in	Mon Feb 08 10:23:51 2010 +0100
-@@ -4,7 +4,7 @@
- define(GMP_COPYRIGHT,[[
- 
- Copyright 1996, 1997, 1998, 1999, 2000, 2001, 2002, 2003, 2004, 2005, 2006,
--2007 Free Software Foundation, Inc.
-+2007, 2010 Free Software Foundation, Inc.
- 
- This file is part of the GNU MP Library.
- 
-@@ -1281,7 +1281,7 @@
-   # mode, in case -m32 has failed not because it's an old gcc, but because
-   # it's a dual 32/64-bit gcc without a 32-bit libc, or whatever.
-   #
--  X86_PATTERN | athlon64-*-* | atom-*-* | core2-*-* | x86_64-*-*)
-+  X86_PATTERN | X86_64_PATTERN)
-     abilist="32"
-     cclist="gcc icc cc"
-     gcc_cflags="$gcc_cflags $fomit_frame_pointer"
-@@ -1409,6 +1409,10 @@
-         gcc_cflags_cpu="-mtune=core2 -mtune=k8"
-         gcc_cflags_arch="-march=core2 -march=core2~-mno-sse2 -march=k8 -march=k8~-mno-sse2"
-         ;;
-+      atom)
-+        gcc_cflags_cpu="-mtune=atom -mtune=pentium3"
-+        gcc_cflags_arch="-march=atom -march=pentium3"
-+        ;;
-       *)
-         gcc_cflags_cpu="-mtune=i486 -mcpu=i486 -m486"
-         gcc_cflags_arch="-march=i486"
-@@ -1434,6 +1438,7 @@
-       # VIA/Centaur processors, sold as CyrixIII and C3.
-       viac32)               path="x86/p6/p3mmx x86/p6/mmx x86/p6 x86";;
-       viac3*)               path="x86/pentium/mmx x86/pentium x86";;
-+      atom)                 path="x86/atom x86" ;;
-       *)                    path="x86" ;;
-     esac
- 
-@@ -2037,7 +2042,7 @@
+@@ -2037,7 +2042,7 @@ done
  # enough assembler.
  #
  case $host in
@@ -348,7 +192,34 @@ diff -r 9400582f6b84 -r 0c87a74fd8af configure.in
      if test "$ABI" = 32; then
        case "$path $fat_path" in
          *mmx*)   GMP_ASM_X86_MMX( , [GMP_STRIP_PATH(*mmx*)]) ;;
-@@ -3017,7 +3022,7 @@
+@@ -2514,7 +2519,7 @@ esac
+ # setup that structure, on a per-directory basis ready for
+ # mpn/<cpu>/fat/fat.c.
+ #
+-# fat.h includes thesholds listed in $fat_thresholds, extracted from
++# fat.h includes thresholds listed in $fat_thresholds, extracted from
+ # gmp-mparam.h in each directory.  An overall maximum for each threshold is
+ # established, for use in making fixed size arrays of temporary space.
+ # (Eg. MUL_TOOM3_THRESHOLD_LIMIT used by mpn/generic/mul.c.)
+@@ -2565,7 +2570,7 @@ DECL_$tmp_fbase (__MPN(${tmp_fbase}_init));" >>fat.h
+   echo "
+ /* Copy all fields into __gmpn_cpuvec.
+    memcpy is not used because it might operate byte-wise (depending on its
+-   implemenation), and we need the function pointer writes to be atomic.
++   implementation), and we need the function pointer writes to be atomic.
+    "volatile" discourages the compiler from trying to optimize this.  */
+ #define CPUVEC_INSTALL(vec) \\
+   do { \\
+@@ -2627,7 +2632,7 @@ DECL_$tmp_fbase (__MPN(${tmp_fbase}_init));" >>fat.h
+     esac
+ 
+     # Extract desired thresholds from gmp-mparam.h file in this directory,
+-    # if prsent.
++    # if present.
+     tmp_mparam=$srcdir/mpn/$tmp_dir/gmp-mparam.h
+     if test -f $tmp_mparam; then
+       for tmp_tn in $fat_thresholds; do
+@@ -3017,7 +3022,7 @@ if test "$gmp_asm_syntax_testing" != no; then
            ;;
        esac
        ;;
@@ -357,37 +228,85 @@ diff -r 9400582f6b84 -r 0c87a74fd8af configure.in
        GMP_ASM_ALIGN_FILL_0x90
        case $ABI in
          32)
-# HG changeset patch
-# User Marco Bodrato <bodrato@mail.dm.unipi.it>
-# Date 1265626976 -3600
-#      Mon Feb 08 12:02:56 2010 +0100
-# Node ID 95d35d1a5b904732266a2918a08018262f8b5e13
-# Parent  0c87a74fd8af899547b8622bab7dfe0c3f9b9c6e
-Changelog.
-
-diff -r 0c87a74fd8af -r 95d35d1a5b90 ChangeLog
---- a/ChangeLog	Mon Feb 08 10:23:51 2010 +0100
-+++ b/ChangeLog	Mon Feb 08 12:02:56 2010 +0100
-@@ -1,5 +1,8 @@
- 2010-02-08  Marco Bodrato  <bodrato@mail.dm.unipi.it>
+@@ -3095,7 +3100,7 @@ fi
+ # Sizes of some types, needed at preprocessing time.
+ #
+ # FIXME: The assumption that BITS_PER_MP_LIMB is 8*sizeof(mp_limb_t) might
+-# be slightly rash, but it's true everwhere we know of and ought to be true
++# be slightly rash, but it's true everywhere we know of and ought to be true
+ # of any sensible system.  In a generic C build, grepping LONG_BIT out of
+ # <limits.h> might be an alternative, for maximum portability.
+ #
+diff --git a/doc/gmp.texi b/doc/gmp.texi
+index 704faed..0760105 100644
+--- a/doc/gmp.texi
++++ b/doc/gmp.texi
+@@ -15,7 +15,7 @@ This manual describes how to install and use the GNU multiple precision
+ arithmetic library, version @value{VERSION}.
  
-+	* acinclude.m4 (X86_64_PATTERN): New.
-+	* configure.in: Compiler options for atom-32, and use
-+	X86_64_PATTERN.
- 	* config.guess: Recognise many more Intel processors.
+ Copyright 1991, 1993, 1994, 1995, 1996, 1997, 1998, 1999, 2000, 2001, 2002,
+-2003, 2004, 2005, 2006, 2007, 2008, 2009 Free Software Foundation, Inc.
++2003, 2004, 2005, 2006, 2007, 2008, 2009, 2011 Free Software Foundation, Inc.
  
- 2010-02-07  Torbjorn Granlund  <tege@gmplib.org>
-# HG changeset patch
-# User Marco Bodrato <bodrato@mail.dm.unipi.it>
-# Date 1265627207 -3600
-#      Mon Feb 08 12:06:47 2010 +0100
-# Node ID dde3c881e7ce52bc7a9cbd27bb36d0ef0e39322c
-# Parent  95d35d1a5b904732266a2918a08018262f8b5e13
-Tuned parameter for atom-32.
-
-diff -r 95d35d1a5b90 -r dde3c881e7ce mpn/x86/atom/gmp-mparam.h
---- /dev/null	Thu Jan 01 00:00:00 1970 +0000
-+++ b/mpn/x86/atom/gmp-mparam.h	Mon Feb 08 12:06:47 2010 +0100
+ Permission is granted to copy, distribute and/or modify this document under
+ the terms of the GNU Free Documentation License, Version 1.3 or any later
+@@ -1795,7 +1795,7 @@ make tuneup
+ 
+ will generate better contents for the @file{gmp-mparam.h} parameter file.
+ 
+-To use the results, put the output in the file file indicated in the
++To use the results, put the output in the file indicated in the
+ @samp{Parameters for ...} header.  Then recompile from scratch.
+ 
+ The @code{tuneup} program takes one useful parameter, @samp{-f NNN}, which
+@@ -4093,7 +4093,7 @@ room for the larger of the two operands, plus an extra
+ @code{mp_bits_per_limb}.
+ 
+ @item
+-@code{mpz_mul}, @code{mpz_mul_ui} and @code{mpz_mul_ui} need room for the sum
++@code{mpz_mul}, @code{mpz_mul_ui} and @code{mpz_mul_si} need room for the sum
+ of the number of bits in their operands, but each rounded up to a multiple of
+ @code{mp_bits_per_limb}.
+ 
+@@ -5133,8 +5133,6 @@ Multiply @{@var{s1p}, @var{n}@} and @{@var{s2p}, @var{n}@}, and write the
+ The destination has to have space for 2*@var{n} limbs, even if the product's
+ most significant limb is zero.  No overlap is permitted between the
+ destination and either source.
+-
+-If the two input operands are the same, use @code{mpn_sqr_n}.
+ @end deftypefun
+ 
+ @deftypefun mp_limb_t mpn_mul (mp_limb_t *@var{rp}, const mp_limb_t *@var{s1p}, mp_size_t @var{s1n}, const mp_limb_t *@var{s2p}, mp_size_t @var{s2n})
+@@ -5149,15 +5147,6 @@ destination and either source.
+ This function requires that @var{s1n} is greater than or equal to @var{s2n}.
+ @end deftypefun
+ 
+-@deftypefun void mpn_sqr_n (mp_limb_t *@var{rp}, const mp_limb_t *@var{s1p}, mp_size_t @var{n})
+-Compute the square of @{@var{s1p}, @var{n}@} and write the 2*@var{n}-limb
+-result to @var{rp}.
+-
+-The destination has to have space for 2*@var{n} limbs, even if the result's
+-most significant limb is zero.  No overlap is permitted between the
+-destination and the source.
+-@end deftypefun
+-
+ @deftypefun mp_limb_t mpn_mul_1 (mp_limb_t *@var{rp}, const mp_limb_t *@var{s1p}, mp_size_t @var{n}, mp_limb_t @var{s2limb})
+ Multiply @{@var{s1p}, @var{n}@} by @var{s2limb}, and write the @var{n} least
+ significant limbs of the product to @var{rp}.  Return the most significant
+@@ -8434,7 +8423,7 @@ single-limb elements. This is done by the function @code{mpn_hgcd2}. The
+ resulting matrix is applied to the inputs using @code{mpn_mul_1} and
+ @code{mpn_submul_1}. Each iteration usually reduces the inputs by almost one
+ limb. In the rare case of a large quotient, no progress can be made by
+-examining just the most significant two limbs, and the quotient is computing
++examining just the most significant two limbs, and the quotient is computed
+ using plain division.
+ 
+ The resulting algorithm is asymptotically @math{O(N^2)}, just as the Euclidean
+diff --git a/mpn/x86/atom/gmp-mparam.h b/mpn/x86/atom/gmp-mparam.h
+new file mode 100644
+index 0000000..5e98fc2
+--- /dev/null
++++ b/mpn/x86/atom/gmp-mparam.h
 @@ -0,0 +1,65 @@
 +/* Intel Atom/32 gmp-mparam.h -- Compiler/machine parameter header file.
 +
@@ -454,144 +373,23 @@ diff -r 95d35d1a5b90 -r dde3c881e7ce mpn/x86/atom/gmp-mparam.h
 +#define SQR_FFT_TABLE  { 336, 672, 896, 2560, 6144, 24576, 98304, 393216, 1572864, 6291456, 0 }
 +#define SQR_FFT_MODF_THRESHOLD          264
 +#define SQR_FFT_THRESHOLD              1792
-# HG changeset patch
-# User Marco Bodrato <bodrato@mail.dm.unipi.it>
-# Date 1265628335 -3600
-#      Mon Feb 08 12:25:35 2010 +0100
-# Node ID 46c976c624538e645fe24037f85b0d7bae69d4e4
-# Parent  dde3c881e7ce52bc7a9cbd27bb36d0ef0e39322c
-Changelog.
-
-diff -r dde3c881e7ce -r 46c976c62453 ChangeLog
---- a/ChangeLog	Mon Feb 08 12:06:47 2010 +0100
-+++ b/ChangeLog	Mon Feb 08 12:25:35 2010 +0100
-@@ -1,5 +1,7 @@
- 2010-02-08  Marco Bodrato  <bodrato@mail.dm.unipi.it>
+diff --git a/mpn/x86_64/aorrlsh_n.asm b/mpn/x86_64/aorrlsh_n.asm
+index 55176f7..535c872 100644
+--- a/mpn/x86_64/aorrlsh_n.asm
++++ b/mpn/x86_64/aorrlsh_n.asm
+@@ -41,7 +41,7 @@ define(`rp',	`%rdi')
+ define(`up',	`%rsi')
+ define(`vp',	`%rdx')
+ define(`n',	`%rcx')
+-define(`cnt'	`%r8')
++define(`cnt',	`%r8')
  
-+	* mpn/x86/atom/gmp-mparam.h: New file.
-+
- 	* acinclude.m4 (X86_64_PATTERN): New.
- 	* configure.in: Compiler options for atom-32, and use
- 	X86_64_PATTERN.
-# HG changeset patch
-# User Marco Bodrato <bodrato@mail.dm.unipi.it>
-# Date 1268204613 -3600
-#      Wed Mar 10 08:03:33 2010 +0100
-# Node ID 2fab0bbcffb4b0730d7ea46364bd1ff94cde4dca
-# Parent  46c976c624538e645fe24037f85b0d7bae69d4e4
-Remove duplicated word.
-
-diff -r 46c976c62453 -r 2fab0bbcffb4 doc/gmp.texi
---- a/doc/gmp.texi	Mon Feb 08 12:25:35 2010 +0100
-+++ b/doc/gmp.texi	Wed Mar 10 08:03:33 2010 +0100
-@@ -1795,7 +1795,7 @@
- 
- will generate better contents for the @file{gmp-mparam.h} parameter file.
- 
--To use the results, put the output in the file file indicated in the
-+To use the results, put the output in the file indicated in the
- @samp{Parameters for ...} header.  Then recompile from scratch.
- 
- The @code{tuneup} program takes one useful parameter, @samp{-f NNN}, which
-# HG changeset patch
-# User Torbjorn Granlund <tege@gmplib.org>
-# Date 1289473304 -3600
-#      Thu Nov 11 12:01:44 2010 +0100
-# Node ID 73e16a6f90e35f8672bfea27e22ed1fe495dd1e3
-# Parent  46c976c624538e645fe24037f85b0d7bae69d4e4
-Remove documentation for non-existing function mpn_sqr_n.
-
-diff -r 46c976c62453 -r 73e16a6f90e3 ChangeLog
---- a/ChangeLog	Mon Feb 08 12:25:35 2010 +0100
-+++ b/ChangeLog	Thu Nov 11 12:01:44 2010 +0100
-@@ -1,3 +1,8 @@
-+2010-11-11  Torbjorn Granlund  <tege@gmplib.org>
-+
-+	* doc/gmp.texi (Low-level Functions): Remove documentation for
-+	non-existing function mpn_sqr_n.
-+
- 2010-02-08  Marco Bodrato  <bodrato@mail.dm.unipi.it>
- 
- 	* mpn/x86/atom/gmp-mparam.h: New file.
-diff -r 46c976c62453 -r 73e16a6f90e3 doc/gmp.texi
---- a/doc/gmp.texi	Mon Feb 08 12:25:35 2010 +0100
-+++ b/doc/gmp.texi	Thu Nov 11 12:01:44 2010 +0100
-@@ -5133,8 +5133,6 @@
- The destination has to have space for 2*@var{n} limbs, even if the product's
- most significant limb is zero.  No overlap is permitted between the
- destination and either source.
--
--If the two input operands are the same, use @code{mpn_sqr_n}.
- @end deftypefun
- 
- @deftypefun mp_limb_t mpn_mul (mp_limb_t *@var{rp}, const mp_limb_t *@var{s1p}, mp_size_t @var{s1n}, const mp_limb_t *@var{s2p}, mp_size_t @var{s2n})
-@@ -5149,15 +5147,6 @@
- This function requires that @var{s1n} is greater than or equal to @var{s2n}.
- @end deftypefun
- 
--@deftypefun void mpn_sqr_n (mp_limb_t *@var{rp}, const mp_limb_t *@var{s1p}, mp_size_t @var{n})
--Compute the square of @{@var{s1p}, @var{n}@} and write the 2*@var{n}-limb
--result to @var{rp}.
--
--The destination has to have space for 2*@var{n} limbs, even if the result's
--most significant limb is zero.  No overlap is permitted between the
--destination and the source.
--@end deftypefun
--
- @deftypefun mp_limb_t mpn_mul_1 (mp_limb_t *@var{rp}, const mp_limb_t *@var{s1p}, mp_size_t @var{n}, mp_limb_t @var{s2limb})
- Multiply @{@var{s1p}, @var{n}@} by @var{s2limb}, and write the @var{n} least
- significant limbs of the product to @var{rp}.  Return the most significant
-# HG changeset patch
-# User Torbjorn Granlund <tege@gmplib.org>
-# Date 1289473340 -3600
-#      Thu Nov 11 12:02:20 2010 +0100
-# Node ID 23bc00ec2a0669791c4845e72fde6fef631a80bf
-# Parent  73e16a6f90e35f8672bfea27e22ed1fe495dd1e3
-# Parent  2fab0bbcffb4b0730d7ea46364bd1ff94cde4dca
-Trivial merge.
-
-diff -r 73e16a6f90e3 -r 23bc00ec2a06 doc/gmp.texi
---- a/doc/gmp.texi	Thu Nov 11 12:01:44 2010 +0100
-+++ b/doc/gmp.texi	Thu Nov 11 12:02:20 2010 +0100
-@@ -1795,7 +1795,7 @@
- 
- will generate better contents for the @file{gmp-mparam.h} parameter file.
- 
--To use the results, put the output in the file file indicated in the
-+To use the results, put the output in the file indicated in the
- @samp{Parameters for ...} header.  Then recompile from scratch.
- 
- The @code{tuneup} program takes one useful parameter, @samp{-f NNN}, which
-# HG changeset patch
-# User Torbjorn Granlund <tege@gmplib.org>
-# Date 1289480998 -3600
-#      Thu Nov 11 14:09:58 2010 +0100
-# Node ID 1a2742d53add129651d223c20eb9e0ecdcb2a544
-# Parent  23bc00ec2a0669791c4845e72fde6fef631a80bf
-Don't rely on ZF after 'bt' insn.
-
-diff -r 23bc00ec2a06 -r 1a2742d53add ChangeLog
---- a/ChangeLog	Thu Nov 11 12:02:20 2010 +0100
-+++ b/ChangeLog	Thu Nov 11 14:09:58 2010 +0100
-@@ -1,8 +1,15 @@
- 2010-11-11  Torbjorn Granlund  <tege@gmplib.org>
- 
-+	* mpn/x86_64/atom/aors_n.asm: Don't rely on ZF after 'bt' insn.
-+	Use 64-bit 'test' to support operands of 2^32 limbs and more.
-+
- 	* doc/gmp.texi (Low-level Functions): Remove documentation for
- 	non-existing function mpn_sqr_n.
- 
-+2010-11-06  Torbjorn Granlund  <tege@gmplib.org>
-+
-+	* mpn/x86_64/aors_n.asm: Rewrite not to rely on ZF after 'bt' insn.
-+
- 2010-02-08  Marco Bodrato  <bodrato@mail.dm.unipi.it>
- 
- 	* mpn/x86/atom/gmp-mparam.h: New file.
-diff -r 23bc00ec2a06 -r 1a2742d53add mpn/x86_64/aors_n.asm
---- a/mpn/x86_64/aors_n.asm	Thu Nov 11 12:02:20 2010 +0100
-+++ b/mpn/x86_64/aors_n.asm	Thu Nov 11 14:09:58 2010 +0100
+ ifdef(`OPERATION_addlsh_n',`
+   define(ADDSUBC,       `adc')
+diff --git a/mpn/x86_64/aors_n.asm b/mpn/x86_64/aors_n.asm
+index dae5408..0133368 100644
+--- a/mpn/x86_64/aors_n.asm
++++ b/mpn/x86_64/aors_n.asm
 @@ -1,6 +1,7 @@
  dnl  AMD64 mpn_add_n, mpn_sub_n
  
@@ -601,13 +399,13 @@ diff -r 23bc00ec2a06 -r 1a2742d53add mpn/x86_64/aors_n.asm
  
  dnl  This file is part of the GNU MP Library.
  
-@@ -52,24 +53,57 @@
+@@ -52,24 +53,57 @@ ASM_START()
  	ALIGN(16)
  PROLOGUE(func_nc)
  	mov	R32(n), R32(%rax)
-+	shr	$2, n
- 	and	$3, R32(%rax)
--	shr	$2, n
+-	and	$3, R32(%rax)
+ 	shr	$2, n
++	and	$3, R32(%rax)
  	bt	$0, %r8			C cy flag <- carry parameter
 -	jz	L(1)
 -	jmp	L(ent)
@@ -664,7 +462,7 @@ diff -r 23bc00ec2a06 -r 1a2742d53add mpn/x86_64/aors_n.asm
  	ALIGN(16)
  L(top):	ADCSBB	(vp), %r8
  	ADCSBB	8(vp), %r9
-@@ -103,36 +137,7 @@
+@@ -103,36 +137,7 @@ L(end):	lea	32(up), up
  
  	inc	R32(%rax)
  	dec	R32(%rax)
@@ -678,9 +476,8 @@ diff -r 23bc00ec2a06 -r 1a2742d53add mpn/x86_64/aors_n.asm
 -	jnz	L(2)
 -	ADCSBB	(vp), %r8
 -	mov	%r8, (rp)
-+	jnz	L(lt4)
- 	adc	%eax, %eax
- 	ret
+-	adc	%eax, %eax
+-	ret
 -
 -L(2):	dec	R32(%rax)
 -	mov	8(up), %r9
@@ -689,8 +486,9 @@ diff -r 23bc00ec2a06 -r 1a2742d53add mpn/x86_64/aors_n.asm
 -	ADCSBB	8(vp), %r9
 -	mov	%r8, (rp)
 -	mov	%r9, 8(rp)
--	adc	%eax, %eax
--	ret
++	jnz	L(lt4)
+ 	adc	%eax, %eax
+ 	ret
 -
 -L(3):	mov	16(up), %r10
 -	ADCSBB	(vp), %r8
@@ -702,9 +500,10 @@ diff -r 23bc00ec2a06 -r 1a2742d53add mpn/x86_64/aors_n.asm
 -	setc	%al
 -	ret
  EPILOGUE()
-diff -r 23bc00ec2a06 -r 1a2742d53add mpn/x86_64/atom/aors_n.asm
---- a/mpn/x86_64/atom/aors_n.asm	Thu Nov 11 12:02:20 2010 +0100
-+++ b/mpn/x86_64/atom/aors_n.asm	Thu Nov 11 14:09:58 2010 +0100
+diff --git a/mpn/x86_64/atom/aors_n.asm b/mpn/x86_64/atom/aors_n.asm
+index 32c1942..6319ae8 100644
+--- a/mpn/x86_64/atom/aors_n.asm
++++ b/mpn/x86_64/atom/aors_n.asm
 @@ -1,6 +1,6 @@
  dnl  X86-64 mpn_add_n, mpn_sub_n, optimized for Intel Atom.
  
@@ -713,7 +512,7 @@ diff -r 23bc00ec2a06 -r 1a2742d53add mpn/x86_64/atom/aors_n.asm
  
  dnl  This file is part of the GNU MP Library.
  
-@@ -63,15 +63,16 @@
+@@ -63,15 +63,16 @@ L(ent):
  	jg	L(b3)
  
  L(b1):	mov	(%rsi), %r10
@@ -733,7 +532,7 @@ diff -r 23bc00ec2a06 -r 1a2742d53add mpn/x86_64/atom/aors_n.asm
  	mov	8(%rsi), %r11
  	lea	16(%rsi), %rsi
  	lea	-16(%rdx), %rdx
-@@ -81,12 +82,13 @@
+@@ -81,12 +82,13 @@ L(gt1):	ADCSBB	(%rdx), %r10
  L(b2):	mov	(%rsi), %r9
  	mov	8(%rsi), %r10
  	lea	-8(%rdx), %rdx
@@ -750,7 +549,7 @@ diff -r 23bc00ec2a06 -r 1a2742d53add mpn/x86_64/atom/aors_n.asm
  	mov	16(%rsi), %r11
  	lea	-8(%rsi), %rsi
  	lea	-8(%rdi), %rdi
-@@ -95,12 +97,13 @@
+@@ -95,12 +97,13 @@ L(gt2):	ADCSBB	8(%rdx), %r9
  L(b3):	mov	(%rsi), %rax
  	mov	8(%rsi), %r9
  	mov	16(%rsi), %r10
@@ -767,41 +566,1017 @@ diff -r 23bc00ec2a06 -r 1a2742d53add mpn/x86_64/atom/aors_n.asm
  	jmp	L(m3)
  
  L(b0):	mov	(%rsi), %r11
-# HG changeset patch
-# User Marco Bodrato <bodrato@mail.dm.unipi.it>
-# Date 1295976902 -3600
-#      Tue Jan 25 18:35:02 2011 +0100
-# Node ID aba92ed22197841297a7e272abc311ad09b550e9
-# Parent  1a2742d53add129651d223c20eb9e0ecdcb2a544
-Fix typos in documentation.
+diff --git a/mpn/x86_64/lshsub_n.asm b/mpn/x86_64/lshsub_n.asm
+index dc8576b..6ae7c36 100644
+--- a/mpn/x86_64/lshsub_n.asm
++++ b/mpn/x86_64/lshsub_n.asm
+@@ -39,7 +39,7 @@ define(`rp',	`%rdi')
+ define(`up',	`%rsi')
+ define(`vp',	`%rdx')
+ define(`n',	`%rcx')
+-define(`cnt'	`%r8')
++define(`cnt',	`%r8')
+ 
+ ASM_START()
+ 	TEXT
+diff --git a/tests/devel/addmul_N.c b/tests/devel/addmul_N.c
+new file mode 100644
+index 0000000..3fbb110
+--- /dev/null
++++ b/tests/devel/addmul_N.c
+@@ -0,0 +1,258 @@
++/*
++Copyright 1996, 1997, 1998, 1999, 2000, 2001, 2002, 2004, 2007 Free
++Software Foundation, Inc.
++
++This file is part of the GNU MP Library.
++
++The GNU MP Library is free software; you can redistribute it and/or modify
++it under the terms of the GNU Lesser General Public License as published by
++the Free Software Foundation; either version 3 of the License, or (at your
++option) any later version.
++
++The GNU MP Library is distributed in the hope that it will be useful, but
++WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
++or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU Lesser General Public
++License for more details.
++
++You should have received a copy of the GNU Lesser General Public License
++along with the GNU MP Library.  If not, see http://www.gnu.org/licenses/.  */
++
++#include <stdlib.h>
++#include <string.h>
++#include <stdio.h>
++#include "gmp.h"
++#include "gmp-impl.h"
++#include "longlong.h"
++
++#if defined (USG) || defined (__SVR4) || defined (_UNICOS) || defined (__hpux)
++#include <time.h>
++
++int
++cputime ()
++{
++  if (CLOCKS_PER_SEC < 100000)
++    return clock () * 1000 / CLOCKS_PER_SEC;
++  return clock () / (CLOCKS_PER_SEC / 1000);
++}
++#else
++#include <sys/types.h>
++#include <sys/time.h>
++#include <sys/resource.h>
++
++int
++cputime ()
++{
++  struct rusage rus;
++
++  getrusage (0, &rus);
++  return rus.ru_utime.tv_sec * 1000 + rus.ru_utime.tv_usec / 1000;
++}
++#endif
++
++static void print_posneg (mp_limb_t);
++static void mpn_print (mp_ptr, mp_size_t);
++
++#define LXW ((int) (2 * sizeof (mp_limb_t)))
++#define M * 1000000
++
++#ifndef CLOCK
++#error "Don't know CLOCK of your machine"
++#endif
++
++#ifndef OPS
++#define OPS (CLOCK/5)
++#endif
++#ifndef SIZE
++#define SIZE 496
++#endif
++#ifndef TIMES
++#define TIMES OPS/(SIZE+1)
++#endif
++
++#if N == 2
++#define mpn_addmul_N mpn_addmul_2
++#elif N == 3
++#define mpn_addmul_N mpn_addmul_3
++#elif N == 4
++#define mpn_addmul_N mpn_addmul_4
++#elif N == 5
++#define mpn_addmul_N mpn_addmul_5
++#elif N == 6
++#define mpn_addmul_N mpn_addmul_6
++#elif N == 7
++#define mpn_addmul_N mpn_addmul_7
++#elif N == 8
++#define mpn_addmul_N mpn_addmul_8
++#endif
++
++mp_limb_t
++refmpn_addmul_N (mp_ptr rp, mp_srcptr up, mp_size_t n, mp_srcptr vp)
++{
++  int i;
++  for (i = 1; i < N; i++)
++    {
++      rp[n] = mpn_addmul_1 (rp, up, n, *vp);
++      rp++;
++      vp++;
++    }
++  return mpn_addmul_1 (rp, up, n, *vp);
++}
++
++int
++main (int argc, char **argv)
++{
++  mp_limb_t up[SIZE];
++  mp_limb_t ref[SIZE + N - 1];
++  mp_limb_t mem[SIZE + N + 1];
++  mp_ptr rp = mem + 1;
++  mp_limb_t vp[N];
++  mp_limb_t cy_ref, cy_try;
++  int i;
++  long t0, t;
++  unsigned test;
++  mp_size_t size;
++  double cyc;
++  unsigned ntests;
++
++  ntests = ~(unsigned) 0;
++  if (argc == 2)
++    ntests = strtol (argv[1], 0, 0);
++
++  for (test = 1; test <= ntests; test++)
++    {
++#if TIMES == 1 && ! defined (PRINT)
++      if (test % (CLOCK / SIZE / 1000) == 0)
++	{
++	  printf ("\r%u", test);
++	  fflush (stdout);
++	}
++#endif
++
++#ifdef RANDOM
++      size = random () % SIZE + 1;
++#else
++      size = SIZE;
++#endif
++
++      rp[size + N - 1] = 0x12345678;
++      rp[-1] = 0x87654321;
++
++      mpn_random (vp, N);
++
++#if TIMES != 1			/* run timing tests unless asked not to */
++      mpn_random (up, size);
++      mpn_random (rp, size + N - 1);
++
++      MPN_COPY (ref, rp, size + N - 1);
++      t0 = cputime();
++      for (i = 0; i < TIMES; i++)
++	mpn_addmul_N (ref, up, size, vp);
++      t = cputime() - t0;
++      cyc = ((double) t * CLOCK) / (TIMES * size * 1000.0) / N;
++      printf ("mpn_addmul_N:    %5ldms (%.3f cycles/limb) [%.2f Gb/s]\n",
++	      t, cyc, CLOCK/cyc*BITS_PER_MP_LIMB*BITS_PER_MP_LIMB/1e9);
++#endif
++
++#ifdef ZEROu
++      MPN_ZERO (up, size);
++#else
++      mpn_random2 (up, size);
++#endif
++      mpn_random2 (vp, N);
++#ifdef ZERO
++      MPN_ZERO (rp, size + N - 1);
++#else
++      mpn_random2 (rp, size + N - 1);
++#endif
++
++#if defined (PRINT) || defined (PRINTV)
++      printf ("vp=");
++      mpn_print (vp, N);
++#endif
++#ifdef PRINT
++      printf ("%*s ", 3 + N * LXW, "");
++      mpn_print (rp, size);
++      printf ("%*s ", 3 + N * LXW, "");
++      mpn_print (up, size);
++#endif
++
++      MPN_COPY (ref, rp, size + N - 1);
++      cy_ref = refmpn_addmul_N (ref, up, size, vp);
++      cy_try = mpn_addmul_N (rp, up, size, vp);
++
++#ifdef PRINT
++      printf ("%*lX ", LXW, cy_ref);
++      mpn_print (ref, size + N - 1);
++      printf ("%*lX ", LXW, cy_try);
++      mpn_print (rp, size + N - 1);
++#endif
++
++#ifndef NOCHECK
++      if (cy_ref != cy_try || mpn_cmp (ref, rp, size + N - 1) != 0
++	  || rp[size + N - 1] != 0x12345678 || rp[-1] != 0x87654321)
++	{
++	  printf ("\n        ref%*s try%*s diff\n", LXW - 3, "", 2 * LXW - 6, "");
++	  for (i = 0; i < size + N - 1; i++)
++	    {
++	      printf ("%6d: ", i);
++	      printf ("%0*llX ", LXW, (unsigned long long) ref[i]);
++	      printf ("%0*llX ", LXW, (unsigned long long) rp[i]);
++	      print_posneg (rp[i] - ref[i]);
++	      printf ("\n");
++	    }
++	  printf ("retval: ");
++	  printf ("%0*llX ", LXW, (unsigned long long) cy_ref);
++	  printf ("%0*llX ", LXW, (unsigned long long) cy_try);
++	  print_posneg (cy_try - cy_ref);
++	  printf ("\n");
++	  if (rp[-1] != 0x87654321)
++	    printf ("clobbered at low end\n");
++	  if (rp[size + N - 1] != 0x12345678)
++	    printf ("clobbered at high end\n");
++	  printf ("TEST NUMBER %u\n", test);
++	  abort();
++	}
++#endif
++    }
++  exit (0);
++}
++
++static void
++print_posneg (mp_limb_t d)
++{
++  char buf[LXW + 2];
++  if (d == 0)
++    printf (" %*X", LXW, 0);
++  else if (-d < d)
++    {
++      sprintf (buf, "%llX", (unsigned long long) -d);
++      printf ("%*s-%s", LXW - (int) strlen (buf), "", buf);
++    }
++  else
++    {
++      sprintf (buf, "%llX", (unsigned long long) d);
++      printf ("%*s+%s", LXW - (int) strlen (buf), "", buf);
++    }
++}
++
++static void
++mpn_print (mp_ptr p, mp_size_t size)
++{
++  mp_size_t i;
++
++  for (i = size - 1; i >= 0; i--)
++    {
++#ifdef _LONG_LONG_LIMB
++      printf ("%0*lX%0*lX", (int) (sizeof(mp_limb_t)),
++	      (unsigned long) (p[i] >> (BITS_PER_MP_LIMB/2)),
++              (int) (sizeof(mp_limb_t)), (unsigned long) (p[i]));
++#else
++      printf ("%0*lX", LXW, p[i]);
++#endif
++#ifdef SPACE
++      if (i != 0)
++	printf (" ");
++#endif
++    }
++  puts ("");
++}
+diff --git a/tests/devel/addsub_n.c b/tests/devel/addsub_n.c
+new file mode 100644
+index 0000000..5e5a543
+--- /dev/null
++++ b/tests/devel/addsub_n.c
+@@ -0,0 +1,198 @@
++/*
++Copyright 1999, 2000, 2001, 2007, 2009 Free Software Foundation, Inc.
++
++This file is part of the GNU MP Library.
++
++The GNU MP Library is free software; you can redistribute it and/or modify
++it under the terms of the GNU Lesser General Public License as published by
++the Free Software Foundation; either version 3 of the License, or (at your
++option) any later version.
++
++The GNU MP Library is distributed in the hope that it will be useful, but
++WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
++or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU Lesser General Public
++License for more details.
++
++You should have received a copy of the GNU Lesser General Public License
++along with the GNU MP Library.  If not, see http://www.gnu.org/licenses/.  */
++
++#include <stdlib.h>
++#include <stdio.h>
++#include "gmp.h"
++#include "gmp-impl.h"
++#include "tests.h"
++
++#if defined (USG) || defined (__SVR4) || defined (_UNICOS) || defined (__hpux)
++#include <time.h>
++
++int
++cputime ()
++{
++  if (CLOCKS_PER_SEC < 100000)
++    return clock () * 1000 / CLOCKS_PER_SEC;
++  return clock () / (CLOCKS_PER_SEC / 1000);
++}
++#else
++#include <sys/types.h>
++#include <sys/time.h>
++#include <sys/resource.h>
++
++int
++cputime ()
++{
++  struct rusage rus;
++
++  getrusage (0, &rus);
++  return rus.ru_utime.tv_sec * 1000 + rus.ru_utime.tv_usec / 1000;
++}
++#endif
++
++#define M * 1000000
++
++#ifndef OPS
++#define OPS 10000000
++#endif
++#ifndef SIZE
++#define SIZE 328
++#endif
++#ifndef TIMES
++#define TIMES OPS/SIZE
++#endif
++
++void mpn_print (mp_ptr, mp_size_t);
++
++int
++main (int argc, char **argv)
++{
++  mp_ptr mem;
++  mp_ptr s1;
++  mp_ptr s2;
++  mp_ptr d1x;
++  mp_ptr d2x;
++  mp_ptr d1y;
++  mp_ptr d2y;
++  int cyx, cyy;
++  int i;
++  long t0, t;
++  int test;
++  mp_size_t size;
++  unsigned int ntests;
++
++  mem = malloc ((6 * SIZE + 8) * sizeof (mp_limb_t));
++
++  s1 = mem + 0;
++  s2 = mem + SIZE;
++  d1x = mem + 2 * SIZE;
++  d2x = mem + 3 * SIZE + 2;
++  d1y = mem + 4 * SIZE + 4;
++  d2y = mem + 5 * SIZE + 6;
++
++  ntests = ~(unsigned) 0;
++  if (argc == 2)
++    ntests = strtol (argv[1], 0, 0);
++
++  for (test = 1; test <= ntests; test++)
++    {
++#if TIMES == 1 && ! defined (PRINT)
++      if (test % (SIZE > 100000 ? 1 : 100000 / SIZE) == 0)
++	{
++	  printf ("\r%d", test);
++	  fflush (stdout);
++	}
++#endif
++
++#ifdef RANDOM
++      size = (random () % SIZE + 1);
++#else
++      size = SIZE;
++#endif
++
++      d1x[0] = 0x87654321;
++      d1y[0] = 0x87654321;
++      d1x[size+1] = 0x12345678;
++      d1y[size+1] = 0x12345678;
++      d2x[0] = 0x87654321;
++      d2y[0] = 0x87654321;
++      d2x[size+1] = 0x12345678;
++      d2y[size+1] = 0x12345678;
++
++#if TIMES != 1
++      mpn_random (s1, size);
++      mpn_random (s2, size);
++
++      t0 = cputime();
++      for (i = 0; i < TIMES; i++)
++	mpn_addsub_n (d1x+1, d2x+1, s1, s2, size);
++      t = cputime() - t0;
++      printf ("   mpn_addsub_n:   %ldms (%.3f cycles/limb)\n",
++	      t, ((double) t * CLOCK) / (TIMES * size * 1000.0));
++#endif
++
++#ifndef NOCHECK
++      mpn_random2 (s1, size);
++      mpn_random2 (s2, size);
++
++#ifdef PRINT
++      mpn_print (s1, size);
++      mpn_print (s2, size);
++#endif
++
++      /* Put garbage in the destination.  */
++      for (i = 0; i < size; i++)
++	{
++	  d1x[i+1] = 0xdead;
++	  d1y[i+1] = 0xbeef;
++	  d2x[i+1] = 0xdeed;
++	  d2y[i+1] = 0xdeaf;
++	}
++
++      cyx = refmpn_addsub_n (d1x+1, d2x+1, s1, s2, size);
++      cyy = mpn_addsub_n (d1y+1, d2y+1, s1, s2, size);
++#ifdef PRINT
++      printf ("%d ", cyx); mpn_print (d1x+1, size);
++      printf ("%d ", cyx); mpn_print (d2x+1, size);
++      printf ("%d ", cyy); mpn_print (d1y+1, size);
++      printf ("%d ", cyy); mpn_print (d2y+1, size);
++#endif
++      if (cyx != cyy
++	  || mpn_cmp (d1x, d1y, size+2) != 0
++	  || mpn_cmp (d2x, d2y, size+2) != 0
++	  || d1x[0] != 0x87654321 || d1x[size+1] != 0x12345678
++	  || d2x[0] != 0x87654321 || d2x[size+1] != 0x12345678)
++	{
++#ifndef PRINT
++	  printf ("%d ", cyx); mpn_print (d1x+1, size);
++	  printf ("%d ", cyx); mpn_print (d2x+1, size);
++	  printf ("%d ", cyy); mpn_print (d1y+1, size);
++	  printf ("%d ", cyy); mpn_print (d2y+1, size);
++#endif
++	  printf ("TEST NUMBER %d\n", test);
++	  abort();
++	}
++#endif
++    }
++
++  exit (0);
++}
++
++void
++mpn_print (mp_ptr p, mp_size_t size)
++{
++  mp_size_t i;
++
++  for (i = size - 1; i >= 0; i--)
++    {
++#ifdef _LONG_LONG_LIMB
++      printf ("%0*lX%0*lX", (int) (sizeof(mp_limb_t)),
++	      (unsigned long) (p[i] >> (BITS_PER_MP_LIMB/2)),
++              (int) (sizeof(mp_limb_t)), (unsigned long) (p[i]));
++#else
++      printf ("%0*lX", (int) (2 * sizeof(mp_limb_t)), p[i]);
++#endif
++#ifdef SPACE
++      if (i != 0)
++	printf (" ");
++#endif
++    }
++  puts ("");
++}
+diff --git a/tests/devel/addsub_n_2.c b/tests/devel/addsub_n_2.c
+new file mode 100644
+index 0000000..2a87d2b
+--- /dev/null
++++ b/tests/devel/addsub_n_2.c
+@@ -0,0 +1,192 @@
++/*
++Copyright 1999, 2000, 2001, 2007, 2009 Free Software Foundation, Inc.
++
++This file is part of the GNU MP Library.
++
++The GNU MP Library is free software; you can redistribute it and/or modify
++it under the terms of the GNU Lesser General Public License as published by
++the Free Software Foundation; either version 3 of the License, or (at your
++option) any later version.
++
++The GNU MP Library is distributed in the hope that it will be useful, but
++WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
++or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU Lesser General Public
++License for more details.
++
++You should have received a copy of the GNU Lesser General Public License
++along with the GNU MP Library.  If not, see http://www.gnu.org/licenses/.  */
++
++#include <stdlib.h>
++#include <stdio.h>
++#include "gmp.h"
++#include "gmp-impl.h"
++
++#if defined (USG) || defined (__SVR4) || defined (_UNICOS) || defined (__hpux)
++#include <time.h>
++
++int
++cputime ()
++{
++  if (CLOCKS_PER_SEC < 100000)
++    return clock () * 1000 / CLOCKS_PER_SEC;
++  return clock () / (CLOCKS_PER_SEC / 1000);
++}
++#else
++#include <sys/types.h>
++#include <sys/time.h>
++#include <sys/resource.h>
++
++int
++cputime ()
++{
++  struct rusage rus;
++
++  getrusage (0, &rus);
++  return rus.ru_utime.tv_sec * 1000 + rus.ru_utime.tv_usec / 1000;
++}
++#endif
++
++#define M * 1000000
++
++#ifndef OPS
++#define OPS 10000000
++#endif
++#ifndef SIZE
++#define SIZE 328
++#endif
++#ifndef TIMES
++#define TIMES OPS/(SIZE+1)
++#endif
++
++void mpn_print (mp_ptr, mp_size_t);
++
++int
++main (int argc, char **argv)
++{
++  int test;
++  mp_ptr a1, a2, a3, a4;
++  mp_ptr s1p, s2p;
++  mp_ptr ref1p, ref2p;
++  mp_ptr r1p, r2p;
++  int i;
++  mp_size_t n;
++  mp_limb_t refcy, cy;
++
++  a1 = malloc ((SIZE + 2) * BYTES_PER_MP_LIMB);
++  a2 = malloc ((SIZE + 2) * BYTES_PER_MP_LIMB);
++  a3 = malloc ((SIZE + 2) * BYTES_PER_MP_LIMB);
++  a4 = malloc ((SIZE + 2) * BYTES_PER_MP_LIMB);
++
++  ref1p = malloc (SIZE * BYTES_PER_MP_LIMB);
++  ref2p = malloc (SIZE * BYTES_PER_MP_LIMB);
++
++  for (test = 0; ; test++)
++    {
++      if (test % (SIZE > 10000 ? 1 : 10000 / SIZE) == 0)
++	{
++	  printf ("\r%d", test);
++	  fflush (stdout);
++	}
++
++#ifdef RANDOM
++      n = (random () % SIZE + 1);
++#else
++      n = SIZE;
++#endif
++
++      for (i = 0; i <= 6; i++)
++	{
++	  mpn_random2 (a1, n + 2);
++	  mpn_random2 (a2, n + 2);
++	  mpn_random2 (a3, n + 2);
++	  mpn_random2 (a4, n + 2);
++
++	  switch (i)
++	    {
++	    case 0:
++	      r1p = a1 + 1;
++	      r2p = a2 + 1;
++	      s1p = a3 + 1;
++	      s2p = a4 + 1;
++	      break;
++	    case 1:
++	      r1p = a1 + 1;
++	      r2p = a2 + 1;
++	      s1p = a1 + 1;
++	      s2p = a4 + 1;
++	      break;
++	    case 2:
++	      r1p = a1 + 1;
++	      r2p = a2 + 1;
++	      s1p = a3 + 1;
++	      s2p = a2 + 1;
++	      break;
++	    case 3:
++	      r1p = a1 + 1;
++	      r2p = a2 + 1;
++	      s1p = a2 + 1;
++	      s2p = a4 + 1;
++	      break;
++	    case 4:
++	      r1p = a1 + 1;
++	      r2p = a2 + 1;
++	      s1p = a3 + 1;
++	      s2p = a1 + 1;
++	      break;
++	    case 5:
++	      r1p = a1 + 1;
++	      r2p = a2 + 1;
++	      s1p = a1 + 1;
++	      s2p = a2 + 1;
++	      break;
++	    case 6:
++	      r1p = a1 + 1;
++	      r2p = a2 + 1;
++	      s1p = a2 + 1;
++	      s2p = a1 + 1;
++	      break;
++	    }
++	  r1p[-1] = 0x87654321;
++	  r1p[n] = 0x12345678;
++	  r2p[-1] = 0x87654321;
++	  r2p[n] = 0x12345678;
++
++	  refcy = refmpn_addsub_n (ref1p, ref2p, s1p, s2p, n);
++	  cy = mpn_addsub_n (r1p, r2p, s1p, s2p, n);
++
++	  if (refcy != cy
++	      || mpn_cmp (ref1p, r1p, n) != 0
++	      || mpn_cmp (ref2p, r2p, n) != 0
++	      || r1p[-1] != 0x87654321 || r1p[n] != 0x12345678
++	      || r2p[-1] != 0x87654321 || r2p[n] != 0x12345678)
++	    {
++	      printf ("\nTEST NUMBER %d/%d\n", test, i);
++	      abort();
++	    }
++	}
++    }
++
++  exit (0);
++}
++
++void
++mpn_print (mp_ptr p, mp_size_t size)
++{
++  mp_size_t i;
++
++  for (i = size - 1; i >= 0; i--)
++    {
++#ifdef _LONG_LONG_LIMB
++      printf ("%0*lX%0*lX", (int) (sizeof(mp_limb_t)),
++	      (unsigned long) (p[i] >> (BITS_PER_MP_LIMB/2)),
++              (int) (sizeof(mp_limb_t)), (unsigned long) (p[i]));
++#else
++      printf ("%0*lX", (int) (2 * sizeof(mp_limb_t)), p[i]);
++#endif
++#ifdef SPACE
++      if (i != 0)
++	printf (" ");
++#endif
++    }
++  puts ("");
++}
+diff --git a/tests/devel/mul_N.c b/tests/devel/mul_N.c
+new file mode 100644
+index 0000000..f60d4c7
+--- /dev/null
++++ b/tests/devel/mul_N.c
+@@ -0,0 +1,256 @@
++/*
++Copyright 1996, 1997, 1998, 1999, 2000, 2001, 2002, 2004, 2007 Free Software
++Foundation, Inc.
++
++This file is part of the GNU MP Library.
++
++The GNU MP Library is free software; you can redistribute it and/or modify
++it under the terms of the GNU Lesser General Public License as published by
++the Free Software Foundation; either version 3 of the License, or (at your
++option) any later version.
++
++The GNU MP Library is distributed in the hope that it will be useful, but
++WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
++or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU Lesser General Public
++License for more details.
++
++You should have received a copy of the GNU Lesser General Public License
++along with the GNU MP Library.  If not, see http://www.gnu.org/licenses/.  */
++
++#include <stdlib.h>
++#include <string.h>
++#include <stdio.h>
++#include "gmp.h"
++#include "gmp-impl.h"
++#include "longlong.h"
++
++#if defined (USG) || defined (__SVR4) || defined (_UNICOS) || defined (__hpux)
++#include <time.h>
++
++int
++cputime ()
++{
++  if (CLOCKS_PER_SEC < 100000)
++    return clock () * 1000 / CLOCKS_PER_SEC;
++  return clock () / (CLOCKS_PER_SEC / 1000);
++}
++#else
++#include <sys/types.h>
++#include <sys/time.h>
++#include <sys/resource.h>
++
++int
++cputime ()
++{
++  struct rusage rus;
++
++  getrusage (0, &rus);
++  return rus.ru_utime.tv_sec * 1000 + rus.ru_utime.tv_usec / 1000;
++}
++#endif
++
++static void print_posneg (mp_limb_t);
++static void mpn_print (mp_ptr, mp_size_t);
++
++#define LXW ((int) (2 * sizeof (mp_limb_t)))
++#define M * 1000000
++
++#ifndef CLOCK
++#error "Don't know CLOCK of your machine"
++#endif
++
++#ifndef OPS
++#define OPS (CLOCK/5)
++#endif
++#ifndef SIZE
++#define SIZE 496
++#endif
++#ifndef TIMES
++#define TIMES OPS/(SIZE+1)
++#endif
++
++#if N == 2
++#define mpn_mul_N mpn_mul_2
++#elif N == 3
++#define mpn_mul_N mpn_mul_3
++#elif N == 4
++#define mpn_mul_N mpn_mul_4
++#elif N == 5
++#define mpn_mul_N mpn_mul_5
++#elif N == 6
++#define mpn_mul_N mpn_mul_6
++#elif N == 7
++#define mpn_mul_N mpn_mul_7
++#elif N == 8
++#define mpn_mul_N mpn_mul_8
++#endif
++
++mp_limb_t
++refmpn_mul_N (mp_ptr rp, mp_srcptr up, mp_size_t n, mp_srcptr vp)
++{
++  int i;
++  rp[n] = mpn_mul_1 (rp, up, n, *vp);
++  rp++;
++  vp++;
++  for (i = 2; i < N; i++)
++    {
++      rp[n] = mpn_addmul_1 (rp, up, n, *vp);
++      rp++;
++      vp++;
++    }
++  return mpn_addmul_1 (rp, up, n, *vp);
++}
++
++int
++main (int argc, char **argv)
++{
++  mp_limb_t up[SIZE];
++  mp_limb_t ref[SIZE + N - 1];
++  mp_limb_t mem[SIZE + N + 1];
++  mp_ptr rp = mem + 1;
++  mp_limb_t vp[N];
++  mp_limb_t cy_ref, cy_try;
++  int i;
++  long t0, t;
++  unsigned test;
++  mp_size_t size;
++  double cyc;
++  unsigned ntests;
++
++  ntests = ~(unsigned) 0;
++  if (argc == 2)
++    ntests = strtol (argv[1], 0, 0);
++
++  for (test = 1; test <= ntests; test++)
++    {
++#if TIMES == 1 && ! defined (PRINT)
++      if (test % (CLOCK / SIZE / 1000) == 0)
++	{
++	  printf ("\r%u", test);
++	  fflush (stdout);
++	}
++#endif
++
++#ifdef RANDOM
++      size = random () % SIZE + 1;
++#else
++      size = SIZE;
++#endif
++
++      rp[size + N - 1] = 0x12345678;
++      rp[-1] = 0x87654321;
++
++      mpn_random (vp, N);
++
++#if TIMES != 1			/* run timing tests unless asked not to */
++      mpn_random (up, size);
++
++      MPN_COPY (ref, rp, size + N - 1);
++      t0 = cputime();
++      for (i = 0; i < TIMES; i++)
++	mpn_mul_N (ref, up, size, vp);
++      t = cputime() - t0;
++      cyc = ((double) t * CLOCK) / (TIMES * size * 1000.0) / N;
++      printf ("mpn_mul_N:    %5ldms (%.3f cycles/limb) [%.2f Gb/s]\n",
++	      t, cyc, CLOCK/cyc*BITS_PER_MP_LIMB*BITS_PER_MP_LIMB/1e9);
++#endif
++
++#ifdef ZEROu
++      MPN_ZERO (up, size);
++#else
++      mpn_random2 (up, size);
++#endif
++      mpn_random2 (vp, N);
++      mpn_random2 (rp, size + N - 1);
++
++#if defined (PRINT) || defined (PRINTV)
++      printf ("vp=");
++      mpn_print (vp, N);
++#endif
++#ifdef PRINT
++      printf ("%*s ", 3 + N * LXW, "");
++      mpn_print (rp, size);
++      printf ("%*s ", 3 + N * LXW, "");
++      mpn_print (up, size);
++#endif
++
++      MPN_COPY (ref, rp, size + N - 1);
++      cy_ref = refmpn_mul_N (ref, up, size, vp);
++      cy_try = mpn_mul_N (rp, up, size, vp);
++
++#ifdef PRINT
++      printf ("%*lX ", LXW, cy_ref);
++      mpn_print (ref, size + N - 1);
++      printf ("%*lX ", LXW, cy_try);
++      mpn_print (rp, size + N - 1);
++#endif
++
++#ifndef NOCHECK
++      if (cy_ref != cy_try || mpn_cmp (ref, rp, size + N - 1) != 0
++	  || rp[size + N - 1] != 0x12345678 || rp[-1] != 0x87654321)
++	{
++	  printf ("\n        ref%*s try%*s diff\n", LXW - 3, "", 2 * LXW - 6, "");
++	  for (i = 0; i < size + N - 1; i++)
++	    {
++	      printf ("%6d: ", i);
++	      printf ("%0*llX ", LXW, (unsigned long long) ref[i]);
++	      printf ("%0*llX ", LXW, (unsigned long long) rp[i]);
++	      print_posneg (rp[i] - ref[i]);
++	      printf ("\n");
++	    }
++	  printf ("retval: ");
++	  printf ("%0*llX ", LXW, (unsigned long long) cy_ref);
++	  printf ("%0*llX ", LXW, (unsigned long long) cy_try);
++	  print_posneg (cy_try - cy_ref);
++	  printf ("\n");
++	  if (rp[-1] != 0x87654321)
++	    printf ("clobbered at low end\n");
++	  if (rp[size + N - 1] != 0x12345678)
++	    printf ("clobbered at high end\n");
++	  printf ("TEST NUMBER %u\n", test);
++	  abort();
++	}
++#endif
++    }
++  exit (0);
++}
++
++static void
++print_posneg (mp_limb_t d)
++{
++  char buf[LXW + 2];
++  if (d == 0)
++    printf (" %*X", LXW, 0);
++  else if (-d < d)
++    {
++      sprintf (buf, "%llX", (unsigned long long) -d);
++      printf ("%*s-%s", LXW - (int) strlen (buf), "", buf);
++    }
++  else
++    {
++      sprintf (buf, "%llX", (unsigned long long) d);
++      printf ("%*s+%s", LXW - (int) strlen (buf), "", buf);
++    }
++}
++
++static void
++mpn_print (mp_ptr p, mp_size_t size)
++{
++  mp_size_t i;
++
++  for (i = size - 1; i >= 0; i--)
++    {
++#ifdef _LONG_LONG_LIMB
++      printf ("%0*lX%0*lX", (int) (sizeof(mp_limb_t)),
++	      (unsigned long) (p[i] >> (BITS_PER_MP_LIMB/2)),
++              (int) (sizeof(mp_limb_t)), (unsigned long) (p[i]));
++#else
++      printf ("%0*lX", LXW, p[i]);
++#endif
++#ifdef SPACE
++      if (i != 0)
++	printf (" ");
++#endif
++    }
++  puts ("");
++}
+diff --git a/tune/gcd_accel.c b/tune/gcd_accel.c
+new file mode 100644
+index 0000000..e858299
+--- /dev/null
++++ b/tune/gcd_accel.c
+@@ -0,0 +1,28 @@
++/* mpn/generic/gcd.c forced to use the accelerated binary algorithm. */
++
++/*
++Copyright 2003 Free Software Foundation, Inc.
++
++This file is part of the GNU MP Library.
++
++The GNU MP Library is free software; you can redistribute it and/or modify
++it under the terms of the GNU Lesser General Public License as published by
++the Free Software Foundation; either version 3 of the License, or (at your
++option) any later version.
++
++The GNU MP Library is distributed in the hope that it will be useful, but
++WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
++or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU Lesser General Public
++License for more details.
++
++You should have received a copy of the GNU Lesser General Public License
++along with the GNU MP Library.  If not, see http://www.gnu.org/licenses/.  */
++
++#include "gmp.h"
++#include "gmp-impl.h"
++
++#undef  GCD_SCHOENHAGE_THRESHOLD
++#define GCD_SCHOENHAGE_THRESHOLD  MP_SIZE_T_MAX
++#define __gmpn_gcd  mpn_gcd_accel
++
++#include "../mpn/generic/gcd.c"
+diff --git a/tune/gcd_bin.c b/tune/gcd_bin.c
+new file mode 100644
+index 0000000..ba3292c
+--- /dev/null
++++ b/tune/gcd_bin.c
+@@ -0,0 +1,30 @@
++/* mpn/generic/gcd.c forced to use the binary algorithm. */
++
++/*
++Copyright 2000 Free Software Foundation, Inc.
++
++This file is part of the GNU MP Library.
++
++The GNU MP Library is free software; you can redistribute it and/or modify
++it under the terms of the GNU Lesser General Public License as published by
++the Free Software Foundation; either version 3 of the License, or (at your
++option) any later version.
++
++The GNU MP Library is distributed in the hope that it will be useful, but
++WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
++or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU Lesser General Public
++License for more details.
++
++You should have received a copy of the GNU Lesser General Public License
++along with the GNU MP Library.  If not, see http://www.gnu.org/licenses/.  */
++
++#include "gmp.h"
++#include "gmp-impl.h"
++
++#undef  GCD_ACCEL_THRESHOLD
++#define GCD_ACCEL_THRESHOLD  MP_SIZE_T_MAX
++#undef  GCD_SCHOENHAGE_THRESHOLD
++#define GCD_SCHOENHAGE_THRESHOLD  MP_SIZE_T_MAX
++#define __gmpn_gcd  mpn_gcd_binary
++
++#include "../mpn/generic/gcd.c"
+-- 
+2.30.1.windows.1
 
-diff -r 1a2742d53add -r aba92ed22197 doc/gmp.texi
---- a/doc/gmp.texi	Thu Nov 11 14:09:58 2010 +0100
-+++ b/doc/gmp.texi	Tue Jan 25 18:35:02 2011 +0100
-@@ -15,7 +15,7 @@
- arithmetic library, version @value{VERSION}.
- 
- Copyright 1991, 1993, 1994, 1995, 1996, 1997, 1998, 1999, 2000, 2001, 2002,
--2003, 2004, 2005, 2006, 2007, 2008, 2009 Free Software Foundation, Inc.
-+2003, 2004, 2005, 2006, 2007, 2008, 2009, 2011 Free Software Foundation, Inc.
- 
- Permission is granted to copy, distribute and/or modify this document under
- the terms of the GNU Free Documentation License, Version 1.3 or any later
-@@ -4093,7 +4093,7 @@
- @code{mp_bits_per_limb}.
- 
- @item
--@code{mpz_mul}, @code{mpz_mul_ui} and @code{mpz_mul_ui} need room for the sum
-+@code{mpz_mul}, @code{mpz_mul_ui} and @code{mpz_mul_si} need room for the sum
- of the number of bits in their operands, but each rounded up to a multiple of
- @code{mp_bits_per_limb}.
- 
-@@ -8423,7 +8423,7 @@
- resulting matrix is applied to the inputs using @code{mpn_mul_1} and
- @code{mpn_submul_1}. Each iteration usually reduces the inputs by almost one
- limb. In the rare case of a large quotient, no progress can be made by
--examining just the most significant two limbs, and the quotient is computing
-+examining just the most significant two limbs, and the quotient is computed
- using plain division.
- 
- The resulting algorithm is asymptotically @math{O(N^2)}, just as the Euclidean
