@@ -47,6 +47,7 @@ source=("https://ftp.gnu.org/gnu/gcc/${_realname}-${pkgver}/${_realname}-${pkgve
         "ftp://gcc.gnu.org/pub/gcc/infrastructure/${GMP_VERSION}.tar.bz2"
         "ftp://gcc.gnu.org/pub/gcc/infrastructure/${MPC_VERSION}.tar.gz"
         "ftp://gcc.gnu.org/pub/gcc/infrastructure/${ISL_VERSION}.tar.bz2"
+        'gmp-4.3.2-changes.patch'
         'isl-0.14.1-no-undefined.patch'
         'config.guess'
         'config.sub'
@@ -137,6 +138,9 @@ prepare() {
   cd ${srcdir}/${_realname}-${pkgver}/isl
   patch -Nbp1 -i ${srcdir}/isl-0.14.1-no-undefined.patch
 
+  cd ${srcdir}/${_realname}-${pkgver}/gmp
+  patch -Nbp1 -i ${srcdir}/gmp-4.3.2-changes.patch
+
   cd ${srcdir}/${_realname}-${pkgver}
 
   #remove files the patches will create (so they aren't in the way the 2nd time round)
@@ -155,6 +159,15 @@ prepare() {
 
   cp -f ${srcdir}/config.guess ${srcdir}/${_realname}-${pkgver}/
   cp -f ${srcdir}/config.sub ${srcdir}/${_realname}-${pkgver}/
+
+  cp -f ${srcdir}/config.guess ${srcdir}/${_realname}-${pkgver}/isl/
+  cp -f ${srcdir}/config.sub ${srcdir}/${_realname}-${pkgver}/isl/
+
+  cp -f ${srcdir}/config.guess ${srcdir}/${_realname}-${pkgver}/mpc/
+  cp -f ${srcdir}/config.sub ${srcdir}/${_realname}-${pkgver}/mpc/
+
+  cp -f ${srcdir}/config.guess ${srcdir}/${_realname}-${pkgver}/mpfr/
+  cp -f ${srcdir}/config.sub ${srcdir}/${_realname}-${pkgver}/mpfr/
 
   apply_patch_with_msg \
     000-gcc-5-mingw-Relocate-libintl.patch \
