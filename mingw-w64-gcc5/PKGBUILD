@@ -134,8 +134,8 @@ prepare() {
   cd ${srcdir}/${_realname}-${pkgver}
 
   #remove files the patches will create (so they aren't in the way the 2nd time round)
-  rm -f gcc/graphite.h intl/canonicalize.c intl/relocatex.c intl/canonicalize.h intl/relocatex.h gcc/testsuite/gfortran.dg > /dev/null 2>&1 || true
- 
+  rm -f intl/canonicalize.c intl/relocatex.c intl/canonicalize.h intl/relocatex.h gcc/testsuite/gfortran.dg > /dev/null 2>&1 || true
+
   # hack! - some configure tests for header files using "$CPP $CPPFLAGS"
   sed -i "/ac_cpp=/s/\$CPPFLAGS/\$CPPFLAGS -O2/" {libiberty,gcc}/configure
 
@@ -151,7 +151,7 @@ prepare() {
     000-gcc-5-mingw-Relocate-libintl.patch \
     001-gcc-4.8-libstdc++export.patch \
     002-gcc-4.7-stdthreads.patch \
-    020-gcc-5-libgomp-Don-t-hard-code-MS-printf-attributes.patch \
+    020-gcc-5-libgomp-Don-t-hard-code-MS-printf-attributes.patch
 
   # Make Windows behave the same as Posix in the consideration of whether folder
   # "/exists/doesnt-exist/.." is a valid path.. in Posix, it isn't.
