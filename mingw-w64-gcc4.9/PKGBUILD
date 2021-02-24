@@ -9,6 +9,7 @@ _enable_fortran=no
 _enable_objc=no
 
 _realname=gcc
+pkgbase=mingw-w64-${_realname}
 pkgname=(
         "${MINGW_PACKAGE_PREFIX}-${_realname}"
         "${MINGW_PACKAGE_PREFIX}-${_realname}-libs"
