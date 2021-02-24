@@ -48,6 +48,8 @@ source=("https://ftp.gnu.org/gnu/gcc/${_realname}-${pkgver}/${_realname}-${pkgve
         "ftp://gcc.gnu.org/pub/gcc/infrastructure/${MPC_VERSION}.tar.gz"
         "ftp://gcc.gnu.org/pub/gcc/infrastructure/${ISL_VERSION}.tar.bz2"
         'isl-0.14.1-no-undefined.patch'
+        'config.guess'
+        'config.sub'
         '000-gcc-5-mingw-Relocate-libintl.patch'
         '001-gcc-4.8-libstdc++export.patch'
         '002-gcc-4.7-stdthreads.patch'
@@ -70,6 +72,8 @@ sha256sums=('335275817b5ed845fee787e75efd76a6e240bfabbe0a0c20a81a04777e204617'
             'e664603757251fd8a352848276497a4c79b7f8b21fd8aedd5cc0598a38fee3e4'
             '8ceebbf4d9a81afa2b4449113cee4b7cb14a687d7a549a963deb5e2a41458b6b'
             '83655a7202f0a0dcce1782d4b365252bf1ad12a522b7ad82ab578ee5ec46433b'
+            'a69d1de72f1e07ceae863dc1f83b497b9832246d6d67f0e87997aa219040518d'
+            '8fed22bcb29a3513bcd1702c69562b343af1669b97a21810a4dd1ccdf6950ea5'
             'afbe4ef53e78ccb2802a04e6c26a24c7890fef68337f926f9b485388690933e2'
             '21191b4fd57ce5f230fcc97b4d9ae31bdc387d7c7c8e39436aa7e4268d278d3d'
             '5e0fc1437ce0b357e78d440692e3a30a7905a5f360a67928a95b14ec8d45365b'
@@ -146,6 +150,9 @@ prepare() {
   # change hardcoded /mingw prefix to the real prefix
   local MINGW_NATIVE_PREFIX=$(cygpath -am ${MINGW_PREFIX}/${MINGW_CHOST})
   sed -i "s/\\/mingw\\//${MINGW_NATIVE_PREFIX//\//\\/}\\//g" gcc/config/i386/mingw32.h
+
+  cp -f ${srcdir}/config.guess ${srcdir}/${_realname}-${pkgver}/
+  cp -f ${srcdir}/config.sub ${srcdir}/${_realname}-${pkgver}/
 
   apply_patch_with_msg \
     000-gcc-5-mingw-Relocate-libintl.patch \
