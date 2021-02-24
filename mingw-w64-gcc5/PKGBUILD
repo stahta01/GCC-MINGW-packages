@@ -65,6 +65,7 @@ source=("https://ftp.gnu.org/gnu/gcc/${_realname}-${pkgver}/${_realname}-${pkgve
         '020-gcc-5-libgomp-Don-t-hard-code-MS-printf-attributes.patch'
         '210-gcc-4.4-ktietz-libgomp.patch'
         '405-dwarf-regression.patch'
+        '810-gcc-5-intl-Update-to-match-releases-gcc-6.patch'
         '955-4.9.2-apply-hack-so-gcc_s-isnt-stripped.patch')
 sha256sums=('335275817b5ed845fee787e75efd76a6e240bfabbe0a0c20a81a04777e204617'
             'c7e75a08a8d49d2082e4caee1591a05d11b9d5627514e678f02d66a124bcf2ba'
@@ -192,6 +193,7 @@ prepare() {
   apply_patch_with_msg  \
     010-gcc-9-Fix-using-large-PCH.patch \
     011-Enable-shared-gnat-implib.patch \
+    810-gcc-5-intl-Update-to-match-releases-gcc-6.patch \
     955-4.9.2-apply-hack-so-gcc_s-isnt-stripped.patch \
     014-gcc-5-clone_function_name_1-Retain-any-stdcall-suffix.patch
 }
