@@ -37,6 +37,10 @@ makedepends=("${MINGW_PACKAGE_PREFIX}-${_realname}"
 #checkdepends=('dejagnu')
 optdepends=()
 options=('staticlibs' '!emptydirs') # '!strip' 'debug')
+# mpc version 1.2.0 requires at least mpfr 4.1.0
+# mpc Version 1.1.0 requires at least gmp 5.0.0, mpfr 3.0.0
+# mpc Version 0.9   requires at least gmp 4.3.2, mpfr 2.4.2
+# mpc Version 0.7   requires at least gmp 4.2
 MPFR_VERSION=mpfr-3.1.4
 GMP_VERSION=gmp-6.1.0
 MPC_VERSION=mpc-1.0.3
