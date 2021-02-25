@@ -5,7 +5,7 @@
 # Contributor: Renato Silva <br.renatosilva@gmail.com>
 # Contributor: Liu Hao <lh_mouse@126.com>
 
-_enable_ada=yes
+_enable_ada=no
 _enable_fortran=no
 _enable_objc=no
 
