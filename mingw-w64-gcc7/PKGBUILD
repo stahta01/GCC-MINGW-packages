@@ -44,7 +44,7 @@ options=('staticlibs' '!emptydirs') # '!strip' 'debug')
 MPFR_VERSION=mpfr-3.1.4
 GMP_VERSION=gmp-6.1.0
 MPC_VERSION=mpc-1.0.3
-ISL_VERSION=isl-0.18      # 0.18 appears to be too old or autotools installed too new trying autoreconf
+ISL_VERSION=isl-0.18
 noextract=("${MPFR_VERSION}.tar.bz2" "${GMP_VERSION}.tar.bz2" "${MPC_VERSION}.tar.gz" "${ISL_VERSION}.tar.bz2")
 source=("https://ftp.gnu.org/gnu/gcc/${_realname}-${pkgver}/${_realname}-${pkgver}.tar.xz"{,.sig}
         "ftp://gcc.gnu.org/pub/gcc/infrastructure/${MPFR_VERSION}.tar.bz2"
@@ -139,7 +139,7 @@ prepare() {
 
   cd ${srcdir}/${_realname}-${pkgver}/isl
   patch -Nbp1 -i ${srcdir}/isl-0.14.1-no-undefined.patch
-  autoreconf -fi
+  autoreconf -fi  # needed for version 0.18 and likely all lower versions
 
   cd ${srcdir}/${_realname}-${pkgver}
   del_file_exists intl/canonicalize.c intl/canonicalize.h \
