@@ -66,6 +66,7 @@ source=("https://ftp.gnu.org/gnu/gcc/${_realname}-${pkgver}/${_realname}-${pkgve
         "014-gcc-6-branch-clone_function_name_1-Retain-any-stdcall-suffix.patch"
         "0016-disable-weak-refs-in-libstdc++.patch"
         "0017-diagnostic-color.patch"
+        '020-libgomp-Don-t-hard-code-MS-printf-attributes.patch'
         "0100-gcc-4.8-libstdc++export.patch"
         "0110-gcc-4.7-stdthreads.patch"
         "0130-libstdc++-in-out.patch"
@@ -91,6 +92,7 @@ sha256sums=('eddde28d04f334aec1604456e536416549e9b1aa137fc69204e65eb0c009fe51'
             '60a58ed41389691a68ef4b7d47a0328df4d28d26e6c680a6b06b31191481ca65'
             '09f27e0dae8d962f2a46a33a9891f2d14303629bb40f91ed8c5824c90da653a9'
             'e33e8f5d1f93250714ddf9d0e09d7e1d5e67ba024f8ec23e96064b34d09ce33d'
+            '2c9b80eebd42ac85cb4b4134617f7eae02de19cc59cc399e4720c6100db430e2'
             '21191b4fd57ce5f230fcc97b4d9ae31bdc387d7c7c8e39436aa7e4268d278d3d'
             '5e0fc1437ce0b357e78d440692e3a30a7905a5f360a67928a95b14ec8d45365b'
             'dce731024e7df92f43c88e15a180a49cea2e588302d7e2a8623df12c892b4fc2'
@@ -162,7 +164,8 @@ prepare() {
   apply_patch_with_msg \
      014-gcc-6-branch-clone_function_name_1-Retain-any-stdcall-suffix.patch \
      0016-disable-weak-refs-in-libstdc++.patch \
-     0017-diagnostic-color.patch
+     0017-diagnostic-color.patch \
+     020-libgomp-Don-t-hard-code-MS-printf-attributes.patch
 
   apply_patch_with_msg \
     0100-gcc-4.8-libstdc++export.patch \
