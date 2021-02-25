@@ -37,17 +37,17 @@ optdepends=()
 options=('staticlibs' '!emptydirs') # '!strip' 'debug')
 source=("https://ftp.gnu.org/gnu/gcc/${_realname}-${pkgver}/${_realname}-${pkgver}.tar.xz"{,.sig}
         "gdbinit"
-        "0002-Relocate-libintl.patch"
-        "0003-Windows-Follow-Posix-dir-exists-semantics-more-close.patch"
-        "0004-Windows-Use-not-in-progpath-and-leave-case-as-is.patch"
-        "0005-Windows-Don-t-ignore-native-system-header-dir.patch"
-        "0006-gcc-6-branch-Windows-New-feature-to-allow-overriding.patch"
-        "0007-Build-EXTRA_GNATTOOLS-for-Ada.patch"
-        "0008-Prettify-linking-no-undefined.patch"
-        "0009-gcc-make-xmmintrin-header-cplusplus-compatible-depre.patch"
-        "0010-Fix-using-large-PCH.patch"
-        "0011-Enable-shared-gnat-implib.patch"
-        "0014-gcc-6-branch-clone_function_name_1-Retain-any-stdcall-suffix.patch"
+        "002-Relocate-libintl.patch"
+        "003-Windows-Follow-Posix-dir-exists-semantics-more-close.patch"
+        "004-Windows-Use-not-in-progpath-and-leave-case-as-is.patch"
+        "005-Windows-Don-t-ignore-native-system-header-dir.patch"
+        "006-gcc-6-branch-Windows-New-feature-to-allow-overriding.patch"
+        "007-Build-EXTRA_GNATTOOLS-for-Ada.patch"
+        "008-Prettify-linking-no-undefined.patch"
+        "009-gcc-make-xmmintrin-header-cplusplus-compatible-depre.patch"
+        "010-Fix-using-large-PCH.patch"
+        "011-Enable-shared-gnat-implib.patch"
+        "014-gcc-6-branch-clone_function_name_1-Retain-any-stdcall-suffix.patch"
         "0016-disable-weak-refs-in-libstdc++.patch"
         "0017-diagnostic-color.patch"
         "0100-gcc-4.8-libstdc++export.patch"
@@ -105,19 +105,19 @@ prepare() {
     libstdc++-v3/src/filesystem/fs-win32.h \
     gcc/testsuite/gfortran.dg/list_read_14.f90
   apply_patch_with_msg \
-     0002-Relocate-libintl.patch \
-     0003-Windows-Follow-Posix-dir-exists-semantics-more-close.patch \
-     0004-Windows-Use-not-in-progpath-and-leave-case-as-is.patch \
-     0005-Windows-Don-t-ignore-native-system-header-dir.patch \
-     0006-gcc-6-branch-Windows-New-feature-to-allow-overriding.patch \
-     0007-Build-EXTRA_GNATTOOLS-for-Ada.patch \
-     0008-Prettify-linking-no-undefined.patch \
-     0009-gcc-make-xmmintrin-header-cplusplus-compatible-depre.patch \
-     0010-Fix-using-large-PCH.patch \
-     0011-Enable-shared-gnat-implib.patch
+     002-Relocate-libintl.patch \
+     003-Windows-Follow-Posix-dir-exists-semantics-more-close.patch \
+     004-Windows-Use-not-in-progpath-and-leave-case-as-is.patch \
+     005-Windows-Don-t-ignore-native-system-header-dir.patch \
+     006-gcc-6-branch-Windows-New-feature-to-allow-overriding.patch \
+     007-Build-EXTRA_GNATTOOLS-for-Ada.patch \
+     008-Prettify-linking-no-undefined.patch \
+     009-gcc-make-xmmintrin-header-cplusplus-compatible-depre.patch \
+     010-Fix-using-large-PCH.patch \
+     011-Enable-shared-gnat-implib.patch
 
   apply_patch_with_msg \
-     0014-gcc-6-branch-clone_function_name_1-Retain-any-stdcall-suffix.patch \
+     014-gcc-6-branch-clone_function_name_1-Retain-any-stdcall-suffix.patch \
      0016-disable-weak-refs-in-libstdc++.patch \
      0017-diagnostic-color.patch
 
