@@ -47,6 +47,7 @@ source=("https://ftp.gnu.org/gnu/gcc/${_realname}-${pkgver}/${_realname}-${pkgve
         "ftp://gcc.gnu.org/pub/gcc/infrastructure/${GMP_VERSION}.tar.bz2"
         "ftp://gcc.gnu.org/pub/gcc/infrastructure/${MPC_VERSION}.tar.gz"
         "ftp://gcc.gnu.org/pub/gcc/infrastructure/${ISL_VERSION}.tar.bz2"
+        'isl-0.14.1-no-undefined.patch'
         "gdbinit"
         "002-Relocate-libintl.patch"
         "003-Windows-Follow-Posix-dir-exists-semantics-more-close.patch"
@@ -121,7 +122,6 @@ _extract_to_gcc_folder() {
 }
 # =========================================== #
 
-
 prepare() {
   cd ${srcdir}
 
@@ -131,6 +131,9 @@ prepare() {
   _extract_to_gcc_folder       $GMP_VERSION.tar.bz2
   _extract_to_gcc_folder       $MPC_VERSION.tar.gz
   _extract_to_gcc_folder       $ISL_VERSION.tar.bz2
+
+  cd ${srcdir}/${_realname}-${pkgver}/isl
+  patch -Nbp1 -i ${srcdir}/isl-0.14.1-no-undefined.patch
 
   cd ${srcdir}/${_realname}-${pkgver}
   del_file_exists intl/canonicalize.c intl/canonicalize.h \
