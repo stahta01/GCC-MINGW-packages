@@ -491,50 +491,62 @@ package_mingw-w64-gcc-objc() {
 
 # 32-bit wrappers
 package_mingw-w64-i686-gcc-libs() {
+  _package_common
   package_mingw-w64-gcc-libs
 }
 
 package_mingw-w64-i686-gcc() {
+  _package_common
   package_mingw-w64-gcc
 }
 
 package_mingw-w64-i686-gcc-libgfortran() {
+  _package_common
   package_mingw-w64-gcc-libgfortran
 }
 
 package_mingw-w64-i686-gcc-fortran() {
+  _package_common
   package_mingw-w64-gcc-fortran
 }
 
 package_mingw-w64-i686-gcc-ada() {
+  _package_common
   package_mingw-w64-gcc-ada
 }
 
 package_mingw-w64-i686-gcc-objc() {
+  _package_common
   package_mingw-w64-gcc-objc
 }
 
 # 64-bit wrappers
 package_mingw-w64-x86_64-gcc-libs() {
+  _package_common
   package_mingw-w64-gcc-libs
 }
 
 package_mingw-w64-x86_64-gcc() {
+  _package_common
   package_mingw-w64-gcc
 }
 
 package_mingw-w64-x86_64-gcc-libgfortran() {
+  _package_common
   package_mingw-w64-gcc-libgfortran
 }
 
 package_mingw-w64-x86_64-gcc-fortran() {
+  _package_common
   package_mingw-w64-gcc-fortran
 }
 
 package_mingw-w64-x86_64-gcc-ada() {
+  _package_common
   package_mingw-w64-gcc-ada
 }
 
 package_mingw-w64-x86_64-gcc-objc() {
+  _package_common
   package_mingw-w64-gcc-objc
 }
