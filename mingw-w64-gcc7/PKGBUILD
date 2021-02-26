@@ -6,6 +6,8 @@
 # Contributor: wirx6 <wirx654@gmail.com>
 # Contributor: Liu Hao <lh_mouse@126.com>
 
+_enable_bootstrap=no # Does nothing right now
+
 _enable_ada=no
 _enable_fortran=no
 _enable_objc=no
