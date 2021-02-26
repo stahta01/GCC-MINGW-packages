@@ -4,7 +4,7 @@
 # Contributor: Ray Donnelly <mingw.android@gmail.com>
 # Contributor: Renato Silva <br.renatosilva@gmail.com>
 
-_enable_ada=yes
+_enable_ada=no
 _enable_fortran=no
 _enable_objc=no
 
