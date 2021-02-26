@@ -10,8 +10,10 @@ _enable_ada=no
 _enable_fortran=no
 _enable_objc=no
 
-_realname=gcc
-pkgbase=mingw-w64-${_realname}
+_basename=gcc
+_major_version=7
+_realname=${_basename}
+pkgbase=mingw-w64-${_basename}${_major_version}
 pkgname=("${MINGW_PACKAGE_PREFIX}-${_realname}"
          "${MINGW_PACKAGE_PREFIX}-${_realname}-libs"
          $([[ "$_enable_fortran" == "yes" ]] && echo "${MINGW_PACKAGE_PREFIX}-${_realname}-libgfortran")
