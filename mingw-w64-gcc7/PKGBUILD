@@ -229,7 +229,7 @@ build() {
   fi
 
   ../${_sourcedir}/configure \
-    --prefix=${MINGW_PREFIX} \
+    --prefix=${_pkg_prefix} \
     --with-local-prefix=${MINGW_PREFIX}/local \
     --build=${MINGW_CHOST} \
     --host=${MINGW_CHOST} \
