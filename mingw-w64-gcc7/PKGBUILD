@@ -342,7 +342,7 @@ package_mingw-w64-gcc() {
   cp bin/g++.exe                                        ${pkgdir}${_pkg_prefix}/bin/
   cp bin/${MINGW_CHOST}-c++.exe                         ${pkgdir}${_pkg_prefix}/bin/
   cp bin/${MINGW_CHOST}-g++.exe                         ${pkgdir}${_pkg_prefix}/bin/
-  cp bin/${MINGW_CHOST}-gcc-${pkgver}.exe               ${pkgdir}${_pkg_prefix}/bin/
+  cp bin/${MINGW_CHOST}-gcc-${_gcc_driver_version}.exe               ${pkgdir}${_pkg_prefix}/bin/
   cp bin/${MINGW_CHOST}-gcc.exe                         ${pkgdir}${_pkg_prefix}/bin/
   cp bin/${MINGW_CHOST}-gcc-ar.exe                      ${pkgdir}${_pkg_prefix}/bin/
   cp bin/${MINGW_CHOST}-gcc-nm.exe                      ${pkgdir}${_pkg_prefix}/bin/
@@ -384,7 +384,7 @@ package_mingw-w64-gcc() {
   #cp lib/gcc/${MINGW_CHOST}/${_gcc_driver_version}/libsupc++*         ${pkgdir}${_pkg_prefix}/lib/gcc/${MINGW_CHOST}/${_gcc_driver_version}/
 
   mkdir -p ${pkgdir}${_pkg_prefix}/share/{doc,info,locale,man}
-  #cp -r share/doc/gcc-${pkgver} ${pkgdir}${_pkg_prefix}/share/doc/
+  #cp -r share/doc/gcc-${_gcc_driver_version} ${pkgdir}${_pkg_prefix}/share/doc/
   cp share/info/cpp.info*                                ${pkgdir}${_pkg_prefix}/share/info/
   cp share/info/cppinternals.info*                       ${pkgdir}${_pkg_prefix}/share/info/
   cp share/info/gcc.info*                                ${pkgdir}${_pkg_prefix}/share/info/
@@ -395,8 +395,8 @@ package_mingw-w64-gcc() {
   cp share/info/libquadmath.info*                        ${pkgdir}${_pkg_prefix}/share/info/
 
   #cp share/locale/* ${pkgdir}${_pkg_prefix}/share/locale/
-  mkdir -p ${pkgdir}${_pkg_prefix}/share/gcc-${pkgver}/python
-  cp -r share/gcc-${pkgver}/python/libstdcxx             ${pkgdir}${_pkg_prefix}/share/gcc-${pkgver}/python/
+  mkdir -p ${pkgdir}${_pkg_prefix}/share/gcc-${_gcc_driver_version}/python
+  cp -r share/gcc-${_gcc_driver_version}/python/libstdcxx             ${pkgdir}${_pkg_prefix}/share/gcc-${_gcc_driver_version}/python/
   mkdir -p ${pkgdir}${_pkg_prefix}/share/man/man1
   cp share/man/man1/cpp.1*                               ${pkgdir}${_pkg_prefix}/share/man/man1/
   cp share/man/man1/gcc.1*                               ${pkgdir}${_pkg_prefix}/share/man/man1/
