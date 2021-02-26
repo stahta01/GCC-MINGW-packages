@@ -125,10 +125,10 @@ del_file_exists() {
 _extract_to_gcc_folder() {
     local tarfile="$1"
     local subfolder="$(echo "$tarfile" | sed 's/-.*$//')"
-    if [ ! -d  "${_realname}-${pkgver}/$subfolder" ]; then
-        echo "Extracting ${tarfile} to ${_realname}-${pkgver}/$subfolder"
-        mkdir -p "${_realname}-${pkgver}/$subfolder"
-        tar -x --strip-components=1 -f "$tarfile" -C "${_realname}-${pkgver}/$subfolder"
+    if [ ! -d  "${_sourcedir}/$subfolder" ]; then
+        echo "Extracting ${tarfile} to ${_sourcedir}/$subfolder"
+        mkdir -p "${_sourcedir}/$subfolder"
+        tar -x --strip-components=1 -f "$tarfile" -C "${_sourcedir}/$subfolder"
     fi
 }
 # =========================================== #
@@ -136,7 +136,7 @@ _extract_to_gcc_folder() {
 prepare() {
   cd ${srcdir}
 
-  rm -fr ${_realname}-${pkgver}/isl || true
+  rm -fr ${_sourcedir}/isl || true
 
   _extract_to_gcc_folder       $MPFR_VERSION.tar.bz2
   _extract_to_gcc_folder       $GMP_VERSION.tar.bz2
