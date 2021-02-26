@@ -235,7 +235,7 @@ build() {
     --host=${MINGW_CHOST} \
     --target=${MINGW_CHOST} \
     --with-native-system-header-dir=${MINGW_PREFIX}/${MINGW_CHOST}/include \
-    --libexecdir=${MINGW_PREFIX}/lib \
+    --libexecdir=${_pkg_prefix}/lib \
     --enable-bootstrap \
     --with-arch=${_arch} \
     --with-tune=generic \
