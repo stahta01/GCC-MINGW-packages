@@ -13,6 +13,9 @@ _enable_objc=no
 _basename=gcc
 _major_version=7
 _realname=${_basename}
+_make_program_major_version=
+_make_program_suffix= # -${_make_program_major_version}
+_makedependsname=${_basename}
 pkgbase=mingw-w64-${_basename}${_major_version}
 pkgname=("${MINGW_PACKAGE_PREFIX}-${_realname}"
          "${MINGW_PACKAGE_PREFIX}-${_realname}-libs"
