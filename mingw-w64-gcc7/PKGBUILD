@@ -8,7 +8,7 @@
 
 _enable_bootstrap=no # Does nothing right now
 
-_enable_ada=no
+_enable_ada=yes
 _enable_fortran=no
 _enable_objc=no
 
