@@ -6,7 +6,7 @@
 # Contributor: wirx6 <wirx654@gmail.com>
 # Contributor: Liu Hao <lh_mouse@126.com>
 
-_enable_bootstrap=no # Does nothing right now
+_enable_bootstrap=no
 
 _enable_ada=yes
 _enable_fortran=no
@@ -223,6 +223,12 @@ build() {
     ;;
   esac
 
+  if [ "$_enable_bootstrap" == "yes" ]; then
+    configure_opts+=("--enable-bootstrap")
+  elif [ "$_enable_bootstrap" == "no" ]; then
+    configure_opts+=("--disable-bootstrap")
+  fi
+
   local _languages="c,c++,lto"
   if [ "$_enable_fortran" == "yes" ]; then
     _languages+=",fortran"
@@ -235,7 +241,6 @@ build() {
   fi
 
   ../${_sourcedir}/configure \
-    --disable-bootstrap \
     --prefix=${_pkg_prefix} \
     --with-local-prefix=${MINGW_PREFIX}/local \
     --build=${MINGW_CHOST} \
