@@ -236,7 +236,6 @@ build() {
     --target=${MINGW_CHOST} \
     --with-native-system-header-dir=${MINGW_PREFIX}/${MINGW_CHOST}/include \
     --libexecdir=${_pkg_prefix}/lib \
-    --enable-bootstrap \
     --with-arch=${_arch} \
     --with-tune=generic \
     --enable-languages=${_languages} \
@@ -265,6 +264,8 @@ build() {
     --with-bugurl="https://github.com/stahta01/GCC-MINGW-packages/issues" \
     --with-gnu-as --with-gnu-ld \
     ${_conf}
+
+   # --enable-bootstrap \
 
   # While we're debugging -fopenmp problems at least.
   # .. we may as well not strip anything.
