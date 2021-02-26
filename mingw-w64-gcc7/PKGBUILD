@@ -433,7 +433,7 @@ package_mingw-w64-gcc-fortran() {
 
   #cp bin/libgfortran*.dll ${pkgdir}${_pkg_prefix}/bin/
 
-  mkdir -p ${pkgdir}${_pkg_prefix}/lib/gcc/${MINGW_CHOST}/${pkgver}
+  mkdir -p ${pkgdir}${_pkg_prefix}/lib/gcc/${MINGW_CHOST}/${_gcc_driver_version}
   cp -r lib/gcc/${MINGW_CHOST}/${_gcc_driver_version}/finclude       ${pkgdir}${_pkg_prefix}/lib/gcc/${MINGW_CHOST}/${_gcc_driver_version}/
   cp lib/gcc/${MINGW_CHOST}/${_gcc_driver_version}/f951.exe          ${pkgdir}${_pkg_prefix}/lib/gcc/${MINGW_CHOST}/${_gcc_driver_version}/
   cp lib/gcc/${MINGW_CHOST}/${_gcc_driver_version}/libcaf_single.a   ${pkgdir}${_pkg_prefix}/lib/gcc/${MINGW_CHOST}/${_gcc_driver_version}/
@@ -455,7 +455,7 @@ package_mingw-w64-gcc-ada() {
 
   cp bin/{libgnarl*,libgnat*}.dll                       ${pkgdir}${_pkg_prefix}/bin/
 
-  mkdir -p ${pkgdir}${_pkg_prefix}/lib/gcc/${MINGW_CHOST}/${pkgver}
+  mkdir -p ${pkgdir}${_pkg_prefix}/lib/gcc/${MINGW_CHOST}/${_gcc_driver_version}
   cp -r lib/gcc/${MINGW_CHOST}/${_gcc_driver_version}/adainclude     ${pkgdir}${_pkg_prefix}/lib/gcc/${MINGW_CHOST}/${_gcc_driver_version}/
   cp -r lib/gcc/${MINGW_CHOST}/${_gcc_driver_version}/adalib         ${pkgdir}${_pkg_prefix}/lib/gcc/${MINGW_CHOST}/${_gcc_driver_version}/
   cp lib/gcc/${MINGW_CHOST}/${_gcc_driver_version}/gnat1.exe         ${pkgdir}${_pkg_prefix}/lib/gcc/${MINGW_CHOST}/${_gcc_driver_version}/
