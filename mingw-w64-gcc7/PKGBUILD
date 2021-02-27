@@ -6,7 +6,7 @@
 # Contributor: wirx6 <wirx654@gmail.com>
 # Contributor: Liu Hao <lh_mouse@126.com>
 
-_enable_bootstrap=no
+_enable_bootstrap=yes
 
 _enable_ada=yes
 _enable_fortran=no
