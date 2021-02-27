@@ -166,8 +166,6 @@ prepare() {
   patch -p1 -i ${srcdir}/009-gcc-make-xmmintrin-header-cplusplus-compatible-depre.patch
   patch -p1 -i ${srcdir}/010-Fix-using-large-PCH.patch
   patch -p1 -i ${srcdir}/011-Enable-shared-gnat-implib.patch
-  # it doesn't work at all
-  # patch -p1 -i ${srcdir}/0012-MinGW-w64-Enable-libitm.patch
 #  patch -p1 -i ${srcdir}/013-MinGW-w64-Enable-shared-gnat.patch
   patch -p1 -i ${srcdir}/014-gcc-6-branch-clone_function_name_1-Retain-any-stdcall-suffix.patch
   patch -p1 -i ${srcdir}/015-Force-linking-to-libgcc_s_dw2-1.dll-deprecated.patch
@@ -175,9 +173,6 @@ prepare() {
   patch -p0 -i ${srcdir}/0017-diagnostic-color.patch
 #  patch -p1 -i ${srcdir}/018-PR-77333-Set-clone-call-fntype-to-callee-type.patch
   patch -p1 -i ${srcdir}/020-libgomp-Don-t-hard-code-MS-printf-attributes.patch
-
-  #patch -p1 -i ${srcdir}/0100-gcc-4.8-libstdc++export.patch
-  #patch -p1 -i ${srcdir}/0110-gcc-4.7-stdthreads.patch
 
 #  patch -p1 -i ${srcdir}/0130-libstdc++-in-out.patch
   
