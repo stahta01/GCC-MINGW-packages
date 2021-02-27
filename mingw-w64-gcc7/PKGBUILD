@@ -49,15 +49,17 @@ options=('staticlibs' '!emptydirs') # '!strip' 'debug')
 # mpc Version 1.1.0 requires at least gmp 5.0.0, mpfr 3.0.0
 # mpc Version 0.9   requires at least gmp 4.3.2, mpfr 2.4.2
 # mpc Version 0.7   requires at least gmp 4.2
-MPFR_VERSION=mpfr-3.1.4
-GMP_VERSION=gmp-6.1.0
+MPFR_VERSION=mpfr-3.1.4 # Try 3.1.6 next
+GMP_VERSION=gmp-6.1.2
 MPC_VERSION=mpc-1.0.3
 ISL_VERSION=isl-0.18
 noextract=("${MPFR_VERSION}.tar.bz2" "${GMP_VERSION}.tar.bz2" "${MPC_VERSION}.tar.gz" "${ISL_VERSION}.tar.bz2")
 _sourcedir=${_basename}-${pkgver}
 source=("https://ftp.gnu.org/gnu/gcc/${_basename}-${pkgver}/${_basename}-${pkgver}.tar.xz"{,.sig}
         "ftp://gcc.gnu.org/pub/gcc/infrastructure/${MPFR_VERSION}.tar.bz2"
-        "ftp://gcc.gnu.org/pub/gcc/infrastructure/${GMP_VERSION}.tar.bz2"
+        #"https://ftp.gnu.org/gnu/mpfr/${MPFR_VERSION}.tar.bz2"
+        #"ftp://gcc.gnu.org/pub/gcc/infrastructure/${GMP_VERSION}.tar.bz2"
+        "https://gmplib.org/download/${GMP_VERSION}/${GMP_VERSION}.tar.bz2"
         "ftp://gcc.gnu.org/pub/gcc/infrastructure/${MPC_VERSION}.tar.gz"
         "ftp://gcc.gnu.org/pub/gcc/infrastructure/${ISL_VERSION}.tar.bz2"
         'isl-0.14.1-no-undefined.patch'
@@ -82,7 +84,7 @@ source=("https://ftp.gnu.org/gnu/gcc/${_basename}-${pkgver}/${_basename}-${pkgve
 sha256sums=('eddde28d04f334aec1604456e536416549e9b1aa137fc69204e65eb0c009fe51'
             'SKIP'
             'd3103a80cdad2407ed581f3618c4bed04e0c92d1cf771a65ead662cc397f7775'
-            '498449a994efeba527885c10405993427995d3f86b8768d8cdf8d9dd7c6b73e8'
+            '5275bb04f4863a13516b2f39392ac5e272f5e1bb8057b18aec1c9b79d73d8fb2'
             '617decc6ea09889fb08ede330917a00b16809b8db88c29c31bfbb49cbf88ecc3'
             '6b8b0fd7f81d0a957beb3679c81bbb34ccc7568d5682844d8924424a0dadcb1b'
             '83655a7202f0a0dcce1782d4b365252bf1ad12a522b7ad82ab578ee5ec46433b'
