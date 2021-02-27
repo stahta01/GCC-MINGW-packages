@@ -4,6 +4,8 @@
 # Contributor: Ray Donnelly <mingw.android@gmail.com>
 # Contributor: Renato Silva <br.renatosilva@gmail.com>
 
+_enable_bootstrap=no
+
 _enable_ada=yes
 _enable_fortran=no
 _enable_objc=no
@@ -39,7 +41,7 @@ options=('strip' '!debug' 'staticlibs' '!emptydirs')
 MPFR_VERSION=mpfr-2.4.2
 GMP_VERSION=gmp-4.3.2
 MPC_VERSION=mpc-0.8.1
-ISL_VERSION=isl-0.12.2 # Try 0.14 and then 0.13.?
+ISL_VERSION=isl-0.14      # Try 0.14 and then 0.13 with patch
 CLOOG_VERSION=cloog-0.18.1
 noextract=("${MPFR_VERSION}.tar.bz2" "${GMP_VERSION}.tar.bz2" "${MPC_VERSION}.tar.gz" "${ISL_VERSION}.tar.bz2" "${CLOOG_VERSION}.tar.gz")
 source=("ftp://gcc.gnu.org/pub/gcc/releases/${_realname}-${pkgver}/${_realname}-${pkgver}.tar.bz2"
@@ -230,18 +232,26 @@ build() {
   [[ -d ${srcdir}/build-${MINGW_CHOST} ]] && rm -rf ${srcdir}/build-${MINGW_CHOST}
   mkdir -p ${srcdir}/build-${MINGW_CHOST} && cd ${srcdir}/build-${MINGW_CHOST}
 
+  local -a configure_opts
+
   case "${CARCH}" in
     i686)
-      local _conf="--disable-sjlj-exceptions --with-dwarf2"
+      configure_opts+=("--disable-sjlj-exceptions")
+      configure_opts+=("--with-dwarf2")
       LDFLAGS+=" -Wl,--large-address-aware"
       local _arch=i686
     ;;
 
     x86_64)
       local _arch=x86-64
-      local _conf=""
     ;;
   esac
+
+  if [ "$_enable_bootstrap" == "yes" ]; then
+    configure_opts+=("--enable-bootstrap")
+  elif [ "$_enable_bootstrap" == "no" ]; then
+    configure_opts+=("--disable-bootstrap")
+  fi
 
   local _languages="c,c++,lto"
   if [ "$_enable_fortran" == "yes" ]; then
@@ -292,7 +302,7 @@ build() {
     --with-pkgversion="Rev${pkgrel}, Built by stahta01 -- Tim S" \
     --with-bugurl="https://github.com/stahta01/GCC-MINGW-packages/issues" \
     --with-gnu-as --with-gnu-ld \
-    ${_conf}
+    "${configure_opts[@]}"
 
   # While we're debugging -fopenmp problems at least.
   # .. we may as well not strip anything.
