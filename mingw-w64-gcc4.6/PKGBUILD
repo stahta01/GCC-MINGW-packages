@@ -172,8 +172,8 @@ build() {
     --with-libiconv \
     --with-system-zlib \
     --with-{gmp,mpfr,mpc}=${MINGW_PREFIX} \
-    --with-pkgversion="Rev${pkgrel}, Built by MSYS2 project" \
-    --with-bugurl="http://sourceforge.net/projects/msys2" \
+    --with-pkgversion="Rev${pkgrel}, Built by stahta01 -- Tim S" \
+    --with-bugurl="https://github.com/stahta01/GCC-MINGW-packages/issues" \
     --with-gnu-as --with-gnu-ld \
     ${_conf}
 
