@@ -49,7 +49,7 @@ options=('staticlibs' '!emptydirs') # '!strip' 'debug')
 # mpc Version 1.1.0 requires at least gmp 5.0.0, mpfr 3.0.0
 # mpc Version 0.9   requires at least gmp 4.3.2, mpfr 2.4.2
 # mpc Version 0.7   requires at least gmp 4.2
-MPFR_VERSION=mpfr-3.1.4 # Try 3.1.6 next
+MPFR_VERSION=mpfr-3.1.4 # Failed with gmp 6.1.0; but worked with 6.1.2 and GCC 7.4.0
 GMP_VERSION=gmp-6.1.2
 MPC_VERSION=mpc-1.0.3
 ISL_VERSION=isl-0.18
