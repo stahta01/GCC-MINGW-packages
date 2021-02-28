@@ -47,7 +47,7 @@ MPC_VERSION=mpc-1.0.3
 ISL_VERSION=isl-0.16.1
 noextract=("${MPFR_VERSION}.tar.bz2" "${GMP_VERSION}.tar.bz2" "${MPC_VERSION}.tar.gz" "${ISL_VERSION}.tar.bz2")
 _sourcedir=${_basename}-${pkgver}
-source=("https://ftp.gnu.org/gnu/gcc/${_realname}-${pkgver}/${_realname}-${pkgver}.tar.gz"
+source=("https://ftp.gnu.org/gnu/gcc/${_basename}-${pkgver}/${_basename}-${pkgver}.tar.gz"
         "ftp://gcc.gnu.org/pub/gcc/infrastructure/${MPFR_VERSION}.tar.bz2"
         "ftp://gcc.gnu.org/pub/gcc/infrastructure/${GMP_VERSION}.tar.bz2"
         "ftp://gcc.gnu.org/pub/gcc/infrastructure/${MPC_VERSION}.tar.gz"
