@@ -123,28 +123,28 @@ del_file_exists() {
     fi
   done
 }
-# =========================================== #
 
-_extract_to_gcc_folder() {
+_extract_to_source_folder() {
     local tarfile="$1"
     local subfolder="$(echo "$tarfile" | sed 's/-.*$//')"
-    if [ ! -d  "${_realname}-${pkgver}/$subfolder" ]; then
-        echo "Extracting ${tarfile} to ${_realname}-${pkgver}/$subfolder"
-        mkdir -p "${_realname}-${pkgver}/$subfolder"
-        tar -x --strip-components=1 -f "$tarfile" -C "${_realname}-${pkgver}/$subfolder"
+    if [ ! -d  "${_sourcedir}/$subfolder" ]; then
+        echo "Extracting ${tarfile} to ${_sourcedir}/$subfolder"
+        mkdir -p "${_sourcedir}/$subfolder"
+        tar -x --strip-components=1 -f "$tarfile" -C "${_sourcedir}/$subfolder"
     fi
 }
+# =========================================== #
 
 prepare() {
   cd ${srcdir}
 
   rm -fr ${_realname}-${pkgver}/isl || true
 
-  _extract_to_gcc_folder       $MPFR_VERSION.tar.bz2
-  _extract_to_gcc_folder       $GMP_VERSION.tar.bz2
-  _extract_to_gcc_folder       $MPC_VERSION.tar.gz
-  _extract_to_gcc_folder       $ISL_VERSION.tar.bz2
-  _extract_to_gcc_folder       $CLOOG_VERSION.tar.gz
+  _extract_to_source_folder       $MPFR_VERSION.tar.bz2
+  _extract_to_source_folder       $GMP_VERSION.tar.bz2
+  _extract_to_source_folder       $MPC_VERSION.tar.gz
+  _extract_to_source_folder       $ISL_VERSION.tar.bz2
+  _extract_to_source_folder       $CLOOG_VERSION.tar.gz
 
   cd ${srcdir}/${_realname}-${pkgver}/gmp
   patch -Nbp1 -i ${srcdir}/gmp-4.3.2-changes.patch
