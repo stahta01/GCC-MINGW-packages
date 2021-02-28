@@ -146,10 +146,10 @@ prepare() {
   _extract_to_source_folder       $ISL_VERSION.tar.bz2
   _extract_to_source_folder       $CLOOG_VERSION.tar.gz
 
-  cd ${srcdir}/${_realname}-${pkgver}/gmp
+  cd ${srcdir}/${_sourcedir}/gmp
   patch -Nbp1 -i ${srcdir}/gmp-4.3.2-changes.patch
 
-  cd ${srcdir}/${_realname}-${pkgver}
+  cd ${srcdir}/${_sourcedir}
 
   #remove files the patches will create (so they aren't in the way the 2nd time round)
   rm -f intl/canonicalize.c intl/relocatex.c intl/relocatex.h > /dev/null 2>&1 || true
@@ -168,17 +168,17 @@ prepare() {
   local MINGW_NATIVE_PREFIX=$(cygpath -am ${MINGW_PREFIX}/${MINGW_CHOST})
   sed -i "s/\\/mingw\\//${MINGW_NATIVE_PREFIX//\//\\/}\\//g" gcc/config/i386/mingw32.h
 
-  cp -f ${srcdir}/config.guess ${srcdir}/${_realname}-${pkgver}/
-  cp -f ${srcdir}/config.sub ${srcdir}/${_realname}-${pkgver}/
+  cp -f ${srcdir}/config.guess ${srcdir}/${_sourcedir}/
+  cp -f ${srcdir}/config.sub ${srcdir}/${_sourcedir}/
 
-  cp -f ${srcdir}/config.guess ${srcdir}/${_realname}-${pkgver}/isl/
-  cp -f ${srcdir}/config.sub ${srcdir}/${_realname}-${pkgver}/isl/
+  cp -f ${srcdir}/config.guess ${srcdir}/${_sourcedir}/isl/
+  cp -f ${srcdir}/config.sub ${srcdir}/${_sourcedir}/isl/
 
-  cp -f ${srcdir}/config.guess ${srcdir}/${_realname}-${pkgver}/mpc/
-  cp -f ${srcdir}/config.sub ${srcdir}/${_realname}-${pkgver}/mpc/
+  cp -f ${srcdir}/config.guess ${srcdir}/${_sourcedir}/mpc/
+  cp -f ${srcdir}/config.sub ${srcdir}/${_sourcedir}/mpc/
 
-  cp -f ${srcdir}/config.guess ${srcdir}/${_realname}-${pkgver}/mpfr/
-  cp -f ${srcdir}/config.sub ${srcdir}/${_realname}-${pkgver}/mpfr/
+  cp -f ${srcdir}/config.guess ${srcdir}/${_sourcedir}/mpfr/
+  cp -f ${srcdir}/config.sub ${srcdir}/${_sourcedir}/mpfr/
 
   patch -p1 -i ${srcdir}/000-relocatex-libintl-0.18.3.1.mingw.patch
   patch -p1 -i ${srcdir}/001-gcc-4.8-libstdc++export.patch
@@ -342,9 +342,9 @@ by LGPL2+. The package as a whole can be redistributed under GPL3+.
 ENDFILE
 
   # License files
-  install -Dm644 "${srcdir}/${_realname}-${pkgver}/COPYING3"        "${pkgdir}${MINGW_PREFIX}/share/licenses/${_realname}-libs/COPYING3"
-  install -Dm644 "${srcdir}/${_realname}-${pkgver}/COPYING.LIB"     "${pkgdir}${MINGW_PREFIX}/share/licenses/${_realname}-libs/COPYING.LIB"
-  install -Dm644 "${srcdir}/${_realname}-${pkgver}/COPYING.RUNTIME" "${pkgdir}${MINGW_PREFIX}/share/licenses/${_realname}-libs/COPYING.RUNTIME"
+  install -Dm644 "${srcdir}/${_sourcedir}/COPYING3"        "${pkgdir}${MINGW_PREFIX}/share/licenses/${_realname}-libs/COPYING3"
+  install -Dm644 "${srcdir}/${_sourcedir}/COPYING.LIB"     "${pkgdir}${MINGW_PREFIX}/share/licenses/${_realname}-libs/COPYING.LIB"
+  install -Dm644 "${srcdir}/${_sourcedir}/COPYING.RUNTIME" "${pkgdir}${MINGW_PREFIX}/share/licenses/${_realname}-libs/COPYING.RUNTIME"
 
   mkdir -p ${pkgdir}${MINGW_PREFIX}/bin
 
