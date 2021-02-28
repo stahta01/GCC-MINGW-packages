@@ -138,7 +138,7 @@ _extract_to_source_folder() {
 prepare() {
   cd ${srcdir}
 
-  rm -fr ${_realname}-${pkgver}/isl || true
+  rm -fr ${_sourcedir}/isl || true
 
   _extract_to_source_folder       $MPFR_VERSION.tar.bz2
   _extract_to_source_folder       $GMP_VERSION.tar.bz2
@@ -267,7 +267,7 @@ build() {
     _languages+=",objc,obj-c++"
   fi
 
-  ../${_realname}-${pkgver}/configure \
+  ../${_sourcedir}/configure \
     --prefix=${MINGW_PREFIX} \
     --with-local-prefix=${MINGW_PREFIX}/local \
     --build=${MINGW_CHOST} \
