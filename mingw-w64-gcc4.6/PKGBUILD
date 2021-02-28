@@ -29,13 +29,17 @@ arch=('any')
 url="http://gcc.gnu.org"
 license=('GPL' 'LGPL' 'FDL' 'custom')
 groups=("${MINGW_PACKAGE_PREFIX}-toolchain" "${MINGW_PACKAGE_PREFIX}")
-depends=("${MINGW_PACKAGE_PREFIX}-zlib" "${MINGW_PACKAGE_PREFIX}-mpc" "${MINGW_PACKAGE_PREFIX}-crt" "${MINGW_PACKAGE_PREFIX}-binutils" "${MINGW_PACKAGE_PREFIX}-winpthreads" "${MINGW_PACKAGE_PREFIX}-headers")
+depends=("${MINGW_PACKAGE_PREFIX}-zlib" "${MINGW_PACKAGE_PREFIX}-crt" "${MINGW_PACKAGE_PREFIX}-binutils" "${MINGW_PACKAGE_PREFIX}-winpthreads" "${MINGW_PACKAGE_PREFIX}-headers")
 makedepends=("${MINGW_PACKAGE_PREFIX}-${_realname}" 'lndir')
 checkdepends=('dejagnu')
 optdepends=()
 replaces=()
 backup=()
 options=('strip' '!debug' 'staticlibs' '!emptydirs') # '!buildflags'
+MPFR_VERSION=mpfr-2.4.2
+GMP_VERSION=gmp-4.3.2
+MPC_VERSION=mpc-0.8.1
+noextract=("${MPFR_VERSION}.tar.bz2" "${GMP_VERSION}.tar.bz2" "${MPC_VERSION}.tar.gz")
 _sourcedir=${_basename}-${pkgver}
 source=("ftp://gcc.gnu.org/pub/gcc/releases/${_basename}-${pkgver}/${_basename}-${pkgver}.tar.bz2"
     102-gcc-4.6-fix-compile-issue-with-gcc-9.patch
@@ -56,8 +60,43 @@ sha256sums=('35af16afa0b67af9b8eb15cafb76d2bc5f568540552522f5dc2c88dd45d977e8'
             'fc1318f0ff236ea158f9123fe80ade0a64bd97cf68a0c076349bd501341a03f7'
             '714e18e8e1a89c149dfabde6eb6dd0a7518590b7a911643de761b6d31c7acd2d')
 
+# Helper macros to help make tasks easier #
+apply_patch_with_msg() {
+  for _patch in "$@"
+  do
+    msg2 "Applying ${_patch}"
+    patch -Nbp1 -i "${srcdir}/${_patch}"
+  done
+}
+
+del_file_exists() {
+  for _fname in "$@"
+  do
+    if [ -f ${_fname} ]; then
+      rm -rf ${_fname}
+    fi
+  done
+}
+
+_extract_to_source_folder() {
+    local tarfile="$1"
+    local subfolder="$(echo "$tarfile" | sed 's/-.*$//')"
+    if [ ! -d  "${_sourcedir}/$subfolder" ]; then
+        echo "Extracting ${tarfile} to ${_sourcedir}/$subfolder"
+        mkdir -p "${_sourcedir}/$subfolder"
+        tar -x --strip-components=1 -f "$tarfile" -C "${_sourcedir}/$subfolder"
+    fi
+}
+# =========================================== #
+
 prepare() {
-  cd ${srcdir}/${_realname}-${pkgver}
+  cd ${srcdir}
+
+  _extract_to_source_folder       $MPFR_VERSION.tar.bz2
+  _extract_to_source_folder       $GMP_VERSION.tar.bz2
+  _extract_to_source_folder       $MPC_VERSION.tar.gz
+
+  cd ${srcdir}/${_sourcedir}
 
   #remove files the patches will create (so they aren't in the way the 2nd time round)
   [ -f gcc/testsuite/g++.dg/cpp0x/lambda/lambda-names1.C ] && rm gcc/testsuite/g++.dg/cpp0x/lambda/lambda-names1.C
@@ -153,7 +192,7 @@ build() {
     _languages+=",objc,obj-c++"
   fi
 
-  ../${_realname}-${pkgver}/configure \
+  ../${_sourcedir}/configure \
     --prefix=${MINGW_PREFIX} \
     --with-local-prefix=${MINGW_PREFIX}/local \
     --build=${MINGW_CHOST} \
@@ -186,7 +225,6 @@ build() {
     --disable-symvers \
     --with-libiconv \
     --with-system-zlib \
-    --with-{gmp,mpfr,mpc}=${MINGW_PREFIX} \
     --with-pkgversion="Rev${pkgrel}, Built by stahta01 -- Tim S" \
     --with-bugurl="https://github.com/stahta01/GCC-MINGW-packages/issues" \
     --with-gnu-as --with-gnu-ld \
@@ -210,7 +248,7 @@ build() {
 
 package_mingw-w64-gcc-libs() {
   pkgdesc="GNU Compiler Collection (libraries) for MinGW-w64"
-  depends=("${MINGW_PACKAGE_PREFIX}-gmp" "${MINGW_PACKAGE_PREFIX}-libwinpthread")
+  depends=("${MINGW_PACKAGE_PREFIX}-libwinpthread")
   mkdir -p ${pkgdir}${MINGW_PREFIX}/bin
 
   cd ${srcdir}${MINGW_PREFIX}
@@ -219,7 +257,7 @@ package_mingw-w64-gcc-libs() {
 
 package_mingw-w64-gcc() {
   pkgdesc="GNU Compiler Collection (C,C++,OpenMP) for MinGW-w64"
-  depends=("${MINGW_PACKAGE_PREFIX}-crt" "${MINGW_PACKAGE_PREFIX}-binutils" "${MINGW_PACKAGE_PREFIX}-winpthreads" "${MINGW_PACKAGE_PREFIX}-headers" "${MINGW_PACKAGE_PREFIX}-zlib" "${MINGW_PACKAGE_PREFIX}-mpc" "${MINGW_PACKAGE_PREFIX}-${_realname}-libs=${pkgver}")
+  depends=("${MINGW_PACKAGE_PREFIX}-crt" "${MINGW_PACKAGE_PREFIX}-binutils" "${MINGW_PACKAGE_PREFIX}-winpthreads" "${MINGW_PACKAGE_PREFIX}-headers" "${MINGW_PACKAGE_PREFIX}-zlib" "${MINGW_PACKAGE_PREFIX}-${_realname}-libs=${pkgver}")
   provides=("${MINGW_PACKAGE_PREFIX}-${_realname}-base")
   conflicts=("${MINGW_PACKAGE_PREFIX}-${_realname}-base")
 
