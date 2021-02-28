@@ -47,7 +47,7 @@ ISL_VERSION=isl-0.14      # Try 0.14 and then 0.13 with patch
 CLOOG_VERSION=cloog-0.18.1
 noextract=("${MPFR_VERSION}.tar.bz2" "${GMP_VERSION}.tar.bz2" "${MPC_VERSION}.tar.gz" "${ISL_VERSION}.tar.bz2" "${CLOOG_VERSION}.tar.gz")
 _sourcedir=${_basename}-${pkgver}
-source=("ftp://gcc.gnu.org/pub/gcc/releases/${_realname}-${pkgver}/${_realname}-${pkgver}.tar.bz2"
+source=("ftp://gcc.gnu.org/pub/gcc/releases/${_basename}-${pkgver}/${_basename}-${pkgver}.tar.bz2"
         "ftp://gcc.gnu.org/pub/gcc/infrastructure/${MPFR_VERSION}.tar.bz2"
         "ftp://gcc.gnu.org/pub/gcc/infrastructure/${GMP_VERSION}.tar.bz2"
         "ftp://gcc.gnu.org/pub/gcc/infrastructure/${MPC_VERSION}.tar.gz"
