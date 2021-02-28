@@ -206,7 +206,7 @@ prepare() {
   patch -p1 -i ${srcdir}/180-pr-57440.patch
 
   # Compatibility with isl>=0.12.2
-  if [[ ${ISL_VERSION} > "isl-0.12.2" ]]; then
+  if [[ ${ISL_VERSION} > "isl-0.12.2" && ${ISL_VERSION} < "isl-0.14" ]]; then
     patch -p0 -i ${srcdir}/190-isl-0.13.patch
   fi
 
