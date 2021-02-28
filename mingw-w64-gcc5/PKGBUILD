@@ -123,9 +123,8 @@ del_file_exists() {
     fi
   done
 }
-# =========================================== #
 
-_extract_to_gcc_folder() {
+_extract_to_source_folder() {
     local tarfile="$1"
     local subfolder="$(echo "$tarfile" | sed 's/-.*$//')"
     if [ ! -d  "${_sourcedir}/$subfolder" ]; then
@@ -134,16 +133,17 @@ _extract_to_gcc_folder() {
         tar -x --strip-components=1 -f "$tarfile" -C "${_sourcedir}/$subfolder"
     fi
 }
+# =========================================== #
 
 prepare() {
   cd ${srcdir}
 
   rm -fr ${_sourcedir}/isl || true
 
-  _extract_to_gcc_folder       $MPFR_VERSION.tar.bz2
-  _extract_to_gcc_folder       $GMP_VERSION.tar.bz2
-  _extract_to_gcc_folder       $MPC_VERSION.tar.gz
-  _extract_to_gcc_folder       $ISL_VERSION.tar.bz2
+  _extract_to_source_folder       $MPFR_VERSION.tar.bz2
+  _extract_to_source_folder       $GMP_VERSION.tar.bz2
+  _extract_to_source_folder       $MPC_VERSION.tar.gz
+  _extract_to_source_folder       $ISL_VERSION.tar.bz2
 
   cd ${srcdir}/${_sourcedir}/isl
   patch -Nbp1 -i ${srcdir}/isl-0.14.1-no-undefined.patch
