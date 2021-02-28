@@ -43,7 +43,7 @@ options=('strip' '!debug' 'staticlibs' '!emptydirs')
 MPFR_VERSION=mpfr-2.4.2
 GMP_VERSION=gmp-4.3.2
 MPC_VERSION=mpc-0.8.1
-ISL_VERSION=isl-0.14      # Try 0.14 and then 0.13 with patch
+ISL_VERSION=isl-0.13      # Try 0.14 and then 0.13 with patch
 CLOOG_VERSION=cloog-0.18.1
 noextract=("${MPFR_VERSION}.tar.bz2" "${GMP_VERSION}.tar.bz2" "${MPC_VERSION}.tar.gz" "${ISL_VERSION}.tar.bz2" "${CLOOG_VERSION}.tar.gz")
 _sourcedir=${_basename}-${pkgver}
@@ -51,7 +51,8 @@ source=("ftp://gcc.gnu.org/pub/gcc/releases/${_basename}-${pkgver}/${_basename}-
         "ftp://gcc.gnu.org/pub/gcc/infrastructure/${MPFR_VERSION}.tar.bz2"
         "ftp://gcc.gnu.org/pub/gcc/infrastructure/${GMP_VERSION}.tar.bz2"
         "ftp://gcc.gnu.org/pub/gcc/infrastructure/${MPC_VERSION}.tar.gz"
-        "ftp://gcc.gnu.org/pub/gcc/infrastructure/${ISL_VERSION}.tar.bz2"
+        #"ftp://gcc.gnu.org/pub/gcc/infrastructure/${ISL_VERSION}.tar.bz2"
+        "http://isl.gforge.inria.fr/${ISL_VERSION}.tar.bz2"
         "ftp://gcc.gnu.org/pub/gcc/infrastructure/${CLOOG_VERSION}.tar.gz"
         'gmp-4.3.2-changes.patch'
         'config.guess'
@@ -79,7 +80,7 @@ sha256sums=('6c11d292cd01b294f9f84c9a59c230d80e9e4a47e5c6355f046bb36d4f358092'
             'c7e75a08a8d49d2082e4caee1591a05d11b9d5627514e678f02d66a124bcf2ba'
             '936162c0312886c21581002b79932829aa048cfaf9937c6265aeaa14f1cd1775'
             'e664603757251fd8a352848276497a4c79b7f8b21fd8aedd5cc0598a38fee3e4'
-            '7e3c02ff52f8540f6a85534f54158968417fd676001651c8289c705bd0228f36'
+            '7265fd897b7f9147fde76560f28ed18f2c20e5f5da7f4bd9d0e01f8a713401f1'
             '02500a4edd14875f94fe84cbeda4290425cb0c1c2474c6f75d75a303d64b4196'
             '4a4d8f4e67488e98f9376c8de90ea11578a5a38d48e839d3358846c5def0d825'
             'a69d1de72f1e07ceae863dc1f83b497b9832246d6d67f0e87997aa219040518d'
