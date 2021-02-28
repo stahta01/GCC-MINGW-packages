@@ -37,7 +37,7 @@ replaces=()
 backup=()
 options=('strip' '!debug' 'staticlibs' '!emptydirs') # '!buildflags'
 _sourcedir=${_basename}-${pkgver}
-source=("ftp://gcc.gnu.org/pub/gcc/releases/${_realname}-${pkgver}/${_realname}-${pkgver}.tar.bz2"
+source=("ftp://gcc.gnu.org/pub/gcc/releases/${_basename}-${pkgver}/${_basename}-${pkgver}.tar.bz2"
     102-gcc-4.6-fix-compile-issue-with-gcc-9.patch
     104-gcc-4.6.4-Fix-texi-docs-syntax-errors.patch
     111-gcc-4.0-fix-for-windows-not-minding-non-existant-parent-dirs.patch
