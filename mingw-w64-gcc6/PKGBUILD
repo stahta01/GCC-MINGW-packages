@@ -228,7 +228,7 @@ build() {
     _languages+=",objc,obj-c++"
   fi
 
-  ../${_realname}-${pkgver}/configure \
+  ../${_sourcedir}/configure \
     --prefix=${MINGW_PREFIX} \
     --with-local-prefix=${MINGW_PREFIX}/local \
     --build=${MINGW_CHOST} \
