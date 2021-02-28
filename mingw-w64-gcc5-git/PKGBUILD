@@ -195,10 +195,10 @@ prepare() {
 
 _package_common() {
   # use with "with-gcc-major-version-only" configuration option
-  _gcc_driver_version=`eval "sed -e 's/^\([0-9]*\).*/\1/' ${srcdir}/${_sourcedir}/gcc/BASE-VER"`
+  #_gcc_driver_version=`eval "sed -e 's/^\([0-9]*\).*/\1/' ${srcdir}/${_sourcedir}/gcc/BASE-VER"`
 
   # Use without "with-gcc-major-version-only" configuration option
-  #_gcc_driver_version=`eval "cat ${srcdir}/${_sourcedir}/gcc/BASE-VER"`
+  _gcc_driver_version=`eval "cat ${srcdir}/${_sourcedir}/gcc/BASE-VER"`
 
   echo "_gcc_driver_version := ${_gcc_driver_version}"
 
@@ -282,7 +282,6 @@ build() {
     --build=${MINGW_CHOST} \
     --host=${MINGW_CHOST} \
     --target=${MINGW_CHOST} \
-    --with-gcc-major-version-only \
     --with-native-system-header-dir=${MINGW_PREFIX}/${MINGW_CHOST}/include \
     --with-gxx-include-dir=${MINGW_PREFIX}/include/c++/${pkgver} \
     --enable-version-specific-runtime-libs \
