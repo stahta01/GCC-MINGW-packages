@@ -48,7 +48,6 @@ makedepends=("${MINGW_PACKAGE_PREFIX}-${_makedependsname}"
 optdepends=()
 options=('staticlibs' '!emptydirs') # '!strip' 'debug')
 source=("https://ftp.gnu.org/gnu/gcc/${_basename}-${pkgver%%+*}/${_basename}-${pkgver}.tar.xz"{,.sig}
-        "gdbinit"
         002-Relocate-libintl.patch
         003-Windows-Follow-Posix-dir-exists-semantics-more-close.patch
         004-Windows-Use-not-in-progpath-and-leave-case-as-is.patch
@@ -381,10 +380,6 @@ package_mingw-w64-gcc() {
   cp share/man/man7/gfdl.7*                              ${pkgdir}${_pkg_prefix}/share/man/man1/
   cp share/man/man7/gpl.7*                               ${pkgdir}${_pkg_prefix}/share/man/man1/
   cp share/man/man1/g++${_build_program_suffix}.1*       ${pkgdir}${_pkg_prefix}/share/man/man1/
-
-  # install "custom" system gdbinit
-  install -D -m644 ${srcdir}/gdbinit ${pkgdir}${_pkg_prefix}/etc/gdbinit
-  sed -i 's|%GCC_NAME%|gcc-'${_gcc_driver_version}'|g' ${pkgdir}${_pkg_prefix}/etc/gdbinit
 }
 
 package_mingw-w64-gcc-libgfortran() {
