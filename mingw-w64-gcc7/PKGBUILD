@@ -81,7 +81,7 @@ source=("https://ftp.gnu.org/gnu/gcc/${_basename}-${pkgver}/${_basename}-${pkgve
         "0110-gcc-4.7-stdthreads.patch"
         "0130-libstdc++-in-out.patch"
         "0140-gcc-7-Enable-std-experimental-filesystem.patch")
-sha256sums=('eddde28d04f334aec1604456e536416549e9b1aa137fc69204e65eb0c009fe51'
+sha256sums=('b81946e7f01f90528a1f7352ab08cc602b9ccc05d4e44da4bd501c5a189ee661'
             'SKIP'
             'd3103a80cdad2407ed581f3618c4bed04e0c92d1cf771a65ead662cc397f7775'
             '5275bb04f4863a13516b2f39392ac5e272f5e1bb8057b18aec1c9b79d73d8fb2'
