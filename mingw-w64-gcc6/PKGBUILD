@@ -153,7 +153,7 @@ prepare() {
   patch -Nbp1 -i ${srcdir}/isl-0.14.1-no-undefined.patch
   autoreconf -fi  # needed for version 0.18 and likely all lower versions
 
-  cd ${srcdir}/${_realname}-${pkgver}
+  cd ${srcdir}/${_sourcedir}
   rm -rf intl/canonicalize.c intl/canonicalize.h intl/relocatex.c intl/relocatex.h || true
   if [ -f "gcc/testsuite/gfortran.dg/list_read_14.f90" ]; then
     echo "skipping 001-gcc-5-branch-gfortran-incorrect-reading-of-values-fr.patch"
@@ -301,9 +301,9 @@ by LGPL2+. The package as a whole can be redistributed under GPL3+.
 ENDFILE
 
   # License files
-  install -Dm644 "${srcdir}/${_realname}-${pkgver}/COPYING3"        "${pkgdir}${MINGW_PREFIX}/share/licenses/${_realname}-libs/COPYING3"
-  install -Dm644 "${srcdir}/${_realname}-${pkgver}/COPYING.LIB"     "${pkgdir}${MINGW_PREFIX}/share/licenses/${_realname}-libs/COPYING.LIB"
-  install -Dm644 "${srcdir}/${_realname}-${pkgver}/COPYING.RUNTIME" "${pkgdir}${MINGW_PREFIX}/share/licenses/${_realname}-libs/COPYING.RUNTIME"
+  install -Dm644 "${srcdir}/${_sourcedir}/COPYING3"        "${pkgdir}${MINGW_PREFIX}/share/licenses/${_realname}-libs/COPYING3"
+  install -Dm644 "${srcdir}/${_sourcedir}/COPYING.LIB"     "${pkgdir}${MINGW_PREFIX}/share/licenses/${_realname}-libs/COPYING.LIB"
+  install -Dm644 "${srcdir}/${_sourcedir}/COPYING.RUNTIME" "${pkgdir}${MINGW_PREFIX}/share/licenses/${_realname}-libs/COPYING.RUNTIME"
 
   mkdir -p ${pkgdir}${MINGW_PREFIX}/bin
 
