@@ -222,7 +222,19 @@ prepare() {
     014-gcc-5-clone_function_name_1-Retain-any-stdcall-suffix.patch
 }
 
+_package_common() {
+  # Use without "with-gcc-major-version-only" configuration option
+  _gcc_driver_version=`eval "cat ${srcdir}/${_sourcedir}/gcc/BASE-VER"`
+
+  _pkg_prefix=${MINGW_PREFIX}
+
+  echo "_gcc_driver_version := ${_gcc_driver_version}"
+  echo "_pkg_prefix := ${_pkg_prefix}"
+}
+
 build() {
+  _package_common
+
   [[ -d ${srcdir}/build-${MINGW_CHOST} ]] && rm -rf ${srcdir}/build-${MINGW_CHOST}
   mkdir -p ${srcdir}/build-${MINGW_CHOST} && cd ${srcdir}/build-${MINGW_CHOST}
 
@@ -502,50 +514,62 @@ package_mingw-w64-gcc-objc() {
 
 # 32-bit wrappers
 package_mingw-w64-i686-gcc-libs() {
+  _package_common
   package_mingw-w64-gcc-libs
 }
 
 package_mingw-w64-i686-gcc() {
+  _package_common
   package_mingw-w64-gcc
 }
 
 package_mingw-w64-i686-gcc-libgfortran() {
+  _package_common
   package_mingw-w64-gcc-libgfortran
 }
 
 package_mingw-w64-i686-gcc-fortran() {
+  _package_common
   package_mingw-w64-gcc-fortran
 }
 
 package_mingw-w64-i686-gcc-ada() {
+  _package_common
   package_mingw-w64-gcc-ada
 }
 
 package_mingw-w64-i686-gcc-objc() {
+  _package_common
   package_mingw-w64-gcc-objc
 }
 
 # 64-bit wrappers
 package_mingw-w64-x86_64-gcc-libs() {
+  _package_common
   package_mingw-w64-gcc-libs
 }
 
 package_mingw-w64-x86_64-gcc() {
+  _package_common
   package_mingw-w64-gcc
 }
 
 package_mingw-w64-x86_64-gcc-libgfortran() {
+  _package_common
   package_mingw-w64-gcc-libgfortran
 }
 
 package_mingw-w64-x86_64-gcc-fortran() {
+  _package_common
   package_mingw-w64-gcc-fortran
 }
 
 package_mingw-w64-x86_64-gcc-ada() {
+  _package_common
   package_mingw-w64-gcc-ada
 }
 
 package_mingw-w64-x86_64-gcc-objc() {
+  _package_common
   package_mingw-w64-gcc-objc
 }
