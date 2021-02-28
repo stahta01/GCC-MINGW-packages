@@ -55,6 +55,7 @@ source=("ftp://gcc.gnu.org/pub/gcc/releases/${_basename}-${pkgver}/${_basename}-
         "http://isl.gforge.inria.fr/${ISL_VERSION}.tar.bz2"
         "ftp://gcc.gnu.org/pub/gcc/infrastructure/${CLOOG_VERSION}.tar.gz"
         'gmp-4.3.2-changes.patch'
+        'isl-0.13-no-undefined.patch'
         'config.guess'
         'config.sub'
         '000-relocatex-libintl-0.18.3.1.mingw.patch'
@@ -83,6 +84,7 @@ sha256sums=('6c11d292cd01b294f9f84c9a59c230d80e9e4a47e5c6355f046bb36d4f358092'
             '7265fd897b7f9147fde76560f28ed18f2c20e5f5da7f4bd9d0e01f8a713401f1'
             '02500a4edd14875f94fe84cbeda4290425cb0c1c2474c6f75d75a303d64b4196'
             '4a4d8f4e67488e98f9376c8de90ea11578a5a38d48e839d3358846c5def0d825'
+            'eae93d9bd1118ea94bd04ca946d72c740d07937beeefd77bc67129d801c083b7'
             'a69d1de72f1e07ceae863dc1f83b497b9832246d6d67f0e87997aa219040518d'
             '8fed22bcb29a3513bcd1702c69562b343af1669b97a21810a4dd1ccdf6950ea5'
             '164e6e90d9306d3da0f15d790a5e44fa87e1db043c4dc0bfaeb8ac1833b9fae0'
@@ -150,6 +152,10 @@ prepare() {
   cd ${srcdir}/${_sourcedir}/gmp
   patch -Nbp1 -i ${srcdir}/gmp-4.3.2-changes.patch
 
+  cd ${srcdir}/${_sourcedir}/isl
+  patch -Nbp1 -i ${srcdir}/isl-0.13-no-undefined.patch
+  autoreconf -fi  # needed because the patch requires refresh
+
   cd ${srcdir}/${_sourcedir}
 
   #remove files the patches will create (so they aren't in the way the 2nd time round)
@@ -206,10 +212,10 @@ prepare() {
 
   patch -p1 -i ${srcdir}/180-pr-57440.patch
 
-  # Compatibility with isl>=0.12.2
-  if [[ ${ISL_VERSION} > "isl-0.12.2" && ${ISL_VERSION} < "isl-0.14" ]]; then
-    patch -p0 -i ${srcdir}/190-isl-0.13.patch
-  fi
+#  # Compatibility with isl>=0.12.2 does not work with gcc 4.9.3 and up
+#  if [[ ${ISL_VERSION} > "isl-0.12.2" ]]; then
+#    patch -p0 -i ${srcdir}/190-isl-0.13.patch
+#  fi
 
   # http://gcc.gnu.org/bugzilla/show_bug.cgi?id=57653
 #  patch -p0 -i ${srcdir}/200-gcc-4.8-filename-output.patch
