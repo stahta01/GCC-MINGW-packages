@@ -15,8 +15,7 @@ _enable_objc=no
 _basename=gcc
 _major_version=7
 _realname=${_basename}
-_make_program_major_version=
-_make_program_suffix= # -${_make_program_major_version}
+_make_program_suffix=
 _makedependsname=${_basename}
 pkgbase=mingw-w64-${_basename}${_major_version}
 pkgname=("${MINGW_PACKAGE_PREFIX}-${_realname}"
@@ -150,7 +149,7 @@ prepare() {
 
   cd ${srcdir}/${_sourcedir}/isl
   patch -Nbp1 -i ${srcdir}/isl-0.14.1-no-undefined.patch
-  autoreconf -fi  # needed for version 0.18 and likely all lower versions
+  autoreconf -fi  # needed because the patch requires refresh
 
   cd ${srcdir}/${_sourcedir}
   del_file_exists intl/canonicalize.c intl/canonicalize.h \
