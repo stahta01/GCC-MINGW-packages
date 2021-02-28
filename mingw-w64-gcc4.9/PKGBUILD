@@ -43,19 +43,13 @@ options=('strip' '!debug' 'staticlibs' '!emptydirs')
 MPFR_VERSION=mpfr-2.4.2
 GMP_VERSION=gmp-4.3.2
 MPC_VERSION=mpc-0.8.1
-ISL_VERSION=isl-0.13      # Try 0.14 and then 0.13 with patch
-CLOOG_VERSION=cloog-0.18.1
-noextract=("${MPFR_VERSION}.tar.bz2" "${GMP_VERSION}.tar.bz2" "${MPC_VERSION}.tar.gz" "${ISL_VERSION}.tar.bz2" "${CLOOG_VERSION}.tar.gz")
+noextract=("${MPFR_VERSION}.tar.bz2" "${GMP_VERSION}.tar.bz2" "${MPC_VERSION}.tar.gz")
 _sourcedir=${_basename}-${pkgver}
 source=("ftp://gcc.gnu.org/pub/gcc/releases/${_basename}-${pkgver}/${_basename}-${pkgver}.tar.bz2"
         "ftp://gcc.gnu.org/pub/gcc/infrastructure/${MPFR_VERSION}.tar.bz2"
         "ftp://gcc.gnu.org/pub/gcc/infrastructure/${GMP_VERSION}.tar.bz2"
         "ftp://gcc.gnu.org/pub/gcc/infrastructure/${MPC_VERSION}.tar.gz"
-        #"ftp://gcc.gnu.org/pub/gcc/infrastructure/${ISL_VERSION}.tar.bz2"
-        "http://isl.gforge.inria.fr/${ISL_VERSION}.tar.bz2"
-        "ftp://gcc.gnu.org/pub/gcc/infrastructure/${CLOOG_VERSION}.tar.gz"
         'gmp-4.3.2-changes.patch'
-        'isl-0.13-no-undefined.patch'
         'config.guess'
         'config.sub'
         '000-relocatex-libintl-0.18.3.1.mingw.patch'
@@ -67,7 +61,6 @@ source=("ftp://gcc.gnu.org/pub/gcc/releases/${_basename}-${pkgver}/${_basename}-
         '160-mingw-dont-ignore-native-system-header-dir.patch'
         '170-Add--mcrtdll-option-for-msvcrt-stubbing.patch'
         '180-pr-57440.patch'
-        '190-isl-0.13.patch'
         '200-gcc-4.8-filename-output.patch'
         '210-ktietz-libgomp.patch'
         '220-4.9.0-libatomic-cygwin.patch'
@@ -141,20 +134,12 @@ _extract_to_source_folder() {
 prepare() {
   cd ${srcdir}
 
-  rm -fr ${_sourcedir}/isl || true
-
   _extract_to_source_folder       $MPFR_VERSION.tar.bz2
   _extract_to_source_folder       $GMP_VERSION.tar.bz2
   _extract_to_source_folder       $MPC_VERSION.tar.gz
-  _extract_to_source_folder       $ISL_VERSION.tar.bz2
-  _extract_to_source_folder       $CLOOG_VERSION.tar.gz
 
   cd ${srcdir}/${_sourcedir}/gmp
   patch -Nbp1 -i ${srcdir}/gmp-4.3.2-changes.patch
-
-  cd ${srcdir}/${_sourcedir}/isl
-  patch -Nbp1 -i ${srcdir}/isl-0.13-no-undefined.patch
-  autoreconf -fi  # needed because the patch requires refresh
 
   cd ${srcdir}/${_sourcedir}
 
@@ -177,9 +162,6 @@ prepare() {
 
   cp -f ${srcdir}/config.guess ${srcdir}/${_sourcedir}/
   cp -f ${srcdir}/config.sub ${srcdir}/${_sourcedir}/
-
-  cp -f ${srcdir}/config.guess ${srcdir}/${_sourcedir}/isl/
-  cp -f ${srcdir}/config.sub ${srcdir}/${_sourcedir}/isl/
 
   cp -f ${srcdir}/config.guess ${srcdir}/${_sourcedir}/mpc/
   cp -f ${srcdir}/config.sub ${srcdir}/${_sourcedir}/mpc/
@@ -211,11 +193,6 @@ prepare() {
   patch -p1 -i ${srcdir}/170-Add--mcrtdll-option-for-msvcrt-stubbing.patch
 
   patch -p1 -i ${srcdir}/180-pr-57440.patch
-
-#  # Compatibility with isl>=0.12.2 does not work with gcc 4.9.3 and up
-#  if [[ ${ISL_VERSION} > "isl-0.12.2" ]]; then
-#    patch -p0 -i ${srcdir}/190-isl-0.13.patch
-#  fi
 
   # http://gcc.gnu.org/bugzilla/show_bug.cgi?id=57653
 #  patch -p0 -i ${srcdir}/200-gcc-4.8-filename-output.patch
@@ -302,14 +279,12 @@ build() {
     --enable-shared --enable-static \
     --enable-libatomic \
     --enable-threads=${_threads} \
-    --enable-graphite \
+    --disable-graphite \
     --enable-fully-dynamic-string \
     --enable-libstdcxx-time=yes \
     --disable-libstdcxx-pch \
     --disable-libstdcxx-debug \
-    --enable-cloog-backend=isl \
     --enable-version-specific-runtime-libs \
-    --disable-cloog-version-check --disable-isl-version-check \
     --enable-lto \
     --enable-libgomp \
     --disable-multilib \
