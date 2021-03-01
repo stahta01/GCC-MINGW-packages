@@ -11,9 +11,9 @@ _enable_fortran=no
 _enable_objc=no
 
 _basename=gcc
-_major_version=4.6
+_base_pkg_version=4.6
 _realname=${_basename}
-pkgbase=mingw-w64-${_basename}${_major_version}
+pkgbase=mingw-w64-${_basename}${_base_pkg_version}
 pkgname=(
          "${MINGW_PACKAGE_PREFIX}-${_realname}"
          "${MINGW_PACKAGE_PREFIX}-${_realname}-libs"
@@ -22,7 +22,7 @@ pkgname=(
          $([[ "$_enable_ada" == "yes" ]] && echo "${MINGW_PACKAGE_PREFIX}-${_realname}-ada")
          $([[ "$_enable_objc" == "yes" ]] && echo "${MINGW_PACKAGE_PREFIX}-${_realname}-objc")
         )
-pkgver=${_major_version}.4
+pkgver=${_base_pkg_version}.4
 pkgrel=1
 pkgdesc="GCC 4.6 for the MinGW-w64"
 arch=('any')
