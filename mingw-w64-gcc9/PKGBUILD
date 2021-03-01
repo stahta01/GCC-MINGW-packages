@@ -10,11 +10,11 @@ _enable_fortran=no
 _enable_objc=no
 _threads="posix"
 _basename=gcc
-_major_version=9
-_realname=${_basename}${_major_version}
+_base_pkg_version=9
+_realname=${_basename}${_base_pkg_version}
 _makedependsname=${_basename}
 _make_program_suffix=
-_build_program_suffix=-${_major_version}
+_build_program_suffix=-${_base_pkg_version}
 pkgbase=mingw-w64-${_realname}
 pkgname=("${MINGW_PACKAGE_PREFIX}-${_realname}-libs"
          "${MINGW_PACKAGE_PREFIX}-${_realname}"
@@ -23,7 +23,7 @@ pkgname=("${MINGW_PACKAGE_PREFIX}-${_realname}-libs"
          $([[ "$_enable_ada" == "yes" ]] && echo "${MINGW_PACKAGE_PREFIX}-${_realname}-ada")
          $([[ "$_enable_objc" == "yes" ]] && echo "${MINGW_PACKAGE_PREFIX}-${_realname}-objc")
         )
-pkgver=${_major_version}.3.0
+pkgver=${_base_pkg_version}.3.0
 _sourcedir=${_basename}-${pkgver}
 pkgrel=1
 pkgdesc="GCC for the MinGW-w64"
@@ -198,7 +198,7 @@ build() {
     --build=${MINGW_CHOST} \
     --host=${MINGW_CHOST} \
     --target=${MINGW_CHOST} \
-    --program-suffix=-${_major_version} \
+    --program-suffix=-${_base_pkg_version} \
     --with-native-system-header-dir=${MINGW_PREFIX}/${MINGW_CHOST}/include \
     --libexecdir=${_pkg_prefix}/lib \
     --enable-bootstrap \
