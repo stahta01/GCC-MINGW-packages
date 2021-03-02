@@ -196,6 +196,8 @@ build() {
       export PATH=/c/GreenApps32/gcc_4.6.0-mingw32_x86_generic/mingw/bin:$PATH
       export GNATBIND=/c/GreenApps32/gcc_4.6.0-mingw32_x86_generic/mingw/bin/gnatbind
       export GNATMAKE=/c/GreenApps32/gcc_4.6.0-mingw32_x86_generic/mingw/bin/gnatmake
+      export CC_FOR_BUILD=/c/GreenApps32/gcc_4.6.0-mingw32_x86_generic/mingw/bin/gcc
+      export CXX_FOR_BUILD=/c/GreenApps32/gcc_4.6.0-mingw32_x86_generic/mingw/bin/g++
       local _arch=i686
     ;;
 
@@ -203,6 +205,8 @@ build() {
       export PATH=/c/GreenApps64/gcc_4.6.0_mingw64_x86_64_K8+ada/mingw/bin:$PATH
       export GNATBIND=/c/GreenApps64/gcc_4.6.0_mingw64_x86_64_K8+ada/mingw/bin/gnatbind
       export GNATMAKE=/c/GreenApps64/gcc_4.6.0_mingw64_x86_64_K8+ada/mingw/bin/gnatmake
+      export CC_FOR_BUILD=/c/GreenApps64/gcc_4.6.0_mingw64_x86_64_K8+ada/mingw/bin/gcc
+      export CXX_FOR_BUILD=/c/GreenApps64/gcc_4.6.0_mingw64_x86_64_K8+ada/mingw/bin/g++
       local _arch=x86-64
     ;;
   esac
