@@ -53,14 +53,13 @@ source=("ftp://gcc.gnu.org/pub/gcc/releases/${_basename}-${pkgver}/${_basename}-
         "ftp://gcc.gnu.org/pub/gcc/infrastructure/${MPFR_VERSION}.tar.bz2"
         "ftp://gcc.gnu.org/pub/gcc/infrastructure/${GMP_VERSION}.tar.bz2"
         "ftp://gcc.gnu.org/pub/gcc/infrastructure/${MPC_VERSION}.tar.gz"
-        102-gcc-4.6-fix-compile-issue-with-gcc-9.patch
-        104-gcc-4.6.4-Fix-texi-docs-syntax-errors.patch
-        111-gcc-4.0-fix-for-windows-not-minding-non-existant-parent-dirs.patch
-        121-gcc-4.0-handle-use-mingw-ansi-stdio.patch
-        131-gcc-4.0-windows-lrealpath-no-force-lowercase-nor-backslash.patch
-        132-gcc-4.3-dont-escape-arguments-that-dont-need-it-in-pex-win32.c.patch
-        141-gcc-4.4-ktietz-libgomp.patch
-        161-gcc-4.0-cfns-fix-mismatch-in-gnu_inline-attributes.patch)
+        804-gcc-4.6.4-Fix-texi-docs-syntax-errors.patch
+        140-gcc-4.0-fix-for-windows-not-minding-non-existant-parent-dirs.patch
+        802-gcc-4.0-handle-use-mingw-ansi-stdio.patch
+        150-gcc-4.0-windows-lrealpath-no-force-lowercase-nor-backslash.patch
+        130-gcc-4.3-dont-escape-arguments-that-dont-need-it-in-pex-win32.c.patch
+        210-gcc-4.4-ktietz-libgomp.patch
+        801-gcc-4.0-cfns-fix-mismatch-in-gnu_inline-attributes.patch)
 sha256sums=('35af16afa0b67af9b8eb15cafb76d2bc5f568540552522f5dc2c88dd45d977e8'
             'c7e75a08a8d49d2082e4caee1591a05d11b9d5627514e678f02d66a124bcf2ba'
             '936162c0312886c21581002b79932829aa048cfaf9937c6265aeaa14f1cd1775'
@@ -145,29 +144,27 @@ prepare() {
   sed -i "s|/mingw/include|/mingw32/include|g" gcc/config/i386/t-mingw-w32
   sed -i "s|/mingw/include|/mingw64/include|g" gcc/config/i386/t-mingw-w64
 
-  patch -Np1 -i ${srcdir}/102-gcc-4.6-fix-compile-issue-with-gcc-9.patch
-
-  patch -Np1 -i ${srcdir}/104-gcc-4.6.4-Fix-texi-docs-syntax-errors.patch
+  patch -Np1 -i ${srcdir}/804-gcc-4.6.4-Fix-texi-docs-syntax-errors.patch
 
   # https://patchwork.ozlabs.org/patch/504982/
-  patch -Np1 -i ${srcdir}/161-gcc-4.0-cfns-fix-mismatch-in-gnu_inline-attributes.patch
+  patch -Np1 -i ${srcdir}/801-gcc-4.0-cfns-fix-mismatch-in-gnu_inline-attributes.patch
 
   # Don't waste valuable commandline chars on double-quotes around "arguments"
   #  that don't need them.
-  patch -Np1 -i ${srcdir}/132-gcc-4.3-dont-escape-arguments-that-dont-need-it-in-pex-win32.c.patch
+  patch -Np1 -i ${srcdir}/130-gcc-4.3-dont-escape-arguments-that-dont-need-it-in-pex-win32.c.patch
 
   # Make Windows behave the same as Posix in the consideration of whether folder
   # "/exists/doesnt-exist/.." is a valid path.. in Posix, it isn't.
-  patch -Np1 -i ${srcdir}/111-gcc-4.0-fix-for-windows-not-minding-non-existant-parent-dirs.patch
+  patch -Np1 -i ${srcdir}/140-gcc-4.0-fix-for-windows-not-minding-non-existant-parent-dirs.patch
 
   # Don't make a lowercase backslashed path from argv[0]
   #  that then fail to strcmp with prefix(es) .. they're also ugly.
-  patch -Np1 -i ${srcdir}/131-gcc-4.0-windows-lrealpath-no-force-lowercase-nor-backslash.patch
+  patch -Np1 -i ${srcdir}/150-gcc-4.0-windows-lrealpath-no-force-lowercase-nor-backslash.patch
 
   # Kai's libgomp fix.
-  patch -Np1 -i ${srcdir}/141-gcc-4.4-ktietz-libgomp.patch
+  patch -Np1 -i ${srcdir}/210-gcc-4.4-ktietz-libgomp.patch
 
-  patch -Np1 -i ${srcdir}/121-gcc-4.0-handle-use-mingw-ansi-stdio.patch
+  patch -Np1 -i ${srcdir}/802-gcc-4.0-handle-use-mingw-ansi-stdio.patch
 }
 
 _package_common() {
