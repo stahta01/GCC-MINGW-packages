@@ -193,13 +193,21 @@ build() {
       configure_opts+=("--disable-sjlj-exceptions")
       configure_opts+=("--with-dwarf2")
       LDFLAGS+=" -Wl,--large-address-aware"
+      export PATH=/c/GreenApps32/gcc_4.6.0-mingw32_x86_generic/mingw/bin:$PATH
       local _arch=i686
     ;;
 
     x86_64)
+      export PATH=/c/GreenApps64/gcc_4.6.0_mingw64_x86_64_K8+ada/mingw/bin:$PATH
       local _arch=x86-64
     ;;
   esac
+
+  gcc --version
+  ld  --version
+  if [ "$_enable_ada" == "yes" ]; then
+    gnatmake  --version
+  fi
 
   if [ "$_enable_bootstrap" == "yes" ]; then
     configure_opts+=("--enable-bootstrap")
