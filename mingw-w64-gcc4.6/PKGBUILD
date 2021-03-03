@@ -232,6 +232,7 @@ build() {
     _languages+=",objc,obj-c++"
   fi
 
+  MAKEINFO=missing \
   ../${_sourcedir}/configure \
     --prefix=${MINGW_PREFIX} \
     --with-local-prefix=${MINGW_PREFIX}/local \
@@ -278,11 +279,9 @@ build() {
     #sed -i 's,^STRIP_FOR_TARGET=.*$,STRIP_FOR_TARGET=true,g' Makefile
   #fi
 
-  # MAKEINFO=missing disables building of some of the types of doc files
+  make -j1 all
 
-  make MAKEINFO=missing -j1 all
-
-  make MAKEINFO=missing -j1 DESTDIR=${srcdir} install
+  make -j1 DESTDIR=${srcdir} install
   if [ "$_enable_ada" == "yes" ]; then
     mv ${srcdir}${MINGW_PREFIX}/lib/gcc/${MINGW_CHOST}/${pkgver}/adalib/*.dll ${srcdir}${MINGW_PREFIX}/bin/
   fi
