@@ -1,4 +1,4 @@
-From 233bc23e32c5213255d8391dede53aa0b61ec23f Mon Sep 17 00:00:00 2001
+From 51e26faf5e2a8b3bec1ae8c7c88d3945ba544239 Mon Sep 17 00:00:00 2001
 From: Ray Donnelly <mingw.android@gmail.com>
 Date: Wed, 5 Aug 2015 23:36:09 +0100
 Subject: Windows: Use '/' not '\' in progpath and leave case as-is
@@ -20,7 +20,7 @@ compiling GNU/Linux glibc on Windows.
  1 file changed, 15 insertions(+), 4 deletions(-)
 
 diff --git a/libiberty/lrealpath.c b/libiberty/lrealpath.c
-index b27c8de..8165984 100644
+index b27c8de990e..816598447cf 100644
 --- a/libiberty/lrealpath.c
 +++ b/libiberty/lrealpath.c
 @@ -138,15 +138,26 @@ lrealpath (const char *filename)
