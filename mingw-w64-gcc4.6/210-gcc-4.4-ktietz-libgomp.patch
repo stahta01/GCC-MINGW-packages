@@ -3,7 +3,7 @@ From: Tim Stahlhut <stahta01@gmail.com>
 Date: Thu, 27 Jun 2019 09:40:37 -0400
 Subject: ktietz libgomp
 
-Created by someone other than me.
+Created by someone other than me; likely Kai Tietz.
 ---
  libgomp/team.c                       | 6 +++---
  libgomp/testsuite/config/default.exp | 5 +++++
