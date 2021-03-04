@@ -1,0 +1,23 @@
+From 17c43807ce524da65b0702f3aca73fe4ddaad1d6 Mon Sep 17 00:00:00 2001
+From: Tim Stahlhut <stahta01@gmail.com>
+Date: Thu, 4 Mar 2021 03:23:17 -0500
+Subject: Disable gcc doc building
+
+---
+ gcc/Makefile.in | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/gcc/Makefile.in b/gcc/Makefile.in
+index e0b952ffd99..731f009bae7 100644
+--- a/gcc/Makefile.in
++++ b/gcc/Makefile.in
+@@ -1791,7 +1791,7 @@ config.status: $(srcdir)/configure $(srcdir)/config.gcc
+ quickstrap: all
+ 	cd $(toplevel_builddir) && $(MAKE) all-target-libgcc
+ 
+-all.internal: start.encap rest.encap doc
++all.internal: start.encap rest.encap
+ # This is what to compile if making a cross-compiler.
+ all.cross: native gcc-cross$(exeext) cpp$(exeext) specs \
+ 	libgcc-support lang.all.cross doc @GENINSRC@ srcextra
+-- 
