@@ -359,6 +359,7 @@ package_mingw-w64-gcc() {
   cp -r share/gcc-${pkgver}/python/libstdcxx  ${pkgdir}${MINGW_PREFIX}/share/gcc-${pkgver}/python/
 
   mkdir -p ${pkgdir}${MINGW_PREFIX}/share/{doc,info,locale,man}
+  # if [ "$_skip_gcc_doc_install" != "yes" ]; then
   #cp -r share/doc/gcc-${pkgver} ${pkgdir}${MINGW_PREFIX}/share/doc/
   cp share/info/cpp.info* ${pkgdir}${MINGW_PREFIX}/share/info/
   cp share/info/cppinternals.info* ${pkgdir}${MINGW_PREFIX}/share/info/
@@ -370,6 +371,7 @@ package_mingw-w64-gcc() {
 
   #cp share/locale/* ${pkgdir}${MINGW_PREFIX}/share/locale/
   mkdir -p ${pkgdir}${MINGW_PREFIX}/share/man/man1
+  # if [ "$_skip_gcc_doc_install" != "yes" ]; then
   cp share/man/man1/cpp.1* ${pkgdir}${MINGW_PREFIX}/share/man/man1/
   cp share/man/man1/gcc.1* ${pkgdir}${MINGW_PREFIX}/share/man/man1/
   cp share/man/man1/gcov.1* ${pkgdir}${MINGW_PREFIX}/share/man/man1/
