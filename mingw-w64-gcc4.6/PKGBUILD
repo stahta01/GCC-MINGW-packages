@@ -6,7 +6,7 @@
 _enable_bootstrap=no
 _threads="win32"
 
-_enable_ada=yes
+_enable_ada=no
 _enable_fortran=no
 _enable_objc=no
 
@@ -22,7 +22,7 @@ pkgname=(
          $([[ "$_enable_ada" == "yes" ]] && echo "${MINGW_PACKAGE_PREFIX}-${_realname}-ada")
          $([[ "$_enable_objc" == "yes" ]] && echo "${MINGW_PACKAGE_PREFIX}-${_realname}-objc")
         )
-pkgver=${_base_pkg_version}.4
+pkgver=${_base_pkg_version}.0
 pkgrel=1
 pkgdesc="GCC 4.6 for the MinGW-w64"
 arch=('any')
