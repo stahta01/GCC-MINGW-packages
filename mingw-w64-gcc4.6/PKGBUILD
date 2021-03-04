@@ -5,6 +5,7 @@
 
 _enable_bootstrap=no
 _threads="win32"
+_skip_gcc_doc_install=yes
 
 _enable_ada=no
 _enable_fortran=no
@@ -167,7 +168,9 @@ prepare() {
 
   patch -Np1 -i ${srcdir}/802-gcc-4.0-handle-use-mingw-ansi-stdio.patch
 
-  patch -Np1 -i ${srcdir}/811-gcc-4.3-disable-gcc-doc-building.patch
+  if [ "$_skip_gcc_doc_install" == "yes" ]; then
+    apply_patch_with_msg 811-gcc-4.3-disable-gcc-doc-building.patch
+  fi
 }
 
 _package_common() {
