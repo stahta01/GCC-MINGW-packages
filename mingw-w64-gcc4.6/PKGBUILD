@@ -232,7 +232,6 @@ build() {
     _languages+=",objc,obj-c++"
   fi
 
-  MAKEINFO="makeinfo --no-warn" \
   ../${_sourcedir}/configure \
     --prefix=${MINGW_PREFIX} \
     --with-local-prefix=${MINGW_PREFIX}/local \
