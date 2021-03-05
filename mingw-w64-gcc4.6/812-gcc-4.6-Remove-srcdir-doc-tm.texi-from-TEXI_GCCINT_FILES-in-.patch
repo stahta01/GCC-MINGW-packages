@@ -1,0 +1,26 @@
+From e221eff34a3436a22f7042498016721f6fb86841 Mon Sep 17 00:00:00 2001
+From: Tim Stahlhut <stahta01@gmail.com>
+Date: Thu, 4 Mar 2021 22:03:44 -0500
+Subject: Remove "$(srcdir)/doc/tm.texi" from "TEXI_GCCINT_FILES" in
+ gcc/Makefile.in
+
+---
+ gcc/Makefile.in | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/gcc/Makefile.in b/gcc/Makefile.in
+index 731f009bae7..70f15c4ed0a 100644
+--- a/gcc/Makefile.in
++++ b/gcc/Makefile.in
+@@ -4226,7 +4226,7 @@ TEXI_GCC_FILES = gcc.texi gcc-common.texi gcc-vers.texi frontends.texi	\
+ TEXI_GCCINT_FILES = gccint.texi gcc-common.texi gcc-vers.texi		\
+ 	 contribute.texi makefile.texi configterms.texi options.texi	\
+ 	 portability.texi interface.texi passes.texi rtl.texi md.texi	\
+-	 $(srcdir)/doc/tm.texi hostconfig.texi fragments.texi	\
++	 hostconfig.texi fragments.texi	\
+ 	 configfiles.texi collect2.texi headerdirs.texi funding.texi	\
+ 	 gnu.texi gpl_v3.texi fdl.texi contrib.texi languages.texi	\
+ 	 sourcebuild.texi gty.texi libgcc.texi cfg.texi tree-ssa.texi	\
+-- 
+2.30.1.windows.1
+
