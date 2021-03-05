@@ -210,12 +210,12 @@ build() {
       configure_opts+=("--disable-sjlj-exceptions")
       configure_opts+=("--with-dwarf2")
       LDFLAGS+=" -Wl,--large-address-aware"
-      local _local_gcc32_prefix=/c/GreenApps32/gcc_4.6.0-mingw32_x86_generic/mingw
-      export PATH="${_local_gcc32_prefix}/bin":$PATH
-      export GNATBIND="${_local_gcc32_prefix}/bin/gnatbind"
-      export GNATMAKE="${_local_gcc32_prefix}/bin/gnatmake"
-      export CC="${_local_gcc32_prefix}/bin/gcc"
-      export CXX="${_local_gcc32_prefix}/bin/g++"
+#      local _local_gcc32_prefix=/c/GreenApps32/gcc_4.6.0-mingw32_x86_generic/mingw
+#      export PATH="${_local_gcc32_prefix}/bin":$PATH
+#      export GNATBIND="${_local_gcc32_prefix}/bin/gnatbind"
+#      export GNATMAKE="${_local_gcc32_prefix}/bin/gnatmake"
+#      export CC="${_local_gcc32_prefix}/bin/gcc"
+#      export CXX="${_local_gcc32_prefix}/bin/g++"
       local _arch=i686
     ;;
 
