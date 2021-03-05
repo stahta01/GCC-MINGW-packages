@@ -386,7 +386,6 @@ package_mingw-w64-gcc() {
 
   #cp share/locale/* ${pkgdir}${MINGW_PREFIX}/share/locale/
   mkdir -p ${pkgdir}${MINGW_PREFIX}/share/man/man1
-  # if [ "$_skip_gcc_doc_install" != "yes" ]; then
   cp share/man/man1/cpp.1* ${pkgdir}${MINGW_PREFIX}/share/man/man1/
   cp share/man/man1/gcc.1* ${pkgdir}${MINGW_PREFIX}/share/man/man1/
   cp share/man/man1/gcov.1* ${pkgdir}${MINGW_PREFIX}/share/man/man1/
@@ -457,9 +456,11 @@ package_mingw-w64-gcc-ada() {
   cp lib/gcc/${MINGW_CHOST}/${pkgver}/gnat1.exe ${pkgdir}${MINGW_PREFIX}/lib/gcc/${MINGW_CHOST}/${pkgver}/
 
   mkdir -p ${pkgdir}${MINGW_PREFIX}/share/info
-  cp share/info/gnat-style.info* ${pkgdir}${MINGW_PREFIX}/share/info/
-  cp share/info/gnat_rm.info* ${pkgdir}${MINGW_PREFIX}/share/info/
-  cp share/info/gnat_ugn.info* ${pkgdir}${MINGW_PREFIX}/share/info/
+  if [ "$_skip_gcc_doc_install" != "yes" ]; then
+    cp share/info/gnat-style.info* ${pkgdir}${MINGW_PREFIX}/share/info/
+    cp share/info/gnat_rm.info* ${pkgdir}${MINGW_PREFIX}/share/info/
+    cp share/info/gnat_ugn.info* ${pkgdir}${MINGW_PREFIX}/share/info/
+  fi
 }
 
 package_mingw-w64-gcc-objc() {
