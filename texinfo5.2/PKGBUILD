@@ -1,0 +1,104 @@
+# Maintainer:  Tim Stahlhut <stahta01@gmail.com>
+# Contributor: Alexey Pavlov <alexpux@gmail.com>
+
+pkgname=('texinfo' 'info' 'texinfo-tex')
+pkgver=5.2
+pkgrel=6
+pkgbase=${pkgname}${pkgver}
+provides=("${pkgname}=${pkgver}")
+pkgdesc="Utilities to work with and produce manuals, ASCII text, and on-line documentation from a single source file"
+arch=('i686' 'x86_64')
+url="http://www.gnu.org/software/texinfo/"
+license=('GPL3')
+makedepends=('ncurses-devel' 'gettext-devel' 'findutils' 'gzip' 'perl-devel' 'gcc')
+source=(ftp://ftp.gnu.org/pub/gnu/${pkgname}/${pkgname}-${pkgver}.tar.xz{,.sig}
+        texinfo-5.2-C-n-fix.patch
+        001-texinfo-5.1-msys2.patch
+        002-manifest.all.patch
+        004-no-w32-stuff.msys2.patch
+        005-fix-makeinfo-exeext.msys2.patch
+        007-configure.ac-Do-not-escape-backquote-in-AC_MSG_WARN.patch)
+sha256sums=('5471ef683a64588a7cfef46ef2bdd3fbcbca89d847e10832612293f105e44eda'
+            'SKIP'
+            '1a0a3b79d00b79157a8b9ac1d8307cd4ea252594a6e9e8d7b73931e7331618b9'
+            '94d32909f8f413bb3446e15f1fc1edc8bb54d73cb2ef6ea31a34509458f6cdfd'
+            '5bc6680fa441b26ed18a794ad201a1252dba9f03d5426c87e42d33c758a4a039'
+            '0bbc5746862ba3d75bf68e6e470c5808d43571a7ec5217077f2289d13c3896f4'
+            'e5b18f11d9a5d99f96f9228266e6204cfb2e076e2d9c336db0eceb72e2252873'
+            '4922797f86946ee16b91669290ece6f77a6ec30949fd8b744b24fca619ecce87')
+
+prepare() {
+  cd ${srcdir}/${pkgname}-${pkgver}
+  patch -p0 -i ${srcdir}/texinfo-5.2-C-n-fix.patch
+  patch -p1 -i ${srcdir}/001-texinfo-5.1-msys2.patch
+  patch -p1 -i ${srcdir}/002-manifest.all.patch
+  patch -p1 -i ${srcdir}/004-no-w32-stuff.msys2.patch
+  patch -p1 -i ${srcdir}/005-fix-makeinfo-exeext.msys2.patch
+  patch -p1 -i ${srcdir}/007-configure.ac-Do-not-escape-backquote-in-AC_MSG_WARN.patch
+
+  autoreconf -fi
+}
+
+build() {
+  cd ${srcdir}/${pkgname}-${pkgver}
+  ./configure --build=${CHOST} \
+    --prefix=/usr \
+    --disable-nls \
+    --without-libiconv-prefix \
+    --without-libintl-prefix \
+    gl_cv_func_wcwidth_works=yes
+
+  make
+  make DESTDIR=${srcdir}/dest install
+}
+
+check() {
+  cd ${srcdir}/${pkgname}-${pkgver}
+  make check
+}
+
+package_texinfo() {
+  depends=('info' 'perl' 'sh')
+  groups=('base-devel')
+  install=texinfo.install
+
+  mkdir -p ${pkgdir}/usr/bin
+  mkdir -p ${pkgdir}/usr/share/info
+  mkdir -p ${pkgdir}/usr/share/man/man{1,5}
+  for ff in makeinfo pod2texi texi2any; do
+    cp -f ${srcdir}/dest/usr/bin/${ff} ${pkgdir}/usr/bin/${ff}
+    cp -f ${srcdir}/dest/usr/share/man/man1/${ff}.1 ${pkgdir}/usr/share/man/man1/${ff}.1
+  done
+  cp -rf ${srcdir}/dest/usr/share/texinfo ${pkgdir}/usr/share/
+  cp -f ${srcdir}/dest/usr/share/man/man5/texinfo.5 ${pkgdir}/usr/share/man/man5/
+  cp -f ${srcdir}/dest/usr/share/info/texinfo.info{,-1,-2,-3} ${pkgdir}/usr/share/info/
+}
+
+package_info() {
+  depends=('ncurses' 'libintl' 'gzip')
+  groups=(base)
+  install=info.install
+
+  mkdir -p ${pkgdir}/usr/{bin,share}
+  mkdir -p ${pkgdir}/usr/share/info
+  mkdir -p ${pkgdir}/usr/share/man/man{1,5}
+  for ff in info infokey install-info; do
+    cp -f ${srcdir}/dest/usr/bin/${ff}.exe ${pkgdir}/usr/bin/${ff}.exe
+    cp -f ${srcdir}/dest/usr/share/man/man1/${ff}.1 ${pkgdir}/usr/share/man/man1/${ff}.1
+  done
+  cp -f ${srcdir}/dest/usr/share/man/man5/info.5 ${pkgdir}/usr/share/man/man5/info.5
+  cp -f ${srcdir}/dest/usr/share/info/info.info ${pkgdir}/usr/share/info/info.info
+  cp -f ${srcdir}/dest/usr/share/info/info-stnd.info ${pkgdir}/usr/share/info/info-stnd.info
+}
+
+package_texinfo-tex() {
+  depends=('perl' 'sh')
+  groups=('base-devel')
+
+  mkdir -p ${pkgdir}/usr/{bin,share}
+  mkdir -p ${pkgdir}/usr/share/man/man1
+  for ff in texindex.exe texi2dvi texi2pdf pdftexi2dvi; do
+    cp -f ${srcdir}/dest/usr/bin/${ff} ${pkgdir}/usr/bin/${ff}
+    cp -f ${srcdir}/dest/usr/share/man/man1/${ff%.*}.1 ${pkgdir}/usr/share/man/man1/${ff%.*}.1
+  done
+}

@@ -1,0 +1,22 @@
+From 858c66bc755ccf3b315e529a1e317df8d41e1d85 Mon Sep 17 00:00:00 2001
+From: Gavin Smith <gavinsmith0123@gmail.com>
+Date: Sun, 27 Sep 2020 14:51:55 +0100
+Subject: * configure.ac: Do not escape backquote in AC_MSG_WARN argument.
+
+Patch edited by Tim S.
+---
+ configure.ac | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/configure.ac b/configure.ac
+index eeab2522ae..85754fee33 100644
+--- a/configure.ac
++++ b/configure.ac
+@@ -469,5 +469,5 @@ AC_OUTPUT
+ # Summarize warnings to make them more visible.
+ if test $have_termlib = no; then
+   AC_MSG_WARN([Could not find a terminal library among ${TERMLIB_VARIANTS}])
+-  AC_MSG_WARN([The programs from \`info' directory will not be built.])
++  AC_MSG_WARN([The programs from `info' directory will not be built.])
+ fi
+-- 
