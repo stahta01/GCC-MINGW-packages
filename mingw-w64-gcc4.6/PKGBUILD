@@ -8,6 +8,7 @@ _threads="win32"
 _skip_gcc_doc_install=yes
 
 _enable_ada=yes
+_enable_cxx=no
 _enable_fortran=no
 _enable_objc=no
 
@@ -242,12 +243,15 @@ build() {
     configure_opts+=("--disable-bootstrap")
   fi
 
-  local _languages="c,lto,c++"
-  if [ "$_enable_fortran" == "yes" ]; then
-    _languages+=",fortran"
-  fi
+  local _languages="c,lto"
   if [ "$_enable_ada" == "yes" ]; then
     _languages+=",ada"
+  fi
+  if [ "$_enable_cxx" == "yes" ]; then
+    _languages+=",c++"
+  fi
+  if [ "$_enable_fortran" == "yes" ]; then
+    _languages+=",fortran"
   fi
   if [ "$_enable_objc" == "yes" ]; then
     _languages+=",objc,obj-c++"
