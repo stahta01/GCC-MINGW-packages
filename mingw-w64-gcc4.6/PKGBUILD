@@ -5,7 +5,7 @@
 
 _enable_bootstrap=no
 _threads="win32"
-_skip_gcc_doc_install=yes
+_skip_gcc_doc_install=no
 
 _enable_ada=yes
 _enable_cxx=yes
