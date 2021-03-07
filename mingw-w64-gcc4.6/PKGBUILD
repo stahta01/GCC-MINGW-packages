@@ -8,9 +8,9 @@ _threads="win32"
 _skip_gcc_doc_install=yes
 
 _enable_ada=yes
-_enable_cxx=no
-_enable_fortran=no
-_enable_objc=no
+_enable_cxx=yes
+_enable_fortran=yes
+_enable_objc=yes
 
 _basename=gcc
 _base_pkg_version=4.6
