@@ -4,7 +4,8 @@
 _bare_gcc=yes
 
 _threads="win32"
-_base_pkg_prefix=/mingw32/opt
+_build_prefix=/mingw32
+_base_pkg_prefix=${_build_prefix}/opt
 _mingw_suff=x86_64-w64-cross
 _target="x86_64-w64-mingw32"
 _build_and_host="i686-w64-mingw32"
@@ -129,7 +130,7 @@ build() {
     --disable-win32-registry \
     --disable-werror \
     --disable-symvers \
-    --with-libiconv-prefix=/mingw32 \
+    --with-libiconv-prefix=${_build_prefix} \
     --with-system-zlib \
     --with-gnu-as --with-gnu-ld \
     CFLAGS="-O2 -pipe" \
