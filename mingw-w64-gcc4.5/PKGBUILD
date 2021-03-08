@@ -251,7 +251,7 @@ build() {
     --with-arch=${_arch} \
     --with-tune=generic \
     --enable-languages=${_languages} \
-    --enable-shared --enable-static \
+    --disable-shared --enable-static \
     --enable-libatomic \
     --enable-threads=${_threads} \
     --enable-graphite \
