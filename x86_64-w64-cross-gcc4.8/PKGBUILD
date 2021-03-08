@@ -63,6 +63,9 @@ source=("ftp://gcc.gnu.org/pub/gcc/releases/${_realname}-${pkgver}/${_realname}-
   'gcc-4.8.0-configure-msys2.patch'
   'gcc-4.8.0-msys2-spec.patch')
 sha256sums=('09dc2276c73424bbbfda1dbddc62bbbf900c9f185acf7f3e1d773ce2d7e3cdc8'
+            'c7e75a08a8d49d2082e4caee1591a05d11b9d5627514e678f02d66a124bcf2ba'
+            '936162c0312886c21581002b79932829aa048cfaf9937c6265aeaa14f1cd1775'
+            'e664603757251fd8a352848276497a4c79b7f8b21fd8aedd5cc0598a38fee3e4'
             '9278e745190bac0b3f6ef74972aecd4e2891d4930f7b6fa8840c3d4f7fbf4f98'
             '301cfbe339043ca14205140acbec1d0f55178f01365ff309e4ddb90a3c934031'
             '9e0401c3e69317a45269fb689e4e89ee8f46997c2c52b11812a11c9faf142ede'
