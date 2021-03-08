@@ -5,11 +5,13 @@ _bare_gcc=yes
 
 _threads="win32"
 _base_pkg_prefix=/mingw32/opt
+_mingw_suff=x86_64-w64-cross
+_target="x86_64-w64-mingw32"
+_build_and_host="i686-w64-mingw32"
 
 _basename=gcc
 _base_pkg_version=4.8
 _realname=${_basename}
-_mingw_suff=x86_64-w64-cross
 pkgbase=${_mingw_suff}-${_basename}${_base_pkg_version}
 pkgname=("${_mingw_suff}-${_realname}")
 pkgver=${_base_pkg_version}.2
@@ -103,13 +105,13 @@ prepare() {
 }
 
 build() {
-  mkdir -p ${srcdir}/gcc-build-x86_64-w64-mingw32 && cd ${srcdir}/gcc-build-x86_64-w64-mingw32
+  mkdir -p ${srcdir}/gcc-build-${_target} && cd ${srcdir}/gcc-build-${_target}
 
   ../${_realname}-${pkgver}/configure \
     --prefix=${_base_pkg_prefix} \
-    --build=i686-w64-mingw32 \
-    --host=i686-w64-mingw32 \
-    --target=x86_64-w64-mingw32 \
+    --build=${_build_and_host} \
+    --host=${_build_and_host} \
+    --target=${_target} \
     --libexecdir=${_base_pkg_prefix}/lib \
     --disable-bootstrap \
     --with-arch=x86-64 \
@@ -136,9 +138,9 @@ build() {
 }
 
 package() {
-    cd ${srcdir}/gcc-build-x86_64-w64-mingw32
+    cd ${srcdir}/gcc-build-${_target}
     make -j1 DESTDIR=${pkgdir} install
-    mv ${pkgdir}${_base_pkg_prefix}/lib/gcc/x86_64-w64-mingw32/lib/libgcc_s.a ${pkgdir}${_base_pkg_prefix}/lib/gcc/x86_64-w64-mingw32/${pkgver}/
-    mv ${pkgdir}${_base_pkg_prefix}/lib/gcc/x86_64-w64-mingw32/libgcc*.dll ${pkgdir}${_base_pkg_prefix}/lib/gcc/x86_64-w64-mingw32/${pkgver}/
+    mv ${pkgdir}${_base_pkg_prefix}/lib/gcc/${_target}/lib/libgcc_s.a ${pkgdir}${_base_pkg_prefix}/lib/gcc/${_target}/${pkgver}/
+    mv ${pkgdir}${_base_pkg_prefix}/lib/gcc/${_target}/libgcc*.dll ${pkgdir}${_base_pkg_prefix}/lib/gcc/${_target}/${pkgver}/
     rm -rf ${pkgdir}${_base_pkg_prefix}/share
 }
