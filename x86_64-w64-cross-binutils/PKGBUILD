@@ -56,6 +56,7 @@ build() {
   --host=${_build_and_host} \
   --target=${_target} \
   --prefix=${_base_pkg_prefix} \
+  --disable-nls \
   --disable-werror \
   --enable-lto \
   --with-libiconv-prefix=/mingw32 \
