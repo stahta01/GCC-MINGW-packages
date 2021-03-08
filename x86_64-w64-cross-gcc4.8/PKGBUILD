@@ -2,7 +2,7 @@
 # Contributor: Alexey Pavlov <alexpux@gmail.com>
 
 _threads="win32"
-_pkg_prefix=/mingw32/opt
+_base_pkg_prefix=/mingw32/opt
 
 _basename=gcc
 _base_pkg_version=4.8
@@ -98,11 +98,11 @@ build() {
   mkdir -p ${srcdir}/gcc-build-x86_64-w64-mingw32 && cd ${srcdir}/gcc-build-x86_64-w64-mingw32
 
   ../${_realname}-${pkgver}/configure \
-    --prefix=${_pkg_prefix} \
+    --prefix=${_base_pkg_prefix} \
     --build=i686-w64-mingw32 \
     --host=i686-w64-mingw32 \
     --target=x86_64-w64-mingw32 \
-    --libexecdir=${_pkg_prefix}/lib \
+    --libexecdir=${_base_pkg_prefix}/lib \
     --disable-bootstrap \
     --with-arch=x86-64 \
     --with-tune=generic \
@@ -130,7 +130,7 @@ build() {
 package() {
     cd ${srcdir}/gcc-build-x86_64-w64-mingw32
     make -j1 DESTDIR=${pkgdir} install
-    mv ${pkgdir}${_pkg_prefix}/lib/gcc/x86_64-w64-mingw32/lib/libgcc_s.a ${pkgdir}${_pkg_prefix}/lib/gcc/x86_64-w64-mingw32/${pkgver}/
-    mv ${pkgdir}${_pkg_prefix}/lib/gcc/x86_64-w64-mingw32/libgcc*.dll ${pkgdir}${_pkg_prefix}/lib/gcc/x86_64-w64-mingw32/${pkgver}/
-    rm -rf ${pkgdir}${_pkg_prefix}/share
+    mv ${pkgdir}${_base_pkg_prefix}/lib/gcc/x86_64-w64-mingw32/lib/libgcc_s.a ${pkgdir}${_base_pkg_prefix}/lib/gcc/x86_64-w64-mingw32/${pkgver}/
+    mv ${pkgdir}${_base_pkg_prefix}/lib/gcc/x86_64-w64-mingw32/libgcc*.dll ${pkgdir}${_base_pkg_prefix}/lib/gcc/x86_64-w64-mingw32/${pkgver}/
+    rm -rf ${pkgdir}${_base_pkg_prefix}/share
 }
