@@ -1,7 +1,7 @@
 # Maintainer:  Tim Stahlhut <stahta01@gmail.com>
 # Contributor: Alexey Pavlov <alexpux@gmail.com>
 
-# This package forked from mingw-w64-cross-headers
+# This package forked from mingw-w64-cross-headers-git from https://github.com/msys2/MSYS2-packages
 
 _base_pkg_prefix=/mingw32/opt
 _mingw_suff=x86_64-w64-cross
@@ -18,7 +18,7 @@ provides=("${_mingw_suff}-${_realname}")
 conflicts=("${_mingw_suff}-${_realname}")
 pkgdesc="MinGW-w64 headers for cross-compiler"
 _ver_base=4.0.0
-pkgver=4.0.0.4305.9bd8fe9
+pkgver=4.0.0.4514.ae0e22cd
 pkgrel=1
 arch=('i686' 'x86_64')
 url="http://mingw-w64.sourceforge.net"
