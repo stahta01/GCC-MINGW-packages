@@ -107,6 +107,16 @@ prepare() {
 
 build() {
   mkdir -p ${srcdir}/gcc-build-${_target} && cd ${srcdir}/gcc-build-${_target}
+  
+  local -a configure_opts
+
+  if [ "$_bare_gcc" == "yes" ]; then
+    configure_opts+=("--disable-threads")
+    configure_opts+=("--enable-languages=c")
+  else
+    configure_opts+=("--enable-threads=${_threads}")
+    configure_opts+=("--enable-languages=c")
+  fi
 
   ../${_realname}-${pkgver}/configure \
     --prefix=${_base_pkg_prefix} \
@@ -118,9 +128,7 @@ build() {
     --disable-bootstrap \
     --with-arch=x86-64 \
     --with-tune=generic \
-    --enable-languages=c \
     --enable-shared --enable-static \
-    --enable-threads=${_threads} \
     --disable-graphite \
     --disable-libstdcxx-pch \
     --disable-libstdcxx-debug \
@@ -134,7 +142,8 @@ build() {
     --with-system-zlib \
     --with-gnu-as --with-gnu-ld \
     CFLAGS="-O2 -pipe" \
-    CXXFALGS="-O2 -pipe"
+    CXXFALGS="-O2 -pipe" \
+    "${configure_opts[@]}"
 
   make all
 }
