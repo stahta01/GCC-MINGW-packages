@@ -2,6 +2,7 @@
 # Contributor: Alexey Pavlov <alexpux@gmail.com>
 
 _threads="win32"
+_pkg_prefix=/mingw32/opt
 
 _basename=gcc
 _base_pkg_version=4.8
@@ -42,25 +43,25 @@ source=("ftp://gcc.gnu.org/pub/gcc/releases/${_realname}-${pkgver}/${_realname}-
     '4.8-specs-cygwin.patch'
     'gcc-4.8.0-configure-msys2.patch'
     'gcc-4.8.0-msys2-spec.patch')
-sha256sums=('a3d7d63b9cb6b6ea049469a0c4a43c9d'
-         '40cb437805e2f7a006aa0d0c3098ab0f'
-         '6eb6e080dbf7bc6825f53a0aaa6c4ef9'
-         'd28f5653282c67bcfd1a8f81aebef72d'
-         '928e151b33981e68d0e67a9bd387b37e'
-         'f6b5fb08ff06a7d60ee3280e14240bb2'
-         '71cdb550528efcf2a5c9112464bfbabc'
-         'f7cb43c6a6a54e55027e70a9b03774b2'
-         '15da8d111f8eab15597db353537aefd3'
-         '094b047b34a044d4ba76074d98bfd8a0'
-         'e553ecf0eeb3e83a149cc1241971fd10'
-         'f01b3978cbd1f8aa14833a26a7891a32'
-         '78eab6229fd809e5494df53797778e0b'
-         '40b0a196ff005adb442ac5b9a2f42fd8'
-         'fc7adee9dc8206aaf5e033798c358157'
-         'acda6f3393d9e935953fa48f68e9d4f5'
-         '3cbcce9b943b85562bb6afd7d83c5eac'
-         'e0c65906da3c1cc14cd2158a9389be74'
-         'c9fb65c97643807fcee2f21e897b5ed7')
+sha256sums=('09dc2276c73424bbbfda1dbddc62bbbf900c9f185acf7f3e1d773ce2d7e3cdc8'
+            '9278e745190bac0b3f6ef74972aecd4e2891d4930f7b6fa8840c3d4f7fbf4f98'
+            '301cfbe339043ca14205140acbec1d0f55178f01365ff309e4ddb90a3c934031'
+            '9e0401c3e69317a45269fb689e4e89ee8f46997c2c52b11812a11c9faf142ede'
+            '52ddd5b2d5f337efa7475de211eccebd70e343c902107343b22d66951fb799d3'
+            '21191b4fd57ce5f230fcc97b4d9ae31bdc387d7c7c8e39436aa7e4268d278d3d'
+            '5e0fc1437ce0b357e78d440692e3a30a7905a5f360a67928a95b14ec8d45365b'
+            '4942e94ccdf11ce260e029400bd1cee8b63e78d071ac2bae812ba261edb7b67b'
+            'af90eb0eb49e06b4735f428fee514c6b87f349c1d3669c8bc7bb6250d4126c4e'
+            '1015575631397b588050e53aba5795cc8357e55a2754f8bc6214b564f38f5a06'
+            '1be5f8d96073061628ffe761e953c9578355545d32ac7829165492ba5287d734'
+            '6812f82299b33c5e354e8a54fcc96149957e9ffa35d576537923621d97c6817c'
+            '889f14abf4d6f60e335b9d0f81b67bb97605193f0a584cd8b52eebf88425c55a'
+            '7f3410ccc61f4b60ae9fc4201cc321f681771196e44fc61639bdf924a9132eec'
+            '6e4322814f7b0f1d3ea3dbea0c8fa233d6ec9493354d7bd54e755ee971914d74'
+            'c47cbc859d96844fa029e09abf060593a43acb908df586e1230daa70369cecae'
+            'b9a4983feba55c0f70fadbf011fe1f7c6bc8390b1d12dc39c58986c6127bb482'
+            'c620dafb8be2dc0cfc9a4242776f55b5c98b28397638ccbb16eb10512e76010f'
+            '2106c9679c19a133ffffe64b9c950094695cf0d4e2609a90702f0d9e8bb9cfbc')
 
 prepare() {
   cd ${srcdir}/${_realname}-${pkgver}
@@ -97,11 +98,11 @@ build() {
   mkdir -p ${srcdir}/gcc-build-x86_64-w64-mingw32 && cd ${srcdir}/gcc-build-x86_64-w64-mingw32
 
   ../${_realname}-${pkgver}/configure \
-    --prefix=/mingw32/opt \
+    --prefix=${_pkg_prefix} \
     --build=i686-w64-mingw32 \
     --host=i686-w64-mingw32 \
     --target=x86_64-w64-mingw32 \
-    --libexecdir=/mingw32/opt/lib \
+    --libexecdir=${_pkg_prefix}/lib \
     --disable-bootstrap \
     --with-arch=x86-64 \
     --with-tune=generic \
@@ -129,7 +130,7 @@ build() {
 package() {
     cd ${srcdir}/gcc-build-x86_64-w64-mingw32
     make -j1 DESTDIR=${pkgdir} install
-    mv ${pkgdir}/mingw32/opt/lib/gcc/x86_64-w64-mingw32/lib/libgcc_s.a ${pkgdir}/mingw32/opt/lib/gcc/x86_64-w64-mingw32/${pkgver}/
-    mv ${pkgdir}/mingw32/opt/lib/gcc/x86_64-w64-mingw32/libgcc*.dll ${pkgdir}/mingw32/opt/lib/gcc/x86_64-w64-mingw32/${pkgver}/
-    rm -rf ${pkgdir}/mingw32/opt/share
+    mv ${pkgdir}${_pkg_prefix}/lib/gcc/x86_64-w64-mingw32/lib/libgcc_s.a ${pkgdir}${_pkg_prefix}/lib/gcc/x86_64-w64-mingw32/${pkgver}/
+    mv ${pkgdir}${_pkg_prefix}/lib/gcc/x86_64-w64-mingw32/libgcc*.dll ${pkgdir}${_pkg_prefix}/lib/gcc/x86_64-w64-mingw32/${pkgver}/
+    rm -rf ${pkgdir}${_pkg_prefix}/share
 }
