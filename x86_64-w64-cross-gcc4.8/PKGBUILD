@@ -188,7 +188,7 @@ build() {
     --disable-graphite \
     --disable-libstdcxx-pch \
     --disable-libstdcxx-debug \
-    --disable-cloog-version-check --disable-isl-version-check \
+    --without-cloog --without-isl \
     --disable-multilib \
     --disable-rpath \
     --disable-win32-registry \
