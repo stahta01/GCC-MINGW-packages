@@ -28,7 +28,7 @@ depends=(
   $([[ "$_bare_gcc" != "yes" ]] && echo "${_mingw_suff}-winpthreads")
   $([[ "$_bare_gcc" != "yes" ]] && echo "${_mingw_suff}-headers")
 )
-makedepends=("gcc" 'lndir')
+makedepends=("${MINGW_PACKAGE_PREFIX}-gcc" 'lndir' 'patch' 'make')
 #checkdepends=('dejagnu')
 optdepends=()
 replaces=()
@@ -113,6 +113,7 @@ build() {
     --host=${_build_and_host} \
     --target=${_target} \
     --libexecdir=${_base_pkg_prefix}/lib \
+    --disable-nls \
     --disable-bootstrap \
     --with-arch=x86-64 \
     --with-tune=generic \
