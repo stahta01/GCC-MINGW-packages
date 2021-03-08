@@ -77,7 +77,7 @@ package() {
   make DESTDIR=${pkgdir} install
 
   # Remove unwanted files
-  #rm ${destdir}/usr/share/info/{configure,standards}.info
+  rm -fr ${pkgdir}${_base_pkg_prefix}/share
 
   # Add some useful headers
   #install -m644 ${srcdir}/binutils-${pkgver}/include/libiberty.h ${pkgdir}${_base_pkg_prefix}/include
