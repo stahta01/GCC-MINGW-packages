@@ -23,10 +23,10 @@ license=('GPL' 'LGPL' 'FDL' 'custom')
 groups=("${_mingw_suff}-toolchain" "${_mingw_suff}")
 depends=(
   "${MINGW_PACKAGE_PREFIX}-zlib"
-  "${_mingw_suff}-crt" 
-  "${_mingw_suff}-binutils" 
-  "${_mingw_suff}-winpthreads" 
-  "${_mingw_suff}-headers"
+  "${_mingw_suff}-binutils"
+  $([[ "$_bare_gcc" != "yes" ]] && echo "${_mingw_suff}-crt")
+  $([[ "$_bare_gcc" != "yes" ]] && echo "${_mingw_suff}-winpthreads")
+  $([[ "$_bare_gcc" != "yes" ]] && echo "${_mingw_suff}-headers")
 )
 makedepends=("gcc" 'lndir')
 #checkdepends=('dejagnu')
@@ -80,15 +80,15 @@ prepare() {
   sed -i 's/install_to_$(INSTALL_DEST) //' libiberty/Makefile.in
   # hack! - some configure tests for header files using "$CPP $CPPFLAGS"
   #sed -i "/ac_cpp=/s/\$CPPFLAGS/\$CPPFLAGS -O2/" {libiberty,gcc}/configure
-  
+
   patch -p0 -i ${srcdir}/gcc-4.8-filename-output.patch
   patch -p1 -i ${srcdir}/gcc-4.8-lambda-ICE.patch
   #patch -p1 -i ${srcdir}/gcc-4.8-iconv.patch
-  
+
   patch -p0 -i ${srcdir}/4.8-libgcc-references.patch
   patch -p1 -i ${srcdir}/gcc-4.8-libstdc++export.patch
   patch -p1 -i ${srcdir}/gcc-4.7-stdthreads.patch
-  
+
   #MSYS/Cygwin patches
   patch -p2 -i ${srcdir}/4.7-execstack.patch
   patch -p2 -i ${srcdir}/4.8-libatomic-cygwin.patch
