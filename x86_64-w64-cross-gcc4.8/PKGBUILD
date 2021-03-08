@@ -1,6 +1,8 @@
 # Maintainer:  Tim Stahlhut <stahta01@gmail.com>
 # Contributor: Alexey Pavlov <alexpux@gmail.com>
 
+_bare_gcc=yes
+
 _threads="win32"
 _base_pkg_prefix=/mingw32/opt
 
@@ -17,7 +19,13 @@ arch=('i686' 'x86_64')
 url="http://gcc.gnu.org"
 license=('GPL' 'LGPL' 'FDL' 'custom')
 groups=("${_mingw_suff}-toolchain" "${_mingw_suff}")
-depends=("zlib" "mpc" "cloog" "${_mingw_suff}-crt" "${_mingw_suff}-binutils" "${_mingw_suff}-winpthreads" "${_mingw_suff}-headers")
+depends=(
+  "${MINGW_PACKAGE_PREFIX}-zlib"
+  "${_mingw_suff}-crt" 
+  "${_mingw_suff}-binutils" 
+  "${_mingw_suff}-winpthreads" 
+  "${_mingw_suff}-headers"
+)
 makedepends=("gcc" 'lndir')
 #checkdepends=('dejagnu')
 optdepends=()
