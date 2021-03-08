@@ -129,7 +129,7 @@ build() {
     --disable-win32-registry \
     --disable-werror \
     --disable-symvers \
-    --with-libiconv \
+    --with-libiconv-prefix=/mingw32 \
     --with-system-zlib \
     --with-gnu-as --with-gnu-ld \
     CFLAGS="-O2 -pipe" \
