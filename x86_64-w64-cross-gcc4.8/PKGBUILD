@@ -35,25 +35,33 @@ optdepends=()
 replaces=()
 backup=()
 options=('!strip' 'staticlibs' '!emptydirs' '!buildflags')
+MPFR_VERSION=mpfr-2.4.2
+GMP_VERSION=gmp-4.3.2
+MPC_VERSION=mpc-0.8.1
+noextract=("${_basename}-${pkgver}.tar.bz2" "${MPFR_VERSION}.tar.bz2" "${GMP_VERSION}.tar.bz2" "${MPC_VERSION}.tar.gz")
+_sourcedir=${_basename}-${pkgver}
 source=("ftp://gcc.gnu.org/pub/gcc/releases/${_realname}-${pkgver}/${_realname}-${pkgver}.tar.bz2"
-    'gcc-4.8-filename-output.patch'
-    'gcc-4.8-lambda-ICE.patch'
-    'gcc-4.8-iconv.patch'
-    '4.8-libgcc-references.patch'
-    'gcc-4.8-libstdc++export.patch'
-    'gcc-4.7-stdthreads.patch'
-    '4.7-execstack.patch'
-    '4.7-libffi-noinst.patch'
-    '4.7-libitm-cygwin.patch'
-    '4.7-libstdc-cygwin.patch'
-    '4.8-libatomic-cygwin.patch'
-    '4.8-libdecnumber-cygwin64.patch'
-    '4.8-libffi-cygwin64.patch'
-    '4.8-lto-plugin-soname.patch'
-    '4.8-picflag-cygwin64.patch'
-    '4.8-specs-cygwin.patch'
-    'gcc-4.8.0-configure-msys2.patch'
-    'gcc-4.8.0-msys2-spec.patch')
+  "ftp://gcc.gnu.org/pub/gcc/infrastructure/${MPFR_VERSION}.tar.bz2"
+  "ftp://gcc.gnu.org/pub/gcc/infrastructure/${GMP_VERSION}.tar.bz2"
+  "ftp://gcc.gnu.org/pub/gcc/infrastructure/${MPC_VERSION}.tar.gz"
+  'gcc-4.8-filename-output.patch'
+  'gcc-4.8-lambda-ICE.patch'
+  'gcc-4.8-iconv.patch'
+  '4.8-libgcc-references.patch'
+  'gcc-4.8-libstdc++export.patch'
+  'gcc-4.7-stdthreads.patch'
+  '4.7-execstack.patch'
+  '4.7-libffi-noinst.patch'
+  '4.7-libitm-cygwin.patch'
+  '4.7-libstdc-cygwin.patch'
+  '4.8-libatomic-cygwin.patch'
+  '4.8-libdecnumber-cygwin64.patch'
+  '4.8-libffi-cygwin64.patch'
+  '4.8-lto-plugin-soname.patch'
+  '4.8-picflag-cygwin64.patch'
+  '4.8-specs-cygwin.patch'
+  'gcc-4.8.0-configure-msys2.patch'
+  'gcc-4.8.0-msys2-spec.patch')
 sha256sums=('09dc2276c73424bbbfda1dbddc62bbbf900c9f185acf7f3e1d773ce2d7e3cdc8'
             '9278e745190bac0b3f6ef74972aecd4e2891d4930f7b6fa8840c3d4f7fbf4f98'
             '301cfbe339043ca14205140acbec1d0f55178f01365ff309e4ddb90a3c934031'
@@ -113,6 +121,13 @@ _extract_to_source_folder() {
 # =========================================== #
 
 prepare() {
+  cd ${srcdir}
+
+  _extract                        ${_basename}-${pkgver}.tar.bz2
+  _extract_to_source_folder       $MPFR_VERSION.tar.bz2
+  _extract_to_source_folder       $GMP_VERSION.tar.bz2
+  _extract_to_source_folder       $MPC_VERSION.tar.gz
+
   cd ${srcdir}/${_realname}-${pkgver}
 
   #do not install libiberty
