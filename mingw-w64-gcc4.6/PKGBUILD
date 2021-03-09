@@ -228,7 +228,7 @@ build() {
   gcc --version
   ld  --version
   if [ "$_enable_ada" == "yes" ]; then
-    gnatmake  --version
+    gnatbind  --version
   fi
 
   if [ "$_enable_bootstrap" == "yes" ]; then
