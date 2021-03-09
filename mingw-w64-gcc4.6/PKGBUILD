@@ -3,7 +3,8 @@
 # Contributor: Alexey Borzenkov <snaury@gmail.com>
 # Contributor: Ray Donnelly <mingw.android@gmail.com>
 
-_enable_bootstrap=yes
+_enable_bootstrap=no
+_enable_threads=no
 _threads="win32"
 _skip_gcc_doc_install=no
 
@@ -26,7 +27,7 @@ pkgname=(
         )
 pkgver=${_base_pkg_version}.4
 pkgrel=1
-pkgdesc="GCC 4.6 for the MinGW-w64"
+pkgdesc="GCC ${_base_pkg_version} for the MinGW-w64"
 arch=('any')
 url="http://gcc.gnu.org"
 license=('GPL' 'LGPL' 'FDL' 'custom')
@@ -39,7 +40,7 @@ makedepends=('lndir' 'make' 'patch' 'bison' 'flex' 'tar' 'diffutils' 'texinfo'
              "${MINGW_PACKAGE_PREFIX}-headers"
              "${MINGW_PACKAGE_PREFIX}-libiconv"
              "${MINGW_PACKAGE_PREFIX}-windows-default-manifest"
-             "${MINGW_PACKAGE_PREFIX}-winpthreads"
+             $([[ "$_enable_threads" == "yes" ]] && echo "${MINGW_PACKAGE_PREFIX}-winpthreads")
              "${MINGW_PACKAGE_PREFIX}-zlib")
 checkdepends=('dejagnu')
 optdepends=()
@@ -243,6 +244,12 @@ build() {
     configure_opts+=("--disable-bootstrap")
   fi
 
+  if [ "$_enable_threads" == "yes" ]; then
+    configure_opts+=("--enable-threads=${_threads}")
+  elif [ "$_enable_bootstrap" == "no" ]; then
+    configure_opts+=("--disable-threads")
+  fi
+
   local _languages="c,lto"
   if [ "$_enable_ada" == "yes" ]; then
     _languages+=",ada"
@@ -272,7 +279,6 @@ build() {
     --enable-languages=${_languages} \
     --enable-shared --enable-static \
     --enable-libatomic \
-    --enable-threads=${_threads} \
     --enable-graphite \
     --enable-fully-dynamic-string \
     --enable-libstdcxx-time=yes \
