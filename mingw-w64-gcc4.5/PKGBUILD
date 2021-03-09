@@ -4,6 +4,7 @@
 # Contributor: Ray Donnelly <mingw.android@gmail.com>
 
 _enable_bootstrap=no
+_enable_threads=no
 _threads="win32"
 
 _enable_ada=yes
@@ -38,7 +39,7 @@ makedepends=('lndir' 'make' 'patch' 'bison' 'flex' 'tar' 'diffutils'
              "${MINGW_PACKAGE_PREFIX}-headers"
              "${MINGW_PACKAGE_PREFIX}-libiconv"
              "${MINGW_PACKAGE_PREFIX}-windows-default-manifest"
-             "${MINGW_PACKAGE_PREFIX}-winpthreads"
+             $([[ "$_enable_threads" == "yes" ]] && echo "${MINGW_PACKAGE_PREFIX}-winpthreads")
              "${MINGW_PACKAGE_PREFIX}-zlib")
 checkdepends=('dejagnu')
 optdepends=()
@@ -219,13 +220,19 @@ build() {
   gcc --version
   ld  --version
   if [ "$_enable_ada" == "yes" ]; then
-    gnatmake  --version
+    gnatbind  --version
   fi
 
   if [ "$_enable_bootstrap" == "yes" ]; then
     configure_opts+=("--enable-bootstrap")
   elif [ "$_enable_bootstrap" == "no" ]; then
     configure_opts+=("--disable-bootstrap")
+  fi
+
+  if [ "$_enable_threads" == "yes" ]; then
+    configure_opts+=("--enable-threads=${_threads}")
+  elif [ "$_enable_bootstrap" == "no" ]; then
+    configure_opts+=("--disable-threads")
   fi
 
   local _languages="c,lto"
