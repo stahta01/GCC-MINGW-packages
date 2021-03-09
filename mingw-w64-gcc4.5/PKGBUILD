@@ -258,14 +258,12 @@ build() {
     --with-native-system-header-dir=${MINGW_PREFIX}/${MINGW_CHOST}/include \
     --libexecdir=${MINGW_PREFIX}/lib \
     --with-gxx-include-dir=${MINGW_PREFIX}/include/c++/${pkgver} \
-    --enable-bootstrap \
     --with-arch=${_arch} \
     --with-tune=generic \
     --enable-languages=${_languages} \
-    --disable-libada \
-    --disable-shared --enable-static \
+    --enable-libada \
+    --enable-shared --enable-static \
     --enable-libatomic \
-    --enable-threads=${_threads} \
     --enable-graphite \
     --enable-fully-dynamic-string \
     --enable-libstdcxx-time=yes \
@@ -273,7 +271,7 @@ build() {
     --disable-libstdcxx-debug \
     --enable-version-specific-runtime-libs \
     --enable-lto \
-    --disable-libgomp \
+    --enable-libgomp \
     --disable-multilib \
     --enable-checking=release \
     --disable-rpath \
