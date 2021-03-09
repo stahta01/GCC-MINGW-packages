@@ -168,9 +168,11 @@ build() {
 
   if [ "$_bare_gcc" == "yes" ]; then
     configure_opts+=("--disable-threads")
+    configure_opts+=("--disable-shared")
     configure_opts+=("--enable-languages=c")
   else
     configure_opts+=("--enable-threads=${_threads}")
+    configure_opts+=("--enable-shared")
     configure_opts+=("--enable-languages=c")
   fi
 
@@ -184,7 +186,7 @@ build() {
     --disable-bootstrap \
     --with-arch=x86-64 \
     --with-tune=generic \
-    --enable-shared --enable-static \
+    --enable-static \
     --disable-graphite \
     --disable-libstdcxx-pch \
     --disable-libstdcxx-debug \
