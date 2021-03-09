@@ -265,7 +265,7 @@ build() {
     --disable-libstdcxx-debug \
     --enable-version-specific-runtime-libs \
     --enable-lto \
-    --enable-libgomp \
+    --disable-libgomp \
     --disable-multilib \
     --enable-checking=release \
     --disable-rpath \
