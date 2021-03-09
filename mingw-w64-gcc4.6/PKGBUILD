@@ -266,7 +266,6 @@ build() {
     --with-native-system-header-dir=${MINGW_PREFIX}/${MINGW_CHOST}/include \
     --libexecdir=${MINGW_PREFIX}/lib \
     --with-gxx-include-dir=${MINGW_PREFIX}/include/c++/${pkgver} \
-    --enable-bootstrap \
     --with-arch=${_arch} \
     --with-tune=generic \
     --enable-languages=${_languages} \
