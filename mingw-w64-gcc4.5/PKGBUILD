@@ -80,11 +80,17 @@ sha256sums=('eef3f0456db8c3d992cbb51d5d32558190bc14f3bc19383dd93acc27acc6befc'
 
 # Helper macros to help make tasks easier #
 apply_patch_with_msg() {
-  for _patch in "$@"
-  do
-    msg2 "Applying ${_patch}"
-    patch -Nbp1 -i "${srcdir}/${_patch}"
-  done
+    for _fname in "$@"
+    do
+        if patch --dry-run -Nbp1 -i "${srcdir}/${_fname}" ; then
+            echo "Applying ${_fname}"
+            patch -Nbp1 -i "${srcdir}/${_fname}"
+        elif patch --dry-run -Rbp1 -i "${srcdir}/${_fname}" ; then
+            echo "Skipping ${_fname} because it likely was already applied"
+        else
+            echo "Skipping ${_fname} because it likely will fail"
+        fi
+    done
 }
 
 del_file_exists() {
