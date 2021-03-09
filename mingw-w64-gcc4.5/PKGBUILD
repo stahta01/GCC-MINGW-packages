@@ -61,7 +61,8 @@ source=("ftp://gcc.gnu.org/pub/gcc/releases/${_basename}-${pkgver}/${_basename}-
         801-gcc-4.0-cfns-fix-mismatch-in-gnu_inline-attributes.patch
         802-gcc-4.0-xm-mingw32.h-__USE_MINGW_ANSI_STDIO.patch
         803-gcc-4.4-add-DWARF2_UNWIND_INFO-guard.patch
-        804-gcc-4.5-Fix-texi-docs-syntax-errors.patch)
+        804-gcc-4.5-Fix-texi-docs-syntax-errors.patch
+        805-gcc-4.4-PR-bootstrap-56258.patch)
 sha256sums=('eef3f0456db8c3d992cbb51d5d32558190bc14f3bc19383dd93acc27acc6befc'
             'c7e75a08a8d49d2082e4caee1591a05d11b9d5627514e678f02d66a124bcf2ba'
             '936162c0312886c21581002b79932829aa048cfaf9937c6265aeaa14f1cd1775'
@@ -179,6 +180,8 @@ prepare() {
   patch -Np1 -i ${srcdir}/803-gcc-4.4-add-DWARF2_UNWIND_INFO-guard.patch
 
   patch -Np1 -i ${srcdir}/804-gcc-4.5-Fix-texi-docs-syntax-errors.patch
+
+  patch -Np1 -i ${srcdir}/805-gcc-4.4-PR-bootstrap-56258.patch
 }
 
 _package_common() {
