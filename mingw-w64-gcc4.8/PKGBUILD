@@ -3,7 +3,13 @@
 # Contributor: Alexey Borzenkov <snaury@gmail.com>
 # Contributor: Ray Donnelly <mingw.android@gmail.com>
 
+_enable_bootstrap=no
 _threads="posix"
+
+_enable_ada=yes
+_enable_cxx=no
+_enable_fortran=no
+_enable_objc=no
 
 _basename=gcc
 _base_pkg_version=4.8
@@ -206,6 +212,8 @@ build() {
   [[ -d ${srcdir}/build-${MINGW_CHOST} ]] && rm -rf ${srcdir}/build-${MINGW_CHOST}
   mkdir -p ${srcdir}/build-${MINGW_CHOST} && cd ${srcdir}/build-${MINGW_CHOST}
 
+  local -a configure_opts
+
   case "${CARCH}" in
     i686)
       local _conf="--disable-sjlj-exceptions --with-dwarf2"
@@ -219,7 +227,33 @@ build() {
     ;;
   esac
 
-  ../${_realname}-${pkgver}/configure \
+  gcc --version
+  ld  --version
+  if [ "$_enable_ada" == "yes" ]; then
+    gnatmake  --version
+  fi
+
+  if [ "$_enable_bootstrap" == "yes" ]; then
+    configure_opts+=("--enable-bootstrap")
+  elif [ "$_enable_bootstrap" == "no" ]; then
+    configure_opts+=("--disable-bootstrap")
+  fi
+
+  local _languages="c,lto"
+  if [ "$_enable_ada" == "yes" ]; then
+    _languages+=",ada"
+  fi
+  if [ "$_enable_cxx" == "yes" ]; then
+    _languages+=",c++"
+  fi
+  if [ "$_enable_fortran" == "yes" ]; then
+    _languages+=",fortran"
+  fi
+  if [ "$_enable_objc" == "yes" ]; then
+    _languages+=",objc,obj-c++"
+  fi
+
+  ../${_sourcedir}/configure \
     --prefix=${MINGW_PREFIX} \
     --with-local-prefix=${MINGW_PREFIX}/local \
     --build=${MINGW_CHOST} \
@@ -228,21 +262,19 @@ build() {
     --with-native-system-header-dir=${MINGW_PREFIX}/${MINGW_CHOST}/include \
     --libexecdir=${MINGW_PREFIX}/lib \
     --with-gxx-include-dir=${MINGW_PREFIX}/include/c++/${pkgver} \
-    --enable-bootstrap \
     --with-arch=${_arch} \
     --with-tune=generic \
-    --enable-languages=c,lto,c++,objc,obj-c++,fortran,ada \
+    --enable-languages=${_languages} \
     --enable-shared --enable-static \
     --enable-libatomic \
     --enable-threads=${_threads} \
-    --enable-graphite \
+    --disable-graphite \
     --enable-fully-dynamic-string \
     --enable-libstdcxx-time=yes \
     --disable-libstdcxx-pch \
     --disable-libstdcxx-debug \
-    --enable-cloog-backend=isl \
     --enable-version-specific-runtime-libs \
-    --disable-cloog-version-check --disable-isl-version-check \
+    --without-cloog --without-isl \
     --enable-lto \
     --enable-libgomp \
     --disable-multilib \
@@ -254,7 +286,6 @@ build() {
     --disable-symvers \
     --with-libiconv \
     --with-system-zlib \
-    --with-{gmp,mpfr,mpc,isl,cloog}=${MINGW_PREFIX} \
     --with-pkgversion="Rev${pkgrel}, Built by stahta01 -- Tim S" \
     --with-bugurl="https://github.com/stahta01/GCC-MINGW-packages/issues" \
     --with-gnu-as --with-gnu-ld \
@@ -275,7 +306,7 @@ build() {
 
 package_mingw-w64-gcc-libs() {
   pkgdesc="GNU Compiler Collection (libraries) for MinGW-w64"
-  depends=("${MINGW_PACKAGE_PREFIX}-gmp" "${MINGW_PACKAGE_PREFIX}-libwinpthread")
+  depends=("${MINGW_PACKAGE_PREFIX}-libwinpthread")
   mkdir -p ${pkgdir}${MINGW_PREFIX}/bin
 
   cd ${srcdir}${MINGW_PREFIX}
@@ -284,7 +315,7 @@ package_mingw-w64-gcc-libs() {
 
 package_mingw-w64-gcc() {
   pkgdesc="GNU Compiler Collection (C,C++,OpenMP) for MinGW-w64"
-  depends=("${MINGW_PACKAGE_PREFIX}-crt" "${MINGW_PACKAGE_PREFIX}-binutils" "${MINGW_PACKAGE_PREFIX}-winpthreads" "${MINGW_PACKAGE_PREFIX}-headers" "${MINGW_PACKAGE_PREFIX}-zlib" "${MINGW_PACKAGE_PREFIX}-mpc" "${MINGW_PACKAGE_PREFIX}-cloog" "${MINGW_PACKAGE_PREFIX}-${_realname}-libs=${pkgver}") 
+  depends=("${MINGW_PACKAGE_PREFIX}-crt" "${MINGW_PACKAGE_PREFIX}-binutils" "${MINGW_PACKAGE_PREFIX}-winpthreads" "${MINGW_PACKAGE_PREFIX}-headers" "${MINGW_PACKAGE_PREFIX}-zlib" "${MINGW_PACKAGE_PREFIX}-${_realname}-libs=${pkgver}") 
   provides=("${MINGW_PACKAGE_PREFIX}-${_realname}-base")
   conflicts=("${MINGW_PACKAGE_PREFIX}-${_realname}-base")
 
