@@ -222,14 +222,14 @@ build() {
 
   case "${CARCH}" in
     i686)
-      local _conf="--disable-sjlj-exceptions --with-dwarf2"
+      configure_opts+=("--disable-sjlj-exceptions")
+      configure_opts+=("--with-dwarf2")
       LDFLAGS+=" -Wl,--large-address-aware"
       local _arch=i686
     ;;
     
     x86_64)
       local _arch=x86-64
-      local _conf=""
     ;;
   esac
 
@@ -295,7 +295,7 @@ build() {
     --with-pkgversion="Rev${pkgrel}, Built by stahta01 -- Tim S" \
     --with-bugurl="https://github.com/stahta01/GCC-MINGW-packages/issues" \
     --with-gnu-as --with-gnu-ld \
-    ${_conf}
+    "${configure_opts[@]}"
 
   # While we're debugging -fopenmp problems at least.
   # .. we may as well not strip anything.
