@@ -6,7 +6,6 @@
 _enable_bootstrap=no
 _enable_threads=no
 _threads="win32"
-_skip_gcc_doc_install=no
 
 _enable_ada=yes
 _enable_cxx=yes
@@ -181,12 +180,6 @@ prepare() {
   patch -Np1 -i ${srcdir}/210-gcc-4.4-ktietz-libgomp.patch
 
   patch -Np1 -i ${srcdir}/802-gcc-4.0-handle-use-mingw-ansi-stdio.patch
-
-  if [ "$_skip_gcc_doc_install" == "yes" ]; then
-    apply_patch_with_msg \
-      811-gcc-4.3-disable-gcc-doc-building.patch \
-      812-gcc-4.6-Remove-srcdir-doc-tm.texi-from-TEXI_GCCINT_FILES-in-.patch
-  fi
 }
 
 _package_common() {
@@ -392,16 +385,14 @@ package_mingw-w64-gcc() {
   fi
 
   mkdir -p ${pkgdir}${MINGW_PREFIX}/share/{doc,info,locale,man}
-  if [ "$_skip_gcc_doc_install" != "yes" ]; then
-    #cp -r share/doc/gcc-${pkgver} ${pkgdir}${MINGW_PREFIX}/share/doc/
-    cp share/info/cpp.info* ${pkgdir}${MINGW_PREFIX}/share/info/
-    cp share/info/cppinternals.info* ${pkgdir}${MINGW_PREFIX}/share/info/
-    cp share/info/gcc.info* ${pkgdir}${MINGW_PREFIX}/share/info/
-    cp share/info/gccinstall.info* ${pkgdir}${MINGW_PREFIX}/share/info/
-    cp share/info/gccint.info* ${pkgdir}${MINGW_PREFIX}/share/info/
-    cp share/info/libgomp.info* ${pkgdir}${MINGW_PREFIX}/share/info/
-    cp share/info/libquadmath.info* ${pkgdir}${MINGW_PREFIX}/share/info/
-  fi
+  #cp -r share/doc/gcc-${pkgver} ${pkgdir}${MINGW_PREFIX}/share/doc/
+  cp share/info/cpp.info* ${pkgdir}${MINGW_PREFIX}/share/info/
+  cp share/info/cppinternals.info* ${pkgdir}${MINGW_PREFIX}/share/info/
+  cp share/info/gcc.info* ${pkgdir}${MINGW_PREFIX}/share/info/
+  cp share/info/gccinstall.info* ${pkgdir}${MINGW_PREFIX}/share/info/
+  cp share/info/gccint.info* ${pkgdir}${MINGW_PREFIX}/share/info/
+  cp share/info/libgomp.info* ${pkgdir}${MINGW_PREFIX}/share/info/
+  cp share/info/libquadmath.info* ${pkgdir}${MINGW_PREFIX}/share/info/
 
   #cp share/locale/* ${pkgdir}${MINGW_PREFIX}/share/locale/
   mkdir -p ${pkgdir}${MINGW_PREFIX}/share/man/man1
@@ -477,11 +468,9 @@ package_mingw-w64-gcc-ada() {
   cp lib/gcc/${MINGW_CHOST}/${pkgver}/gnat1.exe ${pkgdir}${MINGW_PREFIX}/lib/gcc/${MINGW_CHOST}/${pkgver}/
 
   mkdir -p ${pkgdir}${MINGW_PREFIX}/share/info
-  if [ "$_skip_gcc_doc_install" != "yes" ]; then
-    cp share/info/gnat-style.info* ${pkgdir}${MINGW_PREFIX}/share/info/
-    cp share/info/gnat_rm.info* ${pkgdir}${MINGW_PREFIX}/share/info/
-    cp share/info/gnat_ugn.info* ${pkgdir}${MINGW_PREFIX}/share/info/
-  fi
+  cp share/info/gnat-style.info* ${pkgdir}${MINGW_PREFIX}/share/info/
+  cp share/info/gnat_rm.info* ${pkgdir}${MINGW_PREFIX}/share/info/
+  cp share/info/gnat_ugn.info* ${pkgdir}${MINGW_PREFIX}/share/info/
 }
 
 package_mingw-w64-gcc-objc() {
