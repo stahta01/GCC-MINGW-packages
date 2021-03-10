@@ -1,0 +1,72 @@
+# Maintainer:  Tim Stahlhut <stahta01@gmail.com>
+# Contributor: Alexey Pavlov <alexpux@gmail.com>
+
+_git_branch="v3.x"
+_provides_version="3.4"
+
+_realname=headers
+pkgname="${MINGW_PACKAGE_PREFIX}-${_realname}-git"
+replaces=("${MINGW_PACKAGE_PREFIX}-${_realname}-svn")
+pkgdesc="MinGW-w64 headers for Windows"
+pkgver=3.4.0.3935.8c7e0088
+pkgrel=1
+arch=('any')
+url="http://mingw-w64.sourceforge.net"
+license=('custom')
+groups=("${MINGW_PACKAGE_PREFIX}-toolchain")
+makedepends=('git' "${MINGW_PACKAGE_PREFIX}-tools")
+provides=("${MINGW_PACKAGE_PREFIX}-${_realname}" "${MINGW_PACKAGE_PREFIX}-${_realname}=${_provides_version}")
+conflicts=("${MINGW_PACKAGE_PREFIX}-${_realname}")
+options=('!strip' '!libtool' '!emptydirs')
+_sourcedir=${_realname}-git
+source=("${_sourcedir}"::"git://git.code.sf.net/p/mingw-w64/mingw-w64#branch=$_git_branch")
+sha256sums=('SKIP')
+
+# Declare global variables; begin with underscore to avoid name conflicts
+_git_base_commit=
+
+pkgver() {
+  cd "$srcdir/$_sourcedir"
+  local _major=$(head -n 16 mingw-w64-headers/crt/_mingw_mac.h | grep '__MINGW64_VERSION_MAJOR' | sed -e 's/.* //' | tr '\n' '.' | sed 's/.$/\n/')
+  local _minor=$(head -n 16 mingw-w64-headers/crt/_mingw_mac.h | grep '__MINGW64_VERSION_MINOR' | sed -e 's/.* //' | tr '\n' '.' | sed 's/.$/\n/')
+  local _rev=0
+  printf "%s.%s.%s.%s.%s" ${_major} ${_minor} ${_rev} "$(git rev-list --count $_git_base_commit)" "$(git rev-parse --short $_git_base_commit)"
+}
+
+prepare() {
+  cd ${srcdir}/${_sourcedir}
+
+  _git_base_commit=$(git rev-parse HEAD)
+
+  cd ${srcdir}/${_sourcedir}/mingw-w64-headers
+  touch include/windows.*.h include/wincrypt.h include/prsht.h
+}
+
+build() {
+  msg "Configuring ${MINGW_CHOST} headers"
+  mkdir -p ${srcdir}/headers-${MINGW_CHOST} && cd ${srcdir}/headers-${MINGW_CHOST}
+  ${srcdir}/${_sourcedir}/mingw-w64-headers/configure \
+    --build=${MINGW_CHOST} \
+    --host=${MINGW_CHOST} \
+    --target=${MINGW_CHOST} \
+    --prefix=${MINGW_PREFIX}/${MINGW_CHOST} \
+    --enable-sdk=all \
+    --enable-secure-api \
+    --enable-idl
+#    --with-widl
+}
+
+package() {
+  msg "Installing ${MINGW_CHOST} headers"
+  cd ${srcdir}/headers-${MINGW_CHOST}
+  make DESTDIR=${pkgdir} install
+
+  rm ${pkgdir}${MINGW_PREFIX}/${MINGW_CHOST}/include/pthread_signal.h
+  rm ${pkgdir}${MINGW_PREFIX}/${MINGW_CHOST}/include/pthread_time.h
+  rm ${pkgdir}${MINGW_PREFIX}/${MINGW_CHOST}/include/pthread_unistd.h
+
+  msg "Installing MinGW-w64 licenses"
+  install -Dm644 ${srcdir}/${_sourcedir}/mingw-w64-headers/ddk/readme.txt ${pkgdir}${MINGW_PREFIX}/share/licenses/${_realname}/ddk-readme.txt
+  install -Dm644 ${srcdir}/${_sourcedir}/mingw-w64-headers/direct-x/COPYING.LIB ${pkgdir}${MINGW_PREFIX}/share/licenses/${_realname}/direct-x-COPYING.LIB
+  install -Dm644 ${srcdir}/${_sourcedir}/mingw-w64-headers/direct-x/readme.txt ${pkgdir}${MINGW_PREFIX}/share/licenses/${_realname}/direct-x-readme.txt
+}
