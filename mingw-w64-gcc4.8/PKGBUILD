@@ -81,7 +81,8 @@ sha256sums=('09dc2276c73424bbbfda1dbddc62bbbf900c9f185acf7f3e1d773ce2d7e3cdc8'
             'd16e76e0aa9e5a1c239424edc3a6da52785e82849b6e00850f8e2526e7f496d9'
             '1422dccee79ead90dfc729e325074675758e642e38d4af6d0fc870b364c61a8e'
             'e3247fcc84e2b08a3618d73f64f39dd6eef1daf9743819a844ebb8c4d38ebce6'
-            '3b9779b05198b4c814709f211623c0b1ebf8937f32eba29826cf15bfc29df9a3')
+            '3b9779b05198b4c814709f211623c0b1ebf8937f32eba29826cf15bfc29df9a3'
+            '2cafd273a667f1130e9cd20c87cd5c83cda1100de9958b9dbbf656dcf29fd2bb')
 
 # Helper macros to help make tasks easier #
 apply_patch_with_msg() {
