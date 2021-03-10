@@ -1,7 +1,7 @@
 # Maintainer:  Tim Stahlhut <stahta01@gmail.com>
 # Contributor: Alexey Pavlov <alexpux@gmail.com>
 
-_git_branch="v5.x"
+_git_branch="v4.x"
 
 _realname=headers
 pkgname="${MINGW_PACKAGE_PREFIX}-${_realname}-git"
