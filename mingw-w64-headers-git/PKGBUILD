@@ -19,18 +19,8 @@ provides=("${MINGW_PACKAGE_PREFIX}-${_realname}" "${MINGW_PACKAGE_PREFIX}-${_rea
 conflicts=("${MINGW_PACKAGE_PREFIX}-${_realname}")
 options=('!strip' '!libtool' '!emptydirs')
 _sourcedir=${_realname}-git
-source=("${_sourcedir}"::"git://git.code.sf.net/p/mingw-w64/mingw-w64#branch=$_git_branch"
-        "0001-d3d11-Add-prototype-for-CreateDeviceAndSwapChain.patch"
-        "0002-dxgi-Add-interface-for-IDXGISurface1.patch"
-        "0003-dxgi-Add-missing-dxgi-1.2-structs-and-interfaces.patch"
-        "0004-d3d11-Add-missing-d3d11-1.1-structs-and-interfaces.patch"
-        "0005-Add-missing-DirectX11-enum.patch")
-sha256sums=('SKIP'
-            'bd0d8e1d9f973dfb75fa3650b4c62f56988d545b6d5dc129b8c084773012a9d9'
-            'd2b3d26b9214ae72f1c39d6d3cb334903aa0d87f2a9c4b3215da1fbb0052072a'
-            'a12047a75f98f58f54a2800150c14bd42d9b65fd6d540c71305e1e1c042cf44a'
-            '1873bf872c154e7daf0681267d6fdf0fa4d29194f2de7185476d47dc34d8fe38'
-            'bf06d529555752d2d0090c78c82f73ae30190ead712438f8c5ead78734816ea4')
+source=("${_sourcedir}"::"git://git.code.sf.net/p/mingw-w64/mingw-w64#branch=$_git_branch")
+sha256sums=('SKIP')
 
 # Declare global variables; begin with underscore to avoid name conflicts
 _git_base_commit=
@@ -47,12 +37,6 @@ prepare() {
   cd ${srcdir}/${_sourcedir}
 
   _git_base_commit=$(git rev-parse HEAD)
-
-#  git am "${srcdir}/"0001-d3d11-Add-prototype-for-CreateDeviceAndSwapChain.patch
-#  git am "${srcdir}/"0002-dxgi-Add-interface-for-IDXGISurface1.patch
-#  git am "${srcdir}/"0003-dxgi-Add-missing-dxgi-1.2-structs-and-interfaces.patch
-#  git am "${srcdir}/"0004-d3d11-Add-missing-d3d11-1.1-structs-and-interfaces.patch
-#  git am "${srcdir}/"0005-Add-missing-DirectX11-enum.patch
 
   cd ${srcdir}/${_sourcedir}/mingw-w64-headers
   touch include/windows.*.h include/wincrypt.h include/prsht.h
