@@ -1,13 +1,13 @@
 # Maintainer:  Tim Stahlhut <stahta01@gmail.com>
 # Contributor: Alexey Pavlov <alexpux@gmail.com>
 
-_git_branch="v4.x"
+_git_branch="v3.x"
 
 _realname=headers
 pkgname="${MINGW_PACKAGE_PREFIX}-${_realname}-git"
 replaces=("${MINGW_PACKAGE_PREFIX}-${_realname}-svn")
 pkgdesc="MinGW-w64 headers for Windows"
-pkgver=4.0.0.4514.ae0e22cd
+pkgver=3.4.0.3935.8c7e0088
 pkgrel=1
 arch=('any')
 url="http://mingw-w64.sourceforge.net"
