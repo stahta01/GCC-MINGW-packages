@@ -317,7 +317,10 @@ build() {
 
 package_mingw-w64-gcc-libs() {
   pkgdesc="GNU Compiler Collection (libraries) for MinGW-w64"
-  depends=("${MINGW_PACKAGE_PREFIX}-libwinpthread")
+  depends=()
+  if [[ "$_enable_threads" == "yes" && "$_threads" == "posix" ]]; then
+    depends+=("${MINGW_PACKAGE_PREFIX}-libwinpthread")
+  fi
   mkdir -p ${pkgdir}${MINGW_PREFIX}/bin
 
   cd ${srcdir}${MINGW_PREFIX}
@@ -332,11 +335,13 @@ package_mingw-w64-gcc() {
   depends=(
     "${MINGW_PACKAGE_PREFIX}-crt" 
     "${MINGW_PACKAGE_PREFIX}-binutils" 
-    $([[ "$_enable_threads" == "yes" ]] && echo "${MINGW_PACKAGE_PREFIX}-winpthreads")
     "${MINGW_PACKAGE_PREFIX}-headers" 
     "${MINGW_PACKAGE_PREFIX}-zlib" 
     "${MINGW_PACKAGE_PREFIX}-${_realname}-libs=${pkgver}"
   )
+  if [[ "$_enable_threads" == "yes" && "$_threads" == "posix" ]]; then
+    depends+=("${MINGW_PACKAGE_PREFIX}-winpthreads")
+  fi
   provides=("${MINGW_PACKAGE_PREFIX}-${_realname}-base")
   conflicts=("${MINGW_PACKAGE_PREFIX}-${_realname}-base")
 
