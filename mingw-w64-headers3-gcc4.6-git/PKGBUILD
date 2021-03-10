@@ -3,6 +3,7 @@
 
 _git_branch="v3.x"
 _provides_version="3.4"
+_gcc_version="4.6"
 
 _realname=headers
 pkgname="${MINGW_PACKAGE_PREFIX}-${_realname}-git"
@@ -14,7 +15,7 @@ arch=('any')
 url="http://mingw-w64.sourceforge.net"
 license=('custom')
 groups=("${MINGW_PACKAGE_PREFIX}-toolchain")
-makedepends=('git' "${MINGW_PACKAGE_PREFIX}-tools")
+makedepends=('git' "${MINGW_PACKAGE_PREFIX}-tools" "${MINGW_PACKAGE_PREFIX}-gcc=${_gcc_version}")
 provides=("${MINGW_PACKAGE_PREFIX}-${_realname}" "${MINGW_PACKAGE_PREFIX}-${_realname}=${_provides_version}")
 conflicts=("${MINGW_PACKAGE_PREFIX}-${_realname}")
 options=('!strip' '!libtool' '!emptydirs')
