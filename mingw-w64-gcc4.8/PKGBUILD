@@ -16,10 +16,10 @@ _realname=gcc
 pkgname=(
     "${MINGW_PACKAGE_PREFIX}-${_realname}"
     "${MINGW_PACKAGE_PREFIX}-${_realname}-libs"
-    "${MINGW_PACKAGE_PREFIX}-${_realname}-libgfortran"
-    "${MINGW_PACKAGE_PREFIX}-${_realname}-fortran"
-    "${MINGW_PACKAGE_PREFIX}-${_realname}-ada"
-    "${MINGW_PACKAGE_PREFIX}-${_realname}-objc"
+     $([[ "$_enable_fortran" == "yes" ]] && echo "${MINGW_PACKAGE_PREFIX}-${_realname}-libgfortran")
+     $([[ "$_enable_fortran" == "yes" ]] && echo "${MINGW_PACKAGE_PREFIX}-${_realname}-fortran")
+     $([[ "$_enable_ada" == "yes" ]] && echo "${MINGW_PACKAGE_PREFIX}-${_realname}-ada")
+     $([[ "$_enable_objc" == "yes" ]] && echo "${MINGW_PACKAGE_PREFIX}-${_realname}-objc")
     )
 pkgbase=mingw-w64-${_basename}${_base_pkg_version}
 pkgver=${_base_pkg_version}.2
@@ -30,7 +30,7 @@ url="http://gcc.gnu.org"
 license=('GPL' 'LGPL' 'FDL' 'custom')
 groups=("${MINGW_PACKAGE_PREFIX}-toolchain" "${MINGW_PACKAGE_PREFIX}")
 depends=("${MINGW_PACKAGE_PREFIX}-zlib" "${MINGW_PACKAGE_PREFIX}-crt" "${MINGW_PACKAGE_PREFIX}-binutils" "${MINGW_PACKAGE_PREFIX}-winpthreads" "${MINGW_PACKAGE_PREFIX}-headers")
-makedepends=("${MINGW_PACKAGE_PREFIX}-${_realname}-ada" "${MINGW_PACKAGE_PREFIX}-${_realname}" 'lndir')
+makedepends=("${MINGW_PACKAGE_PREFIX}-${_realname}-ada" "${MINGW_PACKAGE_PREFIX}-${_realname}" 'lndir' 'make' 'patch' 'bison' 'flex' 'tar' 'diffutils' 'texinfo')
 #checkdepends=('dejagnu')
 optdepends=()
 replaces=()
