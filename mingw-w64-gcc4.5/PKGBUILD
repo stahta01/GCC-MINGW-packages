@@ -17,8 +17,8 @@ _base_pkg_version=4.5
 _realname=${_basename}
 pkgbase=mingw-w64-${_basename}${_base_pkg_version}
 pkgname=(
-         "${MINGW_PACKAGE_PREFIX}-${_realname}"
          "${MINGW_PACKAGE_PREFIX}-${_realname}-libs"
+         "${MINGW_PACKAGE_PREFIX}-${_realname}"
          $([[ "$_enable_fortran" == "yes" ]] && echo "${MINGW_PACKAGE_PREFIX}-${_realname}-libgfortran")
          $([[ "$_enable_fortran" == "yes" ]] && echo "${MINGW_PACKAGE_PREFIX}-${_realname}-fortran")
          $([[ "$_enable_ada" == "yes" ]] && echo "${MINGW_PACKAGE_PREFIX}-${_realname}-ada")
@@ -310,13 +310,14 @@ build() {
 
 package_mingw-w64-gcc-libs() {
   pkgdesc="GNU Compiler Collection (libraries) for MinGW-w64"
-  depends=(
-    $([[ "$_enable_threads" == "yes" && "$_threads" == "posix" ]] && echo "${MINGW_PACKAGE_PREFIX}-libwinpthread")
-  )
+  depends=()
+  if [[ "$_enable_threads" == "yes" && "$_threads" == "posix" ]]; then
+    depends+=("${MINGW_PACKAGE_PREFIX}-libwinpthread")
+  fi
   mkdir -p ${pkgdir}${MINGW_PREFIX}/bin
 
   cd ${srcdir}${MINGW_PREFIX}
-  cp bin/{libgcc*,libgomp*,libquadmath*,libssp*}.dll ${pkgdir}${MINGW_PREFIX}/bin/
+  cp bin/{libgcc*,libgomp*,libssp*}.dll ${pkgdir}${MINGW_PREFIX}/bin/
   if [ "$_enable_cxx" == "yes" ]; then
     cp bin/libstdc*.dll ${pkgdir}${MINGW_PREFIX}/bin/
   fi
@@ -327,11 +328,13 @@ package_mingw-w64-gcc() {
   depends=(
     "${MINGW_PACKAGE_PREFIX}-crt" 
     "${MINGW_PACKAGE_PREFIX}-binutils" 
-    $([[ "$_enable_threads" == "yes" && "$_threads" == "posix" ]] && echo "${MINGW_PACKAGE_PREFIX}-winpthreads") 
     "${MINGW_PACKAGE_PREFIX}-headers" 
     "${MINGW_PACKAGE_PREFIX}-zlib" 
     "${MINGW_PACKAGE_PREFIX}-${_realname}-libs=${pkgver}"
   )
+  if [[ "$_enable_threads" == "yes" && "$_threads" == "posix" ]]; then
+    depends+=("${MINGW_PACKAGE_PREFIX}-winpthreads")
+  fi
   provides=("${MINGW_PACKAGE_PREFIX}-${_realname}-base")
   conflicts=("${MINGW_PACKAGE_PREFIX}-${_realname}-base")
 
@@ -365,17 +368,17 @@ package_mingw-w64-gcc() {
   cp lib/gcc/${MINGW_CHOST}/${pkgver}/cc1.exe ${pkgdir}${MINGW_PREFIX}/lib/gcc/${MINGW_CHOST}/${pkgver}/
   cp lib/gcc/${MINGW_CHOST}/${pkgver}/collect2.exe ${pkgdir}${MINGW_PREFIX}/lib/gcc/${MINGW_CHOST}/${pkgver}/
   cp lib/gcc/${MINGW_CHOST}/${pkgver}/crt*.o ${pkgdir}${MINGW_PREFIX}/lib/gcc/${MINGW_CHOST}/${pkgver}/
-  cp lib/gcc/${MINGW_CHOST}/${pkgver}/liblto* ${pkgdir}${MINGW_PREFIX}/lib/gcc/${MINGW_CHOST}/${pkgver}/
+#  cp lib/gcc/${MINGW_CHOST}/${pkgver}/liblto* ${pkgdir}${MINGW_PREFIX}/lib/gcc/${MINGW_CHOST}/${pkgver}/
   #cp lib/gcc/${MINGW_CHOST}/${pkgver}/libatomic* ${pkgdir}${MINGW_PREFIX}/lib/gcc/${MINGW_CHOST}/${pkgver}/
   cp lib/gcc/${MINGW_CHOST}/${pkgver}/libgcc* ${pkgdir}${MINGW_PREFIX}/lib/gcc/${MINGW_CHOST}/${pkgver}/
   cp lib/gcc/${MINGW_CHOST}/${pkgver}/libgcov.* ${pkgdir}${MINGW_PREFIX}/lib/gcc/${MINGW_CHOST}/${pkgver}/
   cp lib/gcc/${MINGW_CHOST}/${pkgver}/libgomp.* ${pkgdir}${MINGW_PREFIX}/lib/gcc/${MINGW_CHOST}/${pkgver}/
-  cp lib/gcc/${MINGW_CHOST}/${pkgver}/libquadmath.* ${pkgdir}${MINGW_PREFIX}/lib/gcc/${MINGW_CHOST}/${pkgver}/
+#  cp lib/gcc/${MINGW_CHOST}/${pkgver}/libquadmath.* ${pkgdir}${MINGW_PREFIX}/lib/gcc/${MINGW_CHOST}/${pkgver}/
   cp lib/gcc/${MINGW_CHOST}/${pkgver}/libssp* ${pkgdir}${MINGW_PREFIX}/lib/gcc/${MINGW_CHOST}/${pkgver}/
   cp lib/gcc/${MINGW_CHOST}/${pkgver}/lto*.exe ${pkgdir}${MINGW_PREFIX}/lib/gcc/${MINGW_CHOST}/${pkgver}/
 
   #mkdir -p ${pkgdir}${MINGW_PREFIX}/lib/gcc/${MINGW_CHOST}/lib
-  cp ${srcdir}${MINGW_PREFIX}/lib/gcc/${MINGW_CHOST}/lib/libgcc_s.a ${pkgdir}${MINGW_PREFIX}/lib/gcc/${MINGW_CHOST}/${pkgver}/
+#  cp ${srcdir}${MINGW_PREFIX}/lib/gcc/${MINGW_CHOST}/lib/libgcc_s.a ${pkgdir}${MINGW_PREFIX}/lib/gcc/${MINGW_CHOST}/${pkgver}/
   #cp lib/gcc/${MINGW_CHOST}/lib/libgcc_s.a ${pkgdir}${MINGW_PREFIX}/lib/gcc/${MINGW_CHOST}/lib/
 
   if [ "$_enable_cxx" == "yes" ]; then
@@ -399,7 +402,7 @@ package_mingw-w64-gcc() {
   cp share/info/gccinstall.info* ${pkgdir}${MINGW_PREFIX}/share/info/
   cp share/info/gccint.info* ${pkgdir}${MINGW_PREFIX}/share/info/
   cp share/info/libgomp.info* ${pkgdir}${MINGW_PREFIX}/share/info/
-  cp share/info/libquadmath.info* ${pkgdir}${MINGW_PREFIX}/share/info/
+#  cp share/info/libquadmath.info* ${pkgdir}${MINGW_PREFIX}/share/info/
 
   #cp share/locale/* ${pkgdir}${MINGW_PREFIX}/share/locale/
   mkdir -p ${pkgdir}${MINGW_PREFIX}/share/man/man1
