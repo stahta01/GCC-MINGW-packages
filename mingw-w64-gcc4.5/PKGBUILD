@@ -310,7 +310,9 @@ build() {
 
 package_mingw-w64-gcc-libs() {
   pkgdesc="GNU Compiler Collection (libraries) for MinGW-w64"
-  depends=("${MINGW_PACKAGE_PREFIX}-libwinpthread")
+  depends=(
+    $([[ "$_enable_threads" == "yes" ]] && echo "${MINGW_PACKAGE_PREFIX}-libwinpthread")
+  )
   mkdir -p ${pkgdir}${MINGW_PREFIX}/bin
 
   cd ${srcdir}${MINGW_PREFIX}
