@@ -165,27 +165,27 @@ prepare() {
   sed -i "s|/mingw/include|/mingw32/include|g" gcc/config/i386/t-mingw-w32
   sed -i "s|/mingw/include|/mingw64/include|g" gcc/config/i386/t-mingw-w64
 
-  patch -Np1 -i ${srcdir}/804-gcc-4.6.4-Fix-texi-docs-syntax-errors.patch
+  apply_patch_with_msg 804-gcc-4.6.4-Fix-texi-docs-syntax-errors.patch
 
   # https://patchwork.ozlabs.org/patch/504982/
-  patch -Np1 -i ${srcdir}/801-gcc-4.0-cfns-fix-mismatch-in-gnu_inline-attributes.patch
+  apply_patch_with_msg 801-gcc-4.0-cfns-fix-mismatch-in-gnu_inline-attributes.patch
 
   # Don't waste valuable commandline chars on double-quotes around "arguments"
   #  that don't need them.
-  patch -Np1 -i ${srcdir}/130-gcc-4.3-dont-escape-arguments-that-dont-need-it-in-pex-win32.c.patch
+  apply_patch_with_msg 130-gcc-4.3-dont-escape-arguments-that-dont-need-it-in-pex-win32.c.patch
 
   # Make Windows behave the same as Posix in the consideration of whether folder
   # "/exists/doesnt-exist/.." is a valid path.. in Posix, it isn't.
-  patch -Np1 -i ${srcdir}/140-gcc-4.0-fix-for-windows-not-minding-non-existant-parent-dirs.patch
+  apply_patch_with_msg 140-gcc-4.0-fix-for-windows-not-minding-non-existant-parent-dirs.patch
 
   # Don't make a lowercase backslashed path from argv[0]
   #  that then fail to strcmp with prefix(es) .. they're also ugly.
-  patch -Np1 -i ${srcdir}/150-gcc-4.0-windows-lrealpath-no-force-lowercase-nor-backslash.patch
+  apply_patch_with_msg 150-gcc-4.0-windows-lrealpath-no-force-lowercase-nor-backslash.patch
 
   # Kai's libgomp fix.
-  patch -Np1 -i ${srcdir}/210-gcc-4.4-ktietz-libgomp.patch
+  apply_patch_with_msg 210-gcc-4.4-ktietz-libgomp.patch
 
-  patch -Np1 -i ${srcdir}/802-gcc-4.0-handle-use-mingw-ansi-stdio.patch
+  apply_patch_with_msg 802-gcc-4.0-handle-use-mingw-ansi-stdio.patch
 }
 
 _package_common() {
