@@ -39,7 +39,7 @@ makedepends=('lndir' 'make' 'patch' 'bison' 'flex' 'tar' 'diffutils' 'texinfo=5.
              "${MINGW_PACKAGE_PREFIX}-headers"
              "${MINGW_PACKAGE_PREFIX}-libiconv"
              "${MINGW_PACKAGE_PREFIX}-windows-default-manifest"
-             $([[ "$_enable_threads" == "yes" ]] && echo "${MINGW_PACKAGE_PREFIX}-winpthreads")
+             $([[ "$_enable_threads" == "yes" && "$_threads" == "posix" ]] && echo "${MINGW_PACKAGE_PREFIX}-winpthreads")
              "${MINGW_PACKAGE_PREFIX}-zlib")
 checkdepends=('dejagnu')
 optdepends=()
@@ -311,7 +311,7 @@ build() {
 package_mingw-w64-gcc-libs() {
   pkgdesc="GNU Compiler Collection (libraries) for MinGW-w64"
   depends=(
-    $([[ "$_enable_threads" == "yes" ]] && echo "${MINGW_PACKAGE_PREFIX}-libwinpthread")
+    $([[ "$_enable_threads" == "yes" && "$_threads" == "posix" ]] && echo "${MINGW_PACKAGE_PREFIX}-libwinpthread")
   )
   mkdir -p ${pkgdir}${MINGW_PREFIX}/bin
 
@@ -327,7 +327,7 @@ package_mingw-w64-gcc() {
   depends=(
     "${MINGW_PACKAGE_PREFIX}-crt" 
     "${MINGW_PACKAGE_PREFIX}-binutils" 
-    $([[ "$_enable_threads" == "yes" ]] && echo "${MINGW_PACKAGE_PREFIX}-winpthreads") 
+    $([[ "$_enable_threads" == "yes" && "$_threads" == "posix" ]] && echo "${MINGW_PACKAGE_PREFIX}-winpthreads") 
     "${MINGW_PACKAGE_PREFIX}-headers" 
     "${MINGW_PACKAGE_PREFIX}-zlib" 
     "${MINGW_PACKAGE_PREFIX}-${_realname}-libs=${pkgver}"
