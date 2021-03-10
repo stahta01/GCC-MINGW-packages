@@ -7,7 +7,7 @@ _realname=headers
 pkgname="${MINGW_PACKAGE_PREFIX}-${_realname}-git"
 replaces=("${MINGW_PACKAGE_PREFIX}-${_realname}-svn")
 pkgdesc="MinGW-w64 headers for Windows"
-pkgver=5.0.0.4742.fb1deb11
+pkgver=4.0.0.4514.ae0e22cd
 pkgrel=1
 arch=('any')
 url="http://mingw-w64.sourceforge.net"
@@ -49,9 +49,9 @@ prepare() {
   _git_base_commit=$(git rev-parse HEAD)
 
 #  git am "${srcdir}/"0001-d3d11-Add-prototype-for-CreateDeviceAndSwapChain.patch
-  git am "${srcdir}/"0002-dxgi-Add-interface-for-IDXGISurface1.patch
-  git am "${srcdir}/"0003-dxgi-Add-missing-dxgi-1.2-structs-and-interfaces.patch
-  git am "${srcdir}/"0004-d3d11-Add-missing-d3d11-1.1-structs-and-interfaces.patch
+#  git am "${srcdir}/"0002-dxgi-Add-interface-for-IDXGISurface1.patch
+#  git am "${srcdir}/"0003-dxgi-Add-missing-dxgi-1.2-structs-and-interfaces.patch
+#  git am "${srcdir}/"0004-d3d11-Add-missing-d3d11-1.1-structs-and-interfaces.patch
 #  git am "${srcdir}/"0005-Add-missing-DirectX11-enum.patch
 
   cd ${srcdir}/${_sourcedir}/mingw-w64-headers
