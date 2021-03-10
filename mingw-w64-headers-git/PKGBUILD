@@ -2,6 +2,7 @@
 # Contributor: Alexey Pavlov <alexpux@gmail.com>
 
 _git_branch="v3.x"
+_provides_version="3.4"
 
 _realname=headers
 pkgname="${MINGW_PACKAGE_PREFIX}-${_realname}-git"
@@ -14,7 +15,6 @@ url="http://mingw-w64.sourceforge.net"
 license=('custom')
 groups=("${MINGW_PACKAGE_PREFIX}-toolchain")
 makedepends=('git' "${MINGW_PACKAGE_PREFIX}-tools")
-_provides_version=${_git_branch}
 provides=("${MINGW_PACKAGE_PREFIX}-${_realname}" "${MINGW_PACKAGE_PREFIX}-${_realname}=${_provides_version}")
 conflicts=("${MINGW_PACKAGE_PREFIX}-${_realname}")
 options=('!strip' '!libtool' '!emptydirs')
