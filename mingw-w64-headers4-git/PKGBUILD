@@ -58,6 +58,7 @@ prepare() {
 
 build() {
   msg "Configuring ${MINGW_CHOST} headers"
+  [[ -d ${srcdir}/headers-${MINGW_CHOST} ]] && rm -rf ${srcdir}/headers-${MINGW_CHOST}
   mkdir -p ${srcdir}/headers-${MINGW_CHOST} && cd ${srcdir}/headers-${MINGW_CHOST}
   ${srcdir}/${_sourcedir}/mingw-w64-headers/configure \
     --build=${MINGW_CHOST} \
