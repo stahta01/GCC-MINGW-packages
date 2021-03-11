@@ -16,7 +16,7 @@ checkdepends=('dejagnu' 'bc')
 makedepends=("${_mingw_suff}-libiconv" "${_mingw_suff}-zlib")
 options=('staticlibs' '!distcc' '!ccache')
 #install=binutils.install
-source=("ftp://mirrors.kernel.org/sources.redhat.com/binutils/releases/binutils-${pkgver}.tar.bz2"
+source=("https://mirrors.kernel.org/sources.redhat.com/binutils/releases/binutils-${pkgver}.tar.bz2"
         'binutils-2.23.2-texinfo-5.0.patch')
 md5sums=('4f8fa651e35ef262edc01d60fb45702e'
          '34e439ce23213a91e2af872dfbb5094c')
