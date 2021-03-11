@@ -1,12 +1,12 @@
 # Maintainer:  Tim Stahlhut <stahta01@gmail.com>
 # Contributor: Alexey Pavlov <alexpux@gmail.com>
 
-_git_branch="v3.x"
+_git_branch="v2.x"
 
-_realname=headers3
+_realname=headers2
 pkgname="${MINGW_PACKAGE_PREFIX}-${_realname}-git"
 pkgdesc="MinGW-w64 headers for Windows"
-pkgver=3.4.0.3935.8c7e0088
+pkgver=2.0.0.2777.24b1f9cd
 pkgrel=1
 arch=('any')
 url="http://mingw-w64.sourceforge.net"
@@ -25,8 +25,8 @@ _git_base_commit=
 
 pkgver() {
   cd "$srcdir/$_sourcedir"
-  local _major=$(head -n 16 mingw-w64-headers/crt/_mingw_mac.h | grep '__MINGW64_VERSION_MAJOR' | sed -e 's/.* //' | tr '\n' '.' | sed 's/.$/\n/')
-  local _minor=$(head -n 16 mingw-w64-headers/crt/_mingw_mac.h | grep '__MINGW64_VERSION_MINOR' | sed -e 's/.* //' | tr '\n' '.' | sed 's/.$/\n/')
+  local _major=$(head -n 16 mingw-w64-headers/crt/_mingw_mac.h | sed '/__MINGW64_STRINGIFY/d' | grep '__MINGW64_VERSION_MAJOR' | sed -e 's/.* //' | tr '\n' '.' | sed 's/.$/\n/')
+  local _minor=$(head -n 16 mingw-w64-headers/crt/_mingw_mac.h | sed '/__MINGW64_STRINGIFY/d' | grep '__MINGW64_VERSION_MINOR' | sed -e 's/.* //' | tr '\n' '.' | sed 's/.$/\n/')
   local _rev=0
   printf "%s.%s.%s.%s.%s" ${_major} ${_minor} ${_rev} "$(git rev-list --count $_git_base_commit)" "$(git rev-parse --short $_git_base_commit)"
 }
@@ -58,9 +58,9 @@ package() {
   cd ${srcdir}/headers-${MINGW_CHOST}
   make DESTDIR=${pkgdir} install
 
-  rm ${pkgdir}${MINGW_PREFIX}/opt/${MINGW_CHOST}/include/pthread_signal.h
-  rm ${pkgdir}${MINGW_PREFIX}/opt/${MINGW_CHOST}/include/pthread_time.h
-  rm ${pkgdir}${MINGW_PREFIX}/opt/${MINGW_CHOST}/include/pthread_unistd.h
+#  rm ${pkgdir}${MINGW_PREFIX}/opt/${MINGW_CHOST}/include/pthread_signal.h
+#  rm ${pkgdir}${MINGW_PREFIX}/opt/${MINGW_CHOST}/include/pthread_time.h
+#  rm ${pkgdir}${MINGW_PREFIX}/opt/${MINGW_CHOST}/include/pthread_unistd.h
 
   msg "Installing MinGW-w64 licenses"
   install -Dm644 ${srcdir}/${_sourcedir}/mingw-w64-headers/ddk/readme.txt ${pkgdir}${MINGW_PREFIX}/share/licenses/${_realname}/ddk-readme.txt
