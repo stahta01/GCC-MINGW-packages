@@ -2,11 +2,9 @@
 # Contributor: Alexey Pavlov <alexpux@gmail.com>
 
 _git_branch="v3.x"
-_provides_version="3.4"
 
-_realname=headers
+_realname=headers3
 pkgname="${MINGW_PACKAGE_PREFIX}-${_realname}-git"
-replaces=("${MINGW_PACKAGE_PREFIX}-${_realname}-svn")
 pkgdesc="MinGW-w64 headers for Windows"
 pkgver=3.4.0.3935.8c7e0088
 pkgrel=1
@@ -15,7 +13,7 @@ url="http://mingw-w64.sourceforge.net"
 license=('custom')
 groups=("${MINGW_PACKAGE_PREFIX}-toolchain")
 makedepends=('git' "${MINGW_PACKAGE_PREFIX}-tools")
-provides=("${MINGW_PACKAGE_PREFIX}-${_realname}" "${MINGW_PACKAGE_PREFIX}-${_realname}=${_provides_version}")
+provides=("${MINGW_PACKAGE_PREFIX}-${_realname}")
 conflicts=("${MINGW_PACKAGE_PREFIX}-${_realname}")
 options=('!strip' '!libtool' '!emptydirs')
 _sourcedir=${_realname}-git
@@ -49,11 +47,10 @@ build() {
     --build=${MINGW_CHOST} \
     --host=${MINGW_CHOST} \
     --target=${MINGW_CHOST} \
-    --prefix=${MINGW_PREFIX}/${MINGW_CHOST} \
+    --prefix=${MINGW_PREFIX}/opt/${MINGW_CHOST} \
     --enable-sdk=all \
     --enable-secure-api \
-    --enable-idl
-#    --with-widl
+    --enable-idl --without-widl
 }
 
 package() {
@@ -61,9 +58,9 @@ package() {
   cd ${srcdir}/headers-${MINGW_CHOST}
   make DESTDIR=${pkgdir} install
 
-  rm ${pkgdir}${MINGW_PREFIX}/${MINGW_CHOST}/include/pthread_signal.h
-  rm ${pkgdir}${MINGW_PREFIX}/${MINGW_CHOST}/include/pthread_time.h
-  rm ${pkgdir}${MINGW_PREFIX}/${MINGW_CHOST}/include/pthread_unistd.h
+  rm ${pkgdir}${MINGW_PREFIX}/opt/${MINGW_CHOST}/include/pthread_signal.h
+  rm ${pkgdir}${MINGW_PREFIX}/opt/${MINGW_CHOST}/include/pthread_time.h
+  rm ${pkgdir}${MINGW_PREFIX}/opt/${MINGW_CHOST}/include/pthread_unistd.h
 
   msg "Installing MinGW-w64 licenses"
   install -Dm644 ${srcdir}/${_sourcedir}/mingw-w64-headers/ddk/readme.txt ${pkgdir}${MINGW_PREFIX}/share/licenses/${_realname}/ddk-readme.txt
