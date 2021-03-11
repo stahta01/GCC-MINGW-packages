@@ -9,7 +9,11 @@ _major_version=4
 _git_branch="v${_major_version}.x"
 
 _basename=headers
-_realname=${_basename}${_major_version}
+if [ "$_pkg_prefix" == ${MINGW_PREFIX} ]; then
+  _realname=${_basename}
+else
+  _realname=${_basename}${_major_version}
+fi
 pkgbase=mingw-w64-${_realname}
 pkgname="${MINGW_PACKAGE_PREFIX}-${_realname}-git"
 pkgdesc="MinGW-w64 headers for Windows"
