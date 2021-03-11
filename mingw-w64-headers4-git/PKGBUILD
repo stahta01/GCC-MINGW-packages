@@ -70,9 +70,9 @@ package() {
   cd ${srcdir}/headers-${MINGW_CHOST}
   make DESTDIR=${pkgdir} install
 
-#  rm ${pkgdir}${_pkg_prefix}/${MINGW_CHOST}/include/pthread_signal.h
-#  rm ${pkgdir}${_pkg_prefix}/${MINGW_CHOST}/include/pthread_time.h
-#  rm ${pkgdir}${_pkg_prefix}/${MINGW_CHOST}/include/pthread_unistd.h
+  rm ${pkgdir}${_pkg_prefix}/${MINGW_CHOST}/include/pthread_signal.h
+  rm ${pkgdir}${_pkg_prefix}/${MINGW_CHOST}/include/pthread_time.h
+  rm ${pkgdir}${_pkg_prefix}/${MINGW_CHOST}/include/pthread_unistd.h
 
   msg "Installing MinGW-w64 licenses"
   install -Dm644 ${srcdir}/${_sourcedir}/mingw-w64-headers/ddk/readme.txt ${pkgdir}${MINGW_PREFIX}/share/licenses/${_realname}/ddk-readme.txt
