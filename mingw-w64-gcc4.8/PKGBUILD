@@ -3,12 +3,12 @@
 # Contributor: Alexey Borzenkov <snaury@gmail.com>
 # Contributor: Ray Donnelly <mingw.android@gmail.com>
 
-_enable_bootstrap=yes
+_enable_bootstrap=no
 _threads="posix"
 
 _enable_ada=yes
-_enable_fortran=no
-_enable_objc=no
+_enable_fortran=yes
+_enable_objc=yes
 
 _basename=gcc
 _base_pkg_version=4.8
