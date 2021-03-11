@@ -3,6 +3,8 @@
 # Contributor: Alexey Borzenkov <snaury@gmail.com>
 # Contributor: Ray Donnelly <mingw.android@gmail.com>
 
+_pkg_prefix=${MINGW_PREFIX} # not yet being used
+
 _enable_bootstrap=no
 _enable_threads=no
 _threads="win32"
@@ -32,8 +34,8 @@ url="http://gcc.gnu.org"
 license=('GPL' 'LGPL' 'FDL' 'custom')
 groups=("${MINGW_PACKAGE_PREFIX}-toolchain" "${MINGW_PACKAGE_PREFIX}")
 makedepends=('lndir' 'make' 'patch' 'bison' 'flex' 'tar' 'diffutils' 'texinfo'
-#             "${MINGW_PACKAGE_PREFIX}-${_realname}" 
-#             $([[ "$_enable_ada" == "yes" ]] && echo "${MINGW_PACKAGE_PREFIX}-${_realname}-ada")
+             "${MINGW_PACKAGE_PREFIX}-${_realname}" 
+             $([[ "$_enable_ada" == "yes" ]] && echo "${MINGW_PACKAGE_PREFIX}-${_realname}-ada")
              "${MINGW_PACKAGE_PREFIX}-binutils"
              "${MINGW_PACKAGE_PREFIX}-crt"
              "${MINGW_PACKAGE_PREFIX}-headers"
@@ -191,8 +193,6 @@ prepare() {
 _package_common() {
   # Use without "with-gcc-major-version-only" configuration option
   _gcc_driver_version=`eval "cat ${srcdir}/${_sourcedir}/gcc/BASE-VER"`
-
-  _pkg_prefix=${MINGW_PREFIX}
 
   echo "_gcc_driver_version := ${_gcc_driver_version}"
   echo "_pkg_prefix := ${_pkg_prefix}"
