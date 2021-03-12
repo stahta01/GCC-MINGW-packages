@@ -14,7 +14,7 @@ if [ "$_pkg_prefix" == ${MINGW_PREFIX} ]; then
 else
   _realname=${_basename}${_major_version}
 fi
-pkgbase=mingw-w64-${_realname}
+pkgbase=mingw-w64-${_basename}${_major_version}-git
 pkgname="${MINGW_PACKAGE_PREFIX}-${_realname}-git"
 pkgdesc="MinGW-w64 headers for Windows"
 pkgver=4.0.0.4514.ae0e22cd
