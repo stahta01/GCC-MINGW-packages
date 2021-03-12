@@ -1,8 +1,8 @@
 # Maintainer:  Tim Stahlhut <stahta01@gmail.com>
 # Contributor: Alexey Pavlov <alexpux@gmail.com>
 
-_pkg_prefix=${MINGW_PREFIX}
-#_pkg_prefix=${MINGW_PREFIX}/opt
+#_pkg_prefix=${MINGW_PREFIX}
+_pkg_prefix=${MINGW_PREFIX}/opt
 
 _major_version=4
 
