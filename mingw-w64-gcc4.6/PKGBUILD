@@ -3,7 +3,8 @@
 # Contributor: Alexey Borzenkov <snaury@gmail.com>
 # Contributor: Ray Donnelly <mingw.android@gmail.com>
 
-_pkg_prefix=${MINGW_PREFIX}
+#_pkg_prefix=${MINGW_PREFIX}
+_pkg_prefix=${MINGW_PREFIX}/opt
 
 _enable_bootstrap=no
 _enable_threads=no
@@ -346,10 +347,13 @@ package_mingw-w64-gcc() {
   if [[ "$_enable_threads" == "yes" && "$_threads" == "posix" ]]; then
     depends+=("${MINGW_PACKAGE_PREFIX}-winpthreads")
   fi
-  provides=("${MINGW_PACKAGE_PREFIX}-${_realname}-base" 
-    "${MINGW_PACKAGE_PREFIX}-${_realname}=${_base_pkg_version}"
-    "${MINGW_PACKAGE_PREFIX}-${_realname}>4.5")
-  conflicts=("${MINGW_PACKAGE_PREFIX}-${_realname}-base")
+  if [ "$_pkg_prefix" == ${MINGW_PREFIX} ]; then
+    provides=("${MINGW_PACKAGE_PREFIX}-${_basename}-base")
+    conflicts=("${MINGW_PACKAGE_PREFIX}-${_basename}-base")
+  else
+    provides=("${MINGW_PACKAGE_PREFIX}-opt-${_basename}")
+    conflicts=("${MINGW_PACKAGE_PREFIX}-opt-${_basename}")
+  fi
 
   mkdir -p ${pkgdir}${_pkg_prefix}/{bin,include,lib,share}
 
