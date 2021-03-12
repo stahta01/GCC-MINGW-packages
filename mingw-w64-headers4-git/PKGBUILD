@@ -32,7 +32,7 @@ else
   conflicts=("${MINGW_PACKAGE_PREFIX}-opt-${_basename}")
 fi
 options=('!strip' '!libtool' '!emptydirs')
-_sourcedir=${_realname}-git
+_sourcedir=${_basename}-git
 source=("${_sourcedir}"::"git://git.code.sf.net/p/mingw-w64/mingw-w64#branch=$_git_branch")
 sha256sums=('SKIP')
 
