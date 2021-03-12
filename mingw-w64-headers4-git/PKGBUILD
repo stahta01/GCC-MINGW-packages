@@ -1,8 +1,8 @@
 # Maintainer:  Tim Stahlhut <stahta01@gmail.com>
 # Contributor: Alexey Pavlov <alexpux@gmail.com>
 
-#_pkg_prefix=${MINGW_PREFIX}
-_pkg_prefix=${MINGW_PREFIX}/opt
+_pkg_prefix=${MINGW_PREFIX}
+#_pkg_prefix=${MINGW_PREFIX}/opt
 
 _major_version=4
 
@@ -23,7 +23,7 @@ arch=('any')
 url="http://mingw-w64.sourceforge.net"
 license=('custom')
 groups=("${MINGW_PACKAGE_PREFIX}-toolchain")
-makedepends=('git' "${MINGW_PACKAGE_PREFIX}-tools")
+makedepends=('git' "${MINGW_PACKAGE_PREFIX}-tools" 'make')
 if [ "$_pkg_prefix" == ${MINGW_PREFIX} ]; then
   provides=("${MINGW_PACKAGE_PREFIX}-${_basename}")
   conflicts=("${MINGW_PACKAGE_PREFIX}-${_basename}")
