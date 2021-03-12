@@ -3,15 +3,15 @@
 # Contributor: Alexey Borzenkov <snaury@gmail.com>
 # Contributor: Ray Donnelly <mingw.android@gmail.com>
 
-#_pkg_prefix=${MINGW_PREFIX}
-_pkg_prefix=${MINGW_PREFIX}/opt
+_pkg_prefix=${MINGW_PREFIX}
+#_pkg_prefix=${MINGW_PREFIX}/opt
 
 _enable_bootstrap=no
 _enable_threads=no
 _threads="win32"
 
 _enable_ada=yes
-_enable_cxx=yes
+_enable_cxx=no
 _enable_fortran=no
 _enable_objc=no
 
