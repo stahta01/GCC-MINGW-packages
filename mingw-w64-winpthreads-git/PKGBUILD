@@ -5,10 +5,11 @@
 _realname=winpthreads
 pkgbase=mingw-w64-${_realname}-git
 pkgname=("${MINGW_PACKAGE_PREFIX}-${_realname}-git" "${MINGW_PACKAGE_PREFIX}-libwinpthread-git")
-pkgver=7.0.0.5543.775df066
+pkgver=6.0.0.5202.55e067dc
 pkgrel=1
 #_commit='98dad1fefed2a07ade0b37ca6c610ad66739631a' # 8.0.0.6001.98dad1fe
-_commit='775df066e1a76189868bf27d23247ac069687e94' # 7.0.0.5543.775df066
+#_commit='775df066e1a76189868bf27d23247ac069687e94' # 7.0.0.5543.775df066
+_commit='55e067dc48ad4aededf7a858b15a3039e8088ed4' # 6.0.0.5202.55e067dc
 pkgdesc="MinGW-w64 winpthreads library"
 url="https://mingw-w64.sourceforge.io/"
 # The main license of `winpthreads' is MIT, but parts of this library are
