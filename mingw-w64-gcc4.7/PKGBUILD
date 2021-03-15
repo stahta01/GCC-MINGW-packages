@@ -57,7 +57,6 @@ source=("ftp://gcc.gnu.org/pub/gcc/releases/${_realname}-${pkgver}/${_realname}-
   '160-mingw-dont-ignore-native-system-header-dir.patch'
   'ktietz-libgomp.patch'
   'build-more-gnattools.mingw.patch'
-  'libgomp-no-static.patch'
   'gcc-4.8.2-PR-middle-end-60484-fix-dump-path-problems.patch'
   handle-use-mingw-ansi-stdio.patch
   '804-gcc-4.6.4-Fix-texi-docs-syntax-errors.patch')
@@ -77,7 +76,6 @@ sha256sums=('2f7c37eb4fc14422ff2358a9ef59c974a75ab41204ef0e49fc34ab1d8981a9c3'
             'a7c5daced21086a01b3af9af4c46ee738ccfca6e67b3413771cb7ab81aa2a83f'
             'f05fc823279d764e0e19c7721e34e2c969f1df4492398c9de1764a4ffdba809e'
             'd16e76e0aa9e5a1c239424edc3a6da52785e82849b6e00850f8e2526e7f496d9'
-            '1422dccee79ead90dfc729e325074675758e642e38d4af6d0fc870b364c61a8e'
             'e3247fcc84e2b08a3618d73f64f39dd6eef1daf9743819a844ebb8c4d38ebce6'
             '3b9779b05198b4c814709f211623c0b1ebf8937f32eba29826cf15bfc29df9a3'
             '2cafd273a667f1130e9cd20c87cd5c83cda1100de9958b9dbbf656dcf29fd2bb')
@@ -205,11 +203,6 @@ prepare() {
   apply_patch_with_msg handle-use-mingw-ansi-stdio.patch
 
   apply_patch_with_msg 804-gcc-4.6.4-Fix-texi-docs-syntax-errors.patch
-
-  if check_option "debug" "y"; then
-    # Expose some libgomp internals for debugging.
-    apply_patch_with_msg libgomp-no-static.patch
-  fi
 }
 
 build() {
