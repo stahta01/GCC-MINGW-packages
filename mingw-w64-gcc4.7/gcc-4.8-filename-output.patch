@@ -1,0 +1,32 @@
+From 4a3f0674407f78e5e2ad4995cbe9ed8bf8c593ad Mon Sep 17 00:00:00 2001
+From: Marek Polacek <polacek@redhat.com>
+Date: Thu, 24 Jul 2014 09:00:13 +0000
+Subject: Backport of SVN 212972
+
+Patch edited by Tim S.
+
+2014-07-24  Marek Polacek  <polacek@redhat.com>
+	PR c/57653
+	* c-opts.c (c_finish_options): If -imacros is in effect, return.
+---
+ gcc/c-family/c-opts.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
+
+diff --git a/gcc/c-family/c-opts.c b/gcc/c-family/c-opts.c
+index 4b6990a60c1..2d45bc691a2 100644
+--- a/gcc/c-family/c-opts.c
++++ b/gcc/c-family/c-opts.c
+@@ -1340,6 +1340,12 @@ c_finish_options (void)
+ static void
+ push_command_line_include (void)
+ {
++  /* This can happen if disabled by -imacros for example.
++     Punt so that we don't set "<command-line>" as the filename for
++     the header.  */
++  if (include_cursor > deferred_count)
++    return;
++
+   if (!done_preinclude)
+     {
+       done_preinclude = true;
+-- 
