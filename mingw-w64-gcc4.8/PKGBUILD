@@ -7,8 +7,8 @@ _enable_bootstrap=no
 _threads="posix"
 
 _enable_ada=yes
-_enable_fortran=yes
-_enable_objc=yes
+_enable_fortran=no
+_enable_objc=no
 
 _basename=gcc
 _base_pkg_version=4.8
