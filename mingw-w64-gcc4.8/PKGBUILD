@@ -175,8 +175,8 @@ prepare() {
   apply_patch_with_msg gcc-4.8-lambda-ICE.patch
 
   #apply_patch_with_msg gcc-4.8-iconv.patch
-  
-  patch -p0 -i ${srcdir}/4.8-libgcc-references.patch
+
+  apply_patch_with_msg 4.8-libgcc-references.patch
   apply_patch_with_msg gcc-4.8-libstdc++export.patch
   apply_patch_with_msg gcc-4.7-stdthreads.patch
 
