@@ -4,6 +4,7 @@
 # Contributor: Ray Donnelly <mingw.android@gmail.com>
 
 _enable_bootstrap=no
+_enable_libatomic=no
 _threads="posix"
 
 _enable_ada=yes
@@ -196,10 +197,12 @@ prepare() {
 
   # Kai's libgomp fix.
   apply_patch_with_msg ktietz-libgomp.patch
-  
-  # Enable building libatomic
-  patch -p2 -i ${srcdir}/4.8-libatomic-cygwin.patch
-  
+
+  if [ "$_enable_libatomic" == "yes" ]; then
+    # Enable building libatomic
+    patch -p2 -i ${srcdir}/4.8-libatomic-cygwin.patch
+  fi
+
   # Build aextra tools for Ada
   apply_patch_with_msg build-more-gnattools.mingw.patch
 
@@ -242,6 +245,10 @@ build() {
     gnatmake  --version
   fi
 
+  if [ "$_enable_libatomic" == "yes" ]; then
+    configure_opts+=("--enable-libatomic")
+  fi
+
   if [ "$_enable_bootstrap" == "yes" ]; then
     configure_opts+=("--enable-bootstrap")
   elif [ "$_enable_bootstrap" == "no" ]; then
@@ -272,7 +279,6 @@ build() {
     --with-tune=generic \
     --enable-languages=${_languages} \
     --enable-shared --enable-static \
-    --enable-libatomic \
     --enable-threads=${_threads} \
     --disable-graphite \
     --enable-fully-dynamic-string \
@@ -316,7 +322,10 @@ package_mingw-w64-gcc-libs() {
   mkdir -p ${pkgdir}${MINGW_PREFIX}/bin
 
   cd ${srcdir}${MINGW_PREFIX}
-  cp bin/{libatomic*,libgcc*,libgomp*,libquadmath*,libssp*,libstdc*}.dll ${pkgdir}${MINGW_PREFIX}/bin/
+  cp bin/{libgcc*,libgomp*,libquadmath*,libssp*,libstdc*}.dll ${pkgdir}${MINGW_PREFIX}/bin/
+  if [ "$_enable_libatomic" == "yes" ]; then
+    cp bin/libatomic*.dll ${pkgdir}${MINGW_PREFIX}/bin/
+  fi
 }
 
 package_mingw-w64-gcc() {
@@ -354,7 +363,9 @@ package_mingw-w64-gcc() {
   cp lib/gcc/${MINGW_CHOST}/${pkgver}/collect2.exe ${pkgdir}${MINGW_PREFIX}/lib/gcc/${MINGW_CHOST}/${pkgver}/
   cp lib/gcc/${MINGW_CHOST}/${pkgver}/crt*.o ${pkgdir}${MINGW_PREFIX}/lib/gcc/${MINGW_CHOST}/${pkgver}/
   cp lib/gcc/${MINGW_CHOST}/${pkgver}/liblto* ${pkgdir}${MINGW_PREFIX}/lib/gcc/${MINGW_CHOST}/${pkgver}/
-  cp lib/gcc/${MINGW_CHOST}/${pkgver}/libatomic* ${pkgdir}${MINGW_PREFIX}/lib/gcc/${MINGW_CHOST}/${pkgver}/
+  if [ "$_enable_libatomic" == "yes" ]; then
+    cp lib/gcc/${MINGW_CHOST}/${pkgver}/libatomic* ${pkgdir}${MINGW_PREFIX}/lib/gcc/${MINGW_CHOST}/${pkgver}/
+  fi
   cp lib/gcc/${MINGW_CHOST}/${pkgver}/libgcc* ${pkgdir}${MINGW_PREFIX}/lib/gcc/${MINGW_CHOST}/${pkgver}/
   cp lib/gcc/${MINGW_CHOST}/${pkgver}/libgcov.* ${pkgdir}${MINGW_PREFIX}/lib/gcc/${MINGW_CHOST}/${pkgver}/
   cp lib/gcc/${MINGW_CHOST}/${pkgver}/libgomp.* ${pkgdir}${MINGW_PREFIX}/lib/gcc/${MINGW_CHOST}/${pkgver}/
