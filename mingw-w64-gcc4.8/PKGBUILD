@@ -4,7 +4,7 @@
 # Contributor: Ray Donnelly <mingw.android@gmail.com>
 
 _enable_bootstrap=no
-_enable_libatomic=yes
+_enable_libatomic=no
 _threads="posix"
 
 _enable_ada=yes
