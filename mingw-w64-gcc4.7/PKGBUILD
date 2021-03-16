@@ -209,6 +209,7 @@ build() {
     ;;
   esac
 
+  pacman -Q ${MINGW_PACKAGE_PREFIX}-crt
   gcc --version
   ld  --version
   if [ "$_enable_ada" == "yes" ]; then
