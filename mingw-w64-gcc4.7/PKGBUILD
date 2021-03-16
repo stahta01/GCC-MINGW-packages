@@ -78,10 +78,10 @@ sha256sums=('2f7c37eb4fc14422ff2358a9ef59c974a75ab41204ef0e49fc34ab1d8981a9c3'
 apply_patch_with_msg() {
     for _fname in "$@"
     do
-        if patch --dry-run -Nbp1 -i "${srcdir}/${_fname}" ; then
+        if patch --dry-run -Nbp1 -i "${srcdir}/${_fname}" > /dev/null 2>&1 ; then
             echo "Applying ${_fname}"
             patch -Nbp1 -i "${srcdir}/${_fname}"
-        elif patch --dry-run -Rbp1 -i "${srcdir}/${_fname}" ; then
+        elif patch --dry-run -Rbp1 -i "${srcdir}/${_fname}" > /dev/null 2>&1 ; then
             echo "Skipping ${_fname} because it likely was already applied"
         else
             echo "Skipping ${_fname} because it likely will fail"
