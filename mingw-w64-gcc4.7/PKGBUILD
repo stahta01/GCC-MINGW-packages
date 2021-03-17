@@ -132,8 +132,8 @@ prepare() {
 
   cd ${srcdir}/${_realname}-${pkgver}
 
-  #remove files the patches will create (so they aren't in the way the 2nd time round)
-  [ -f gcc/testsuite/g++.dg/cpp0x/lambda/lambda-names1.C ] && rm gcc/testsuite/g++.dg/cpp0x/lambda/lambda-names1.C
+#  #remove files the patches will create (so they aren't in the way the 2nd time round)
+#  [ -f gcc/testsuite/g++.dg/cpp0x/lambda/lambda-names1.C ] && rm gcc/testsuite/g++.dg/cpp0x/lambda/lambda-names1.C
 
   #do not install libiberty
   sed -i 's/install_to_$(INSTALL_DEST) //' libiberty/Makefile.in
