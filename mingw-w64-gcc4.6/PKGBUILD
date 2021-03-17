@@ -10,7 +10,7 @@ _enable_bootstrap=no
 _enable_threads=no
 _threads="win32"
 
-_enable_ada=yes
+_enable_ada=no
 _enable_cxx=no
 _enable_fortran=no
 _enable_objc=no
