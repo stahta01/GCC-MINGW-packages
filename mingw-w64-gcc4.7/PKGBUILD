@@ -300,7 +300,7 @@ package_mingw-w64-gcc-libs() {
   cd ${srcdir}${MINGW_PREFIX}
   cp bin/{libgcc*,libgomp*,libquadmath*,libssp*}.dll ${pkgdir}${MINGW_PREFIX}/bin/
   if [ "$_enable_cxx" == "yes" ]; then
-    cp bin/libstdc*.dll ${pkgdir}${_pkg_prefix}/bin/
+    cp bin/libstdc*.dll ${pkgdir}${MINGW_PREFIX}/bin/
   fi
 }
 
