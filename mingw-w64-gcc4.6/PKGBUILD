@@ -8,6 +8,7 @@ _pkg_prefix=${MINGW_PREFIX}
 
 _enable_bootstrap=no
 _enable_threads=no
+_enable_libgomp=no
 _threads="win32"
 
 _enable_ada=no
@@ -324,9 +325,12 @@ package_mingw-w64-gcc-libs() {
   mkdir -p ${pkgdir}${_pkg_prefix}/bin
 
   cd ${srcdir}${_pkg_prefix}
-  cp bin/{libgcc*,libgomp*,libquadmath*,libssp*}.dll ${pkgdir}${_pkg_prefix}/bin/
+  cp bin/{libgcc*,libquadmath*,libssp*}.dll ${pkgdir}${_pkg_prefix}/bin/
   if [ "$_enable_cxx" == "yes" ]; then
     cp bin/libstdc*.dll ${pkgdir}${_pkg_prefix}/bin/
+  fi
+  if [ "$_enable_libgomp" == "yes" ]; then
+    cp bin/libgomp*.dll ${pkgdir}${_pkg_prefix}/bin/
   fi
 }
 
@@ -384,7 +388,9 @@ package_mingw-w64-gcc() {
   #cp lib/gcc/${MINGW_CHOST}/${pkgver}/libatomic* ${pkgdir}${_pkg_prefix}/lib/gcc/${MINGW_CHOST}/${pkgver}/
   cp lib/gcc/${MINGW_CHOST}/${pkgver}/libgcc* ${pkgdir}${_pkg_prefix}/lib/gcc/${MINGW_CHOST}/${pkgver}/
   cp lib/gcc/${MINGW_CHOST}/${pkgver}/libgcov.* ${pkgdir}${_pkg_prefix}/lib/gcc/${MINGW_CHOST}/${pkgver}/
-  cp lib/gcc/${MINGW_CHOST}/${pkgver}/libgomp.* ${pkgdir}${_pkg_prefix}/lib/gcc/${MINGW_CHOST}/${pkgver}/
+  if [ "$_enable_libgomp" == "yes" ]; then
+    cp lib/gcc/${MINGW_CHOST}/${pkgver}/libgomp.* ${pkgdir}${_pkg_prefix}/lib/gcc/${MINGW_CHOST}/${pkgver}/
+  fi
   cp lib/gcc/${MINGW_CHOST}/${pkgver}/libquadmath.* ${pkgdir}${_pkg_prefix}/lib/gcc/${MINGW_CHOST}/${pkgver}/
   cp lib/gcc/${MINGW_CHOST}/${pkgver}/libssp* ${pkgdir}${_pkg_prefix}/lib/gcc/${MINGW_CHOST}/${pkgver}/
   cp lib/gcc/${MINGW_CHOST}/${pkgver}/lto*.exe ${pkgdir}${_pkg_prefix}/lib/gcc/${MINGW_CHOST}/${pkgver}/
@@ -413,7 +419,9 @@ package_mingw-w64-gcc() {
   cp share/info/gcc.info* ${pkgdir}${_pkg_prefix}/share/info/
   cp share/info/gccinstall.info* ${pkgdir}${_pkg_prefix}/share/info/
   cp share/info/gccint.info* ${pkgdir}${_pkg_prefix}/share/info/
-  cp share/info/libgomp.info* ${pkgdir}${_pkg_prefix}/share/info/
+  if [ "$_enable_libgomp" == "yes" ]; then
+    cp share/info/libgomp.info* ${pkgdir}${_pkg_prefix}/share/info/
+  fi
   cp share/info/libquadmath.info* ${pkgdir}${_pkg_prefix}/share/info/
 
   #cp share/locale/* ${pkgdir}${_pkg_prefix}/share/locale/
