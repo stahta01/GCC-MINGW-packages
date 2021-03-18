@@ -8,8 +8,12 @@ _pkg_prefix=${MINGW_PREFIX}
 
 _enable_bootstrap=no
 _enable_threads=no
-_enable_libgomp=no
 _threads="win32"
+if [[ "$_enable_threads" == "yes" && "$_threads" == "posix" ]]; then
+  _enable_libgomp=yes
+else
+  _enable_libgomp=no
+fi
 
 _enable_ada=no
 _enable_cxx=no
@@ -247,8 +251,14 @@ build() {
 
   if [ "$_enable_threads" == "yes" ]; then
     configure_opts+=("--enable-threads=${_threads}")
-  elif [ "$_enable_bootstrap" == "no" ]; then
+  elif [ "$_enable_threads" == "no" ]; then
     configure_opts+=("--disable-threads")
+  fi
+
+  if [ "$_enable_libgomp" == "yes" ]; then
+    configure_opts+=("--enable-libgomp")
+  elif [ "$_enable_libgomp" == "no" ]; then
+    configure_opts+=("--disable-libgomp")
   fi
 
   local _languages="c,lto"
