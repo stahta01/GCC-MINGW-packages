@@ -237,7 +237,7 @@ build() {
 
   if [ "$_enable_threads" == "yes" ]; then
     configure_opts+=("--enable-threads=${_threads}")
-  elif [ "$_enable_bootstrap" == "no" ]; then
+  elif [ "$_enable_threads" == "no" ]; then
     configure_opts+=("--disable-threads")
   fi
 
