@@ -15,7 +15,7 @@ else
   _enable_libgomp=no
 fi
 
-_enable_ada=no
+_enable_ada=yes
 _enable_cxx=no
 _enable_fortran=no
 _enable_objc=no
@@ -44,8 +44,8 @@ url="http://gcc.gnu.org"
 license=('GPL' 'LGPL' 'FDL' 'custom')
 groups=("${MINGW_PACKAGE_PREFIX}-toolchain" "${MINGW_PACKAGE_PREFIX}")
 makedepends=('lndir' 'make' 'patch' 'bison' 'flex' 'tar' 'diffutils' 'texinfo'
-             "${MINGW_PACKAGE_PREFIX}-${_realname}" 
-             $([[ "$_enable_ada" == "yes" ]] && echo "${MINGW_PACKAGE_PREFIX}-${_realname}-ada")
+#             "${MINGW_PACKAGE_PREFIX}-${_realname}" 
+#             $([[ "$_enable_ada" == "yes" ]] && echo "${MINGW_PACKAGE_PREFIX}-${_realname}-ada")
              "${MINGW_PACKAGE_PREFIX}-binutils"
              "${MINGW_PACKAGE_PREFIX}-crt"
              "${MINGW_PACKAGE_PREFIX}-headers"
@@ -57,7 +57,7 @@ checkdepends=('dejagnu')
 optdepends=()
 replaces=()
 backup=()
-options=('strip' '!debug' 'staticlibs' '!emptydirs') # '!buildflags'
+options=('strip' '!debug' 'staticlibs' '!emptydirs' '!buildflags')
 MPFR_VERSION=mpfr-2.4.2
 GMP_VERSION=gmp-4.3.2
 MPC_VERSION=mpc-0.8.1
@@ -227,6 +227,9 @@ build() {
     ;;
 
     x86_64)
+      configure_opts+=("--enable-sjlj-exceptions")
+      configure_opts+=("--without-dwarf2")
+      configure_opts+=("--enable-64bit")
       local _local_gcc64_prefix=/c/GreenApps64/gcc_4.6.0_mingw64_x86_64_K8+ada/mingw64
       export PATH="${_local_gcc64_prefix}/bin":$PATH
       export GNATBIND="${_local_gcc64_prefix}/bin/gnatbind"
@@ -265,6 +268,7 @@ build() {
   local _languages="c,lto"
   if [ "$_enable_ada" == "yes" ]; then
     _languages+=",ada"
+    configure_opts+=("--enable-gnattools")
   fi
   if [ "$_enable_cxx" == "yes" ]; then
     _languages+=",c++"
@@ -352,7 +356,7 @@ package_mingw-w64-gcc() {
     "${MINGW_PACKAGE_PREFIX}-binutils" 
     "${MINGW_PACKAGE_PREFIX}-headers" 
     "${MINGW_PACKAGE_PREFIX}-zlib" 
-    "${MINGW_PACKAGE_PREFIX}-${_realname}-libs=${pkgver}"
+#    "${MINGW_PACKAGE_PREFIX}-${_realname}-libs=${pkgver}"
   )
   if [[ "$_enable_threads" == "yes" && "$_threads" == "posix" ]]; then
     depends+=("${MINGW_PACKAGE_PREFIX}-winpthreads")
@@ -450,7 +454,7 @@ package_mingw-w64-gcc() {
 
 package_mingw-w64-gcc-libgfortran() {
   pkgdesc="GNU Compiler Collection (libgfortran) for MinGW-w64"
-  depends=("${MINGW_PACKAGE_PREFIX}-${_realname}-libs=${pkgver}")
+#  depends=("${MINGW_PACKAGE_PREFIX}-${_realname}-libs=${pkgver}")
 
   mkdir -p ${pkgdir}${_pkg_prefix}/bin
   cd ${srcdir}${_pkg_prefix}
@@ -482,7 +486,7 @@ package_mingw-w64-gcc-fortran() {
 
 package_mingw-w64-gcc-ada() {
   pkgdesc="GNU Compiler Collection (Ada) for MinGW-w64"
-  depends=("${MINGW_PACKAGE_PREFIX}-${_realname}=${pkgver}")
+#  depends=("${MINGW_PACKAGE_PREFIX}-${_realname}=${pkgver}")
 
   mkdir -p ${pkgdir}${_pkg_prefix}/{bin,lib,share}
 
