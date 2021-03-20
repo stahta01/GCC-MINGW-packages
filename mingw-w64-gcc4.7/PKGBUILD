@@ -4,7 +4,13 @@
 # Contributor: Ray Donnelly <mingw.android@gmail.com>
 
 _enable_bootstrap=no
+_enable_threads=no
 _threads="posix"
+if [[ "$_enable_threads" == "yes" && "$_threads" == "posix" ]]; then
+  _enable_libgomp=yes
+else
+  _enable_libgomp=no
+fi
 
 _enable_ada=yes
 _enable_cxx=no
@@ -33,8 +39,11 @@ groups=("${MINGW_PACKAGE_PREFIX}-toolchain" "${MINGW_PACKAGE_PREFIX}")
 depends=("${MINGW_PACKAGE_PREFIX}-zlib" "${MINGW_PACKAGE_PREFIX}-crt" "${MINGW_PACKAGE_PREFIX}-binutils" "${MINGW_PACKAGE_PREFIX}-winpthreads" "${MINGW_PACKAGE_PREFIX}-headers")
 makedepends=(
   $([[ "$_enable_ada" == "yes" ]] && echo "${MINGW_PACKAGE_PREFIX}-${_realname}-ada") 
-  "${MINGW_PACKAGE_PREFIX}-${_realname}" 
+  "${MINGW_PACKAGE_PREFIX}-${_realname}"
   'lndir' 'make' 'patch' 'bison' 'flex' 'tar' 'diffutils' 'texinfo')
+if [[ "$_enable_threads" == "yes" && "$_threads" == "posix" ]]; then
+  makedepends+=("${MINGW_PACKAGE_PREFIX}-winpthreads")
+fi
 #checkdepends=('dejagnu')
 optdepends=()
 replaces=()
@@ -226,6 +235,18 @@ build() {
     configure_opts+=("--disable-bootstrap")
   fi
 
+  if [ "$_enable_threads" == "yes" ]; then
+    configure_opts+=("--enable-threads=${_threads}")
+  elif [ "$_enable_threads" == "no" ]; then
+    configure_opts+=("--disable-threads")
+  fi
+
+  if [ "$_enable_libgomp" == "yes" ]; then
+    configure_opts+=("--enable-libgomp")
+  elif [ "$_enable_libgomp" == "no" ]; then
+    configure_opts+=("--disable-libgomp")
+  fi
+
   local _languages="c,lto"
   if [ "$_enable_ada" == "yes" ]; then
     _languages+=",ada"
@@ -262,7 +283,6 @@ build() {
     --enable-version-specific-runtime-libs \
     --without-cloog --without-isl \
     --enable-lto \
-    --enable-libgomp \
     --disable-multilib \
     --enable-checking=release \
     --disable-rpath \
@@ -294,19 +314,28 @@ build() {
 
 package_mingw-w64-gcc-libs() {
   pkgdesc="GNU Compiler Collection (libraries) for MinGW-w64"
-  depends=("${MINGW_PACKAGE_PREFIX}-libwinpthread")
-  mkdir -p ${pkgdir}${MINGW_PREFIX}/bin
+  depends=()
+  if [[ "$_enable_threads" == "yes" && "$_threads" == "posix" ]]; then
+    depends+=("${MINGW_PACKAGE_PREFIX}-libwinpthread")
+  fi
 
+  mkdir -p ${pkgdir}${MINGW_PREFIX}/bin
   cd ${srcdir}${MINGW_PREFIX}
-  cp bin/{libgcc*,libgomp*,libquadmath*,libssp*}.dll ${pkgdir}${MINGW_PREFIX}/bin/
+  cp bin/{libgcc*,libquadmath*,libssp*}.dll ${pkgdir}${MINGW_PREFIX}/bin/
   if [ "$_enable_cxx" == "yes" ]; then
     cp bin/libstdc*.dll ${pkgdir}${MINGW_PREFIX}/bin/
+  fi
+  if [ "$_enable_libgomp" == "yes" ]; then
+    cp bin/libgomp*.dll ${pkgdir}${_pkg_prefix}/bin/
   fi
 }
 
 package_mingw-w64-gcc() {
   pkgdesc="GNU Compiler Collection (C,C++,OpenMP) for MinGW-w64"
-  depends=("${MINGW_PACKAGE_PREFIX}-crt" "${MINGW_PACKAGE_PREFIX}-binutils" "${MINGW_PACKAGE_PREFIX}-winpthreads" "${MINGW_PACKAGE_PREFIX}-headers" "${MINGW_PACKAGE_PREFIX}-zlib" "${MINGW_PACKAGE_PREFIX}-${_realname}-libs=${pkgver}") 
+  depends=("${MINGW_PACKAGE_PREFIX}-crt" "${MINGW_PACKAGE_PREFIX}-binutils" "${MINGW_PACKAGE_PREFIX}-headers" "${MINGW_PACKAGE_PREFIX}-zlib" "${MINGW_PACKAGE_PREFIX}-${_realname}-libs=${pkgver}") 
+  if [[ "$_enable_threads" == "yes" && "$_threads" == "posix" ]]; then
+    depends+=("${MINGW_PACKAGE_PREFIX}-winpthreads")
+  fi
   provides=("${MINGW_PACKAGE_PREFIX}-${_realname}-base")
   conflicts=("${MINGW_PACKAGE_PREFIX}-${_realname}-base")
 
@@ -343,7 +372,9 @@ package_mingw-w64-gcc() {
   cp lib/gcc/${MINGW_CHOST}/${pkgver}/liblto* ${pkgdir}${MINGW_PREFIX}/lib/gcc/${MINGW_CHOST}/${pkgver}/
   cp lib/gcc/${MINGW_CHOST}/${pkgver}/libgcc* ${pkgdir}${MINGW_PREFIX}/lib/gcc/${MINGW_CHOST}/${pkgver}/
   cp lib/gcc/${MINGW_CHOST}/${pkgver}/libgcov.* ${pkgdir}${MINGW_PREFIX}/lib/gcc/${MINGW_CHOST}/${pkgver}/
-  cp lib/gcc/${MINGW_CHOST}/${pkgver}/libgomp.* ${pkgdir}${MINGW_PREFIX}/lib/gcc/${MINGW_CHOST}/${pkgver}/
+  if [ "$_enable_libgomp" == "yes" ]; then
+    cp lib/gcc/${MINGW_CHOST}/${pkgver}/libgomp.* ${pkgdir}${MINGW_PREFIX}/lib/gcc/${MINGW_CHOST}/${pkgver}/
+  fi
   cp lib/gcc/${MINGW_CHOST}/${pkgver}/libquadmath.* ${pkgdir}${MINGW_PREFIX}/lib/gcc/${MINGW_CHOST}/${pkgver}/
   cp lib/gcc/${MINGW_CHOST}/${pkgver}/libssp* ${pkgdir}${MINGW_PREFIX}/lib/gcc/${MINGW_CHOST}/${pkgver}/
   cp lib/gcc/${MINGW_CHOST}/${pkgver}/lto*.exe ${pkgdir}${MINGW_PREFIX}/lib/gcc/${MINGW_CHOST}/${pkgver}/
@@ -372,7 +403,9 @@ package_mingw-w64-gcc() {
   cp share/info/gcc.info* ${pkgdir}${MINGW_PREFIX}/share/info/
   cp share/info/gccinstall.info* ${pkgdir}${MINGW_PREFIX}/share/info/
   cp share/info/gccint.info* ${pkgdir}${MINGW_PREFIX}/share/info/
-  cp share/info/libgomp.info* ${pkgdir}${MINGW_PREFIX}/share/info/
+  if [ "$_enable_libgomp" == "yes" ]; then
+    cp share/info/libgomp.info* ${pkgdir}${MINGW_PREFIX}/share/info/
+  fi
   cp share/info/libquadmath.info* ${pkgdir}${MINGW_PREFIX}/share/info/
   
   #cp share/locale/* ${pkgdir}${MINGW_PREFIX}/share/locale/
