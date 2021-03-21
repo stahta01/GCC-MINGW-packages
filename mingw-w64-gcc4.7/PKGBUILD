@@ -38,8 +38,8 @@ license=('GPL' 'LGPL' 'FDL' 'custom')
 groups=("${MINGW_PACKAGE_PREFIX}-toolchain" "${MINGW_PACKAGE_PREFIX}")
 depends=("${MINGW_PACKAGE_PREFIX}-zlib" "${MINGW_PACKAGE_PREFIX}-crt" "${MINGW_PACKAGE_PREFIX}-binutils" "${MINGW_PACKAGE_PREFIX}-headers")
 makedepends=(
-  $([[ "$_enable_ada" == "yes" ]] && echo "${MINGW_PACKAGE_PREFIX}-${_realname}-ada") 
-  "${MINGW_PACKAGE_PREFIX}-${_realname}"
+#  $([[ "$_enable_ada" == "yes" ]] && echo "${MINGW_PACKAGE_PREFIX}-${_realname}-ada") 
+#  "${MINGW_PACKAGE_PREFIX}-${_realname}"
   'lndir' 'make' 'patch' 'bison' 'flex' 'tar' 'diffutils' 'texinfo')
 if [[ "$_enable_threads" == "yes" && "$_threads" == "posix" ]]; then
   makedepends+=("${MINGW_PACKAGE_PREFIX}-winpthreads")
@@ -48,7 +48,7 @@ fi
 optdepends=()
 replaces=()
 backup=()
-options=('strip' '!debug' 'staticlibs' '!emptydirs') # '!buildflags'
+options=('strip' '!debug' 'staticlibs' '!emptydirs' '!buildflags')
 MPFR_VERSION=mpfr-2.4.2
 GMP_VERSION=gmp-4.3.2
 MPC_VERSION=mpc-0.8.1
@@ -219,6 +219,26 @@ build() {
     
     x86_64)
       local _arch=x86-64
+    ;;
+  esac
+
+  case "${CARCH}" in
+    i686)
+      local _local_gcc32_prefix=/c/GreenApps32/gcc_4.6.0-mingw32_x86_generic/mingw
+      export PATH="${_local_gcc32_prefix}/bin":$PATH
+      export GNATBIND="${_local_gcc32_prefix}/bin/gnatbind"
+      export GNATMAKE="${_local_gcc32_prefix}/bin/gnatmake"
+      export CC="${_local_gcc32_prefix}/bin/gcc"
+      export CXX="${_local_gcc32_prefix}/bin/g++"
+    ;;
+
+    x86_64)
+      local _local_gcc64_prefix=/c/GreenApps64/gcc_4.6.0_mingw64_x86_64_K8+ada/mingw64
+      export PATH="${_local_gcc64_prefix}/bin":$PATH
+      export GNATBIND="${_local_gcc64_prefix}/bin/gnatbind"
+      export GNATMAKE="${_local_gcc64_prefix}/bin/gnatmake"
+      export CC="${_local_gcc64_prefix}/bin/gcc"
+      export CXX="${_local_gcc64_prefix}/bin/g++"
     ;;
   esac
 
