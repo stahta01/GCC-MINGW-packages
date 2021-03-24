@@ -70,7 +70,7 @@ source=("ftp://gcc.gnu.org/pub/gcc/releases/${_basename}-${pkgver}/${_basename}-
   '804-gcc-4.6.4-Fix-texi-docs-syntax-errors.patch'
   '806-gcc-4.8-libgcc-references.patch'
   '807-gcc-4.8-lambda-ICE.patch')
-sha256sums=('2f7c37eb4fc14422ff2358a9ef59c974a75ab41204ef0e49fc34ab1d8981a9c3'
+sha256sums=('SKIP'
             'c7e75a08a8d49d2082e4caee1591a05d11b9d5627514e678f02d66a124bcf2ba'
             '936162c0312886c21581002b79932829aa048cfaf9937c6265aeaa14f1cd1775'
             'e664603757251fd8a352848276497a4c79b7f8b21fd8aedd5cc0598a38fee3e4'
