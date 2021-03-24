@@ -29,7 +29,7 @@ pkgname=(
      $([[ "$_enable_objc" == "yes" ]] && echo "${MINGW_PACKAGE_PREFIX}-${_realname}-objc")
     )
 pkgbase=mingw-w64-${_basename}${_base_pkg_version}
-pkgver=${_base_pkg_version}.0
+pkgver=${_base_pkg_version}.2
 pkgrel=1
 pkgdesc="GCC for the MinGW-w64"
 arch=('any')
