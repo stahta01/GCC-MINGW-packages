@@ -1,4 +1,4 @@
-From 6e25f8b2104678ae27fc6e6e336d71de6704515c Mon Sep 17 00:00:00 2001
+From b2fd7e5e23c811d93ba01d4513b33aea7904c2f8 Mon Sep 17 00:00:00 2001
 From: Kai Tietz <ktietz@redhat.com>
 Date: Wed, 13 Feb 2013 11:20:30 +0100
 Subject: SVN 196003 PR target/52122 add LN_S_RECURSIVE
@@ -8,15 +8,15 @@ Patch file edited by Tim S.
 PR target/52122
 * Makefile.in (LN_S_RECUSIVE): New.
 (adainclude, adalib): Use LN_S_RECURSIVE for copy.
-
 ---
  libada/Makefile.in | 14 ++++++++++----
+ 1 file changed, 10 insertions(+), 4 deletions(-)
 
 diff --git a/libada/Makefile.in b/libada/Makefile.in
-index 389a2fb2f79..68c846fe94e 100644
+index 36cf5ad5e5a..ad775431e5a 100644
 --- a/libada/Makefile.in
 +++ b/libada/Makefile.in
-@@ -43,6 +43,12 @@ enable_shared = @enable_shared@
+@@ -44,6 +44,12 @@ enable_shared = @enable_shared@
  LN_S=@LN_S@
  AWK=@AWK@
  
@@ -29,7 +29,7 @@ index 389a2fb2f79..68c846fe94e 100644
  # Variables for the user (or the top level) to override.
  objext=.o
  THREAD_KIND=native
-@@ -100,8 +106,8 @@ gnatlib-plain: osconstool $(GCC_DIR)/ada/Makefile
+@@ -102,8 +108,8 @@ gnatlib-plain: osconstool $(GCC_DIR)/ada/Makefile
  	&& touch stamp-libada
  	-rm -rf adainclude
  	-rm -rf adalib
@@ -40,7 +40,7 @@ index 389a2fb2f79..68c846fe94e 100644
  
  gnatlib-sjlj gnatlib-zcx gnatlib-shared: osconstool $(GCC_DIR)/ada/Makefile
  	test -f stamp-libada || \
-@@ -109,8 +115,8 @@ gnatlib-sjlj gnatlib-zcx gnatlib-shared: osconstool $(GCC_DIR)/ada/Makefile
+@@ -111,8 +117,8 @@ gnatlib-sjlj gnatlib-zcx gnatlib-shared: osconstool $(GCC_DIR)/ada/Makefile
  	&& touch stamp-libada
  	-rm -rf adainclude
  	-rm -rf adalib
