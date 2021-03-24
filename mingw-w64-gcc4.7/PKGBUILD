@@ -40,7 +40,7 @@ depends=("${MINGW_PACKAGE_PREFIX}-zlib" "${MINGW_PACKAGE_PREFIX}-crt" "${MINGW_P
 makedepends=(
 #  $([[ "$_enable_ada" == "yes" ]] && echo "${MINGW_PACKAGE_PREFIX}-${_realname}-ada") 
 #  "${MINGW_PACKAGE_PREFIX}-${_realname}"
-  'lndir' 'make' 'patch' 'bison' 'flex' 'tar' 'diffutils' 'texinfo')
+  'lndir' 'make' 'patch' 'bison' 'flex' 'tar' 'diffutils') # 'texinfo')
 if [[ "$_enable_threads" == "yes" && "$_threads" == "posix" ]]; then
   makedepends+=("${MINGW_PACKAGE_PREFIX}-winpthreads")
 fi
