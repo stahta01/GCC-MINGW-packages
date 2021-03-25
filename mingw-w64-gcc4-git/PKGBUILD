@@ -5,6 +5,8 @@
 # Contributor: Renato Silva <br.renatosilva@gmail.com>
 # Contributor: Liu Hao <lh_mouse@126.com>
 
+_enable_bootstrap=no
+
 _enable_gcc_plugin=no
 _enable_gcc_lto=yes
 _enable_ada=yes
@@ -21,7 +23,7 @@ pkgname=("${MINGW_PACKAGE_PREFIX}-${_realname}-libs-git"
          $([[ "$_enable_ada" == "yes" ]] && echo "${MINGW_PACKAGE_PREFIX}-${_realname}-ada-git")
          $([[ "$_enable_objc" == "yes" ]] && echo "${MINGW_PACKAGE_PREFIX}-${_realname}-objc-git")
         )
-pkgver=5.5.0.d20171010+1.c10.g926d9947847
+pkgver=4.7.4.d20140612+45.c2.g4d1f511d7f2
 pkgrel=1
 pkgdesc="GCC for the MinGW-w64"
 arch=('any')
@@ -236,6 +238,12 @@ build() {
     ;;
   esac
 
+  if [ "$_enable_bootstrap" == "yes" ]; then
+    configure_opts+=("--enable-bootstrap")
+  elif [ "$_enable_bootstrap" == "no" ]; then
+    configure_opts+=("--disable-bootstrap")
+  fi
+
   if [ "$_enable_gcc_lto" == "yes" ]; then
     configure_opts+=("--enable-lto")
   else
@@ -287,7 +295,6 @@ build() {
     --with-gxx-include-dir=${MINGW_PREFIX}/include/c++/${pkgver} \
     --enable-version-specific-runtime-libs \
     --libexecdir=${_pkg_prefix}/lib \
-    --enable-bootstrap \
     --with-arch=${_arch} \
     --with-tune=generic \
     --enable-languages=${_languages} \
