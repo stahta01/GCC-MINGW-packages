@@ -152,8 +152,8 @@ prepare() {
   cd ${srcdir}/${_sourcedir}
   GIT_AM="git am --committer-date-is-author-date"
 
-  patch -p1 -i ${srcdir}/001-gcc-4.8-libstdc++export.patch
-  patch -p1 -i ${srcdir}/002-gcc-4.7-stdthreads.patch
+  apply_patch_with_msg 001-gcc-4.8-libstdc++export.patch
+  apply_patch_with_msg 002-gcc-4.7-stdthreads.patch
 
   # Don't waste valuable commandline chars on double-quotes around "arguments"
   #  that don't need them.
