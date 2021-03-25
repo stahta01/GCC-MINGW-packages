@@ -175,7 +175,7 @@ prepare() {
   # Build extra tools for Ada
   apply_patch_with_msg 230-build-more-gnattools.mingw.patch
 
-  ${GIT_AM} ${srcdir}/802-handle-use-mingw-ansi-stdio.patch
+  apply_patch_with_msg 802-handle-use-mingw-ansi-stdio.patch
   ${GIT_AM} ${srcdir}/804-gcc-4.6.4-Fix-texi-docs-syntax-errors.patch
   ${GIT_AM} ${srcdir}/806-gcc-4.8-libgcc-references.patch
   ${GIT_AM} ${srcdir}/807-gcc-4.8-lambda-ICE.patch
