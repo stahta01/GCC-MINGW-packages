@@ -177,9 +177,9 @@ prepare() {
 
   apply_patch_with_msg 802-handle-use-mingw-ansi-stdio.patch
   ${GIT_AM} ${srcdir}/804-gcc-4.6.4-Fix-texi-docs-syntax-errors.patch
-  ${GIT_AM} ${srcdir}/806-gcc-4.8-libgcc-references.patch
-  ${GIT_AM} ${srcdir}/807-gcc-4.8-lambda-ICE.patch
-  ${GIT_AM} ${srcdir}/808-gcc-4.7.0-SVN-196003-PR-target-52122-add-LN_S_RECURSIVE.patch
+  apply_patch_with_msg 806-gcc-4.8-libgcc-references.patch
+  apply_patch_with_msg 807-gcc-4.8-lambda-ICE.patch
+  apply_patch_with_msg 808-gcc-4.7.0-SVN-196003-PR-target-52122-add-LN_S_RECURSIVE.patch
 
   # hack! - some configure tests for header files using "$CPP $CPPFLAGS"
   sed -i "/ac_cpp=/s/\$CPPFLAGS/\$CPPFLAGS -O2/" {libiberty,gcc}/configure
