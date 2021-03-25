@@ -6,6 +6,7 @@
 # Contributor: Liu Hao <lh_mouse@126.com>
 
 _enable_bootstrap=no
+_threads="posix"
 
 _enable_gcc_plugin=no
 _enable_gcc_lto=yes
@@ -127,7 +128,6 @@ _extract_to_source_folder() {
 }
 # =========================================== #
 
-_threads="posix"
 _git_base_commit=
 _gcc_version=
 _gcc_date=
