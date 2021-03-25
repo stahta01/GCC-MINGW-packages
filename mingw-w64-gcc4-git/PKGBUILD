@@ -79,7 +79,8 @@ source+=(
   '802-handle-use-mingw-ansi-stdio.patch'
   '804-gcc-4.6.4-Fix-texi-docs-syntax-errors.patch'
   '806-gcc-4.8-libgcc-references.patch'
-  '807-gcc-4.8-lambda-ICE.patch')
+  '807-gcc-4.8-lambda-ICE.patch'
+  '808-gcc-4.7.0-SVN-196003-PR-target-52122-add-LN_S_RECURSIVE.patch')
 sha256sums=('SKIP'
             'd3103a80cdad2407ed581f3618c4bed04e0c92d1cf771a65ead662cc397f7775'
             '498449a994efeba527885c10405993427995d3f86b8768d8cdf8d9dd7c6b73e8'
@@ -103,14 +104,19 @@ sha256sums=('SKIP'
             '0768864eba737cf7be59e8469d039a2246e015e40ba139cd2d20aa798c3362ef'
             '9893cd986191de2e761e2ed98ad6ec8fadeab86311dc6ba20a1032f13e478686')
 
-_threads="posix"
-_git_base_commit=
-_gcc_version=
-_gcc_date=
-
-pkgver() {
-  cd ${srcdir}/${_sourcedir}
-  printf "%s.d%s+%s.c%s.g%s" "$_gcc_version" "$_gcc_date" $(git rev-list --count $(git rev-list -1 ${_git_base_commit} gcc/DATESTAMP)..${_git_base_commit}) $(git rev-list --count ${_git_base_commit}..HEAD) $(git rev-parse --short ${_git_base_commit})
+# Helper macros to help make tasks easier #
+apply_patch_with_msg() {
+  for _patch in "$@"
+  do
+    if patch --dry-run -Nbp1 -i "${srcdir}/${_patch}" > /dev/null 2>&1 ; then
+      msg2 "Applying ${_patch}"
+      patch -Nbp1 -i "${srcdir}/${_patch}"
+    elif patch --dry-run -Rbp1 -i "${srcdir}/${_patch}" > /dev/null 2>&1 ; then
+      msg2 "Skipping ${_patch} because it likely was already applied"
+    else
+      msg2 "Skipping ${_patch} because it likely will fail"
+    fi
+  done
 }
 
 _extract_to_source_folder() {
@@ -121,6 +127,17 @@ _extract_to_source_folder() {
         mkdir -p "${srcdir}/${_sourcedir}/$subfolder"
         tar -x --strip-components=1 -f "$tarfile" -C "${srcdir}/${_sourcedir}/$subfolder"
     fi
+}
+# =========================================== #
+
+_threads="posix"
+_git_base_commit=
+_gcc_version=
+_gcc_date=
+
+pkgver() {
+  cd ${srcdir}/${_sourcedir}
+  printf "%s.d%s+%s.c%s.g%s" "$_gcc_version" "$_gcc_date" $(git rev-list --count $(git rev-list -1 ${_git_base_commit} gcc/DATESTAMP)..${_git_base_commit}) $(git rev-list --count ${_git_base_commit}..HEAD) $(git rev-parse --short ${_git_base_commit})
 }
 
 prepare() {
@@ -139,31 +156,35 @@ prepare() {
 
   cd ${srcdir}/${_sourcedir}
   GIT_AM="git am --committer-date-is-author-date"
-  ${GIT_AM} ${srcdir}/000-gcc-5-mingw-Relocate-libintl.patch
+
   patch -p1 -i ${srcdir}/001-gcc-4.8-libstdc++export.patch
   patch -p1 -i ${srcdir}/002-gcc-4.7-stdthreads.patch
-  ${GIT_AM} ${srcdir}/003-Windows-Follow-Posix-dir-exists-semantics-more-close.patch
-  ${GIT_AM} ${srcdir}/004-Windows-Use-not-in-progpath-and-leave-case-as-is.patch
-  ${GIT_AM} ${srcdir}/005-gcc-9-Windows-Don-t-ignore-native-system-header-dir.patch
-  ${GIT_AM} ${srcdir}/007-gcc-5-mingw-Build-EXTRA_GNATTOOLS-for-Ada.patch
-  if [ "$_enable_fortran" == "yes" ]; then
-    ${GIT_AM} ${srcdir}/008-gcc-5-mingw-Prettify-linking-no-undefined.patch
-  fi
-  patch -p1 -i ${srcdir}/009-gcc-5-make-xmmintrin-header-cplusplus-compatible.patch
-  ${GIT_AM} ${srcdir}/010-gcc-9-Fix-using-large-PCH.patch
-  ${GIT_AM} ${srcdir}/011-Enable-shared-gnat-implib.patch
-  if [[ ${_gcc_version:1:1} == "." && ${_gcc_version:0:1} < "6" ]]; then
-    ${GIT_AM} ${srcdir}/014-gcc-5-clone_function_name_1-Retain-any-stdcall-suffix.patch
-  fi
-  ${GIT_AM} ${srcdir}/020-gcc-5-libgomp-Don-t-hard-code-MS-printf-attributes.patch
+
+  # Don't waste valuable commandline chars on double-quotes around "arguments"
+  #  that don't need them.
+  apply_patch_with_msg 130-dont-escape-arguments-that-dont-need-it-in-pex-win32.c.patch
+
+  # Make Windows behave the same as Posix in the consideration of whether folder
+  # "/exists/doesnt-exist/.." is a valid path.. in Posix, it isn't.
+  apply_patch_with_msg 140-fix-for-windows-not-minding-non-existant-parent-dirs.patch
+
+  # Don't make a lowercase backslashed path from argv[0]
+  #  that then fail to strcmp with prefix(es) .. they're also ugly.
+  apply_patch_with_msg 150-windows-lrealpath-no-force-lowercase-nor-backslash.patch
+
+  # Don't ignore values passed via --with-native-system-header-dir=
+  # apply_patch_with_msg 160-mingw-dont-ignore-native-system-header-dir.patch
 
   ${GIT_AM} ${srcdir}/210-gcc-4.4-ktietz-libgomp.patch
 
-  if [ "${CARCH}" = "i686" ]; then
-    patch -p1 -i ${srcdir}/405-dwarf-regression.patch
-  fi
+  # Build extra tools for Ada
+  apply_patch_with_msg 230-build-more-gnattools.mingw.patch
 
-  patch -p1 -i ${srcdir}/955-4.9.2-apply-hack-so-gcc_s-isnt-stripped.patch
+  ${GIT_AM} ${srcdir}/802-handle-use-mingw-ansi-stdio.patch
+  ${GIT_AM} ${srcdir}/804-gcc-4.6.4-Fix-texi-docs-syntax-errors.patch
+  ${GIT_AM} ${srcdir}/806-gcc-4.8-libgcc-references.patch
+  ${GIT_AM} ${srcdir}/807-gcc-4.8-lambda-ICE.patch
+  ${GIT_AM} ${srcdir}/808-gcc-4.7.0-SVN-196003-PR-target-52122-add-LN_S_RECURSIVE.patch
 
   # hack! - some configure tests for header files using "$CPP $CPPFLAGS"
   sed -i "/ac_cpp=/s/\$CPPFLAGS/\$CPPFLAGS -O2/" {libiberty,gcc}/configure
