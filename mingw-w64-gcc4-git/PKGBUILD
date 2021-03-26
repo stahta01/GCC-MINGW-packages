@@ -7,6 +7,7 @@
 
 _enable_info=no
 _enable_bootstrap=no
+_enable_threads=yes
 _threads="posix"
 
 _enable_gcc_plugin=no
@@ -362,8 +363,10 @@ check() {
 
 package_mingw-w64-gcc-libs-git() {
   pkgdesc="GNU Compiler Collection (libraries) for MinGW-w64"
-  depends=("${MINGW_PACKAGE_PREFIX}-gmp"
-           "${MINGW_PACKAGE_PREFIX}-libwinpthread")
+  depends=()
+  if [[ "$_enable_threads" == "yes" && "$_threads" == "posix" ]]; then
+    depends+=("${MINGW_PACKAGE_PREFIX}-libwinpthread")
+  fi
   provides=("${MINGW_PACKAGE_PREFIX}-${_realname}-libs")
   conflicts=("${MINGW_PACKAGE_PREFIX}-${_realname}-libs")
 
