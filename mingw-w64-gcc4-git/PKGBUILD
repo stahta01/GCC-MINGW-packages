@@ -460,10 +460,10 @@ package_mingw-w64-gcc-git() {
   cp lib/gcc/${MINGW_CHOST}/${_gcc_driver_version}/libgcc*            ${pkgdir}${_pkg_prefix}/lib/gcc/${MINGW_CHOST}/${_gcc_driver_version}/
 
   if [ "$_enable_cxx" == "yes" ]; then
-    cp -r include/c++                               ${pkgdir}${_pkg_prefix}/include/
-    cp lib/gcc/${MINGW_CHOST}/${pkgver}/cc1plus.exe ${pkgdir}${_pkg_prefix}/lib/gcc/${MINGW_CHOST}/${_gcc_driver_version}/
-    cp lib/gcc/${MINGW_CHOST}/${pkgver}/libstdc++* ${pkgdir}${_pkg_prefix}/lib/gcc/${MINGW_CHOST}/${_gcc_driver_version}/
-    cp lib/gcc/${MINGW_CHOST}/${pkgver}/libsupc++* ${pkgdir}${_pkg_prefix}/lib/gcc/${MINGW_CHOST}/${_gcc_driver_version}/
+    cp -r include/c++                                               ${pkgdir}${_pkg_prefix}/include/
+    cp    lib/gcc/${MINGW_CHOST}/${_gcc_driver_version}/cc1plus.exe ${pkgdir}${_pkg_prefix}/lib/gcc/${MINGW_CHOST}/${_gcc_driver_version}/
+    cp    lib/gcc/${MINGW_CHOST}/${_gcc_driver_version}/libstdc++*  ${pkgdir}${_pkg_prefix}/lib/gcc/${MINGW_CHOST}/${_gcc_driver_version}/
+    cp    lib/gcc/${MINGW_CHOST}/${_gcc_driver_version}/libsupc++*  ${pkgdir}${_pkg_prefix}/lib/gcc/${MINGW_CHOST}/${_gcc_driver_version}/
   fi
 
   if [ "$_enable_cxx" == "yes" ]; then
