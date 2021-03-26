@@ -416,7 +416,6 @@ package_mingw-w64-gcc-git() {
   cp bin/gcc-nm.exe                                     ${pkgdir}${_pkg_prefix}/bin/
   cp bin/gcc-ranlib.exe                                 ${pkgdir}${_pkg_prefix}/bin/
   cp bin/gcov.exe                                       ${pkgdir}${_pkg_prefix}/bin/
-  cp bin/gcov-tool.exe                                  ${pkgdir}${_pkg_prefix}/bin/
   cp bin/c++.exe                                        ${pkgdir}${_pkg_prefix}/bin/
   cp bin/g++.exe                                        ${pkgdir}${_pkg_prefix}/bin/
   cp bin/${MINGW_CHOST}-c++.exe                         ${pkgdir}${_pkg_prefix}/bin/
