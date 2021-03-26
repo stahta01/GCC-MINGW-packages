@@ -445,7 +445,6 @@ package_mingw-w64-gcc-git() {
   cp lib/gcc/${MINGW_CHOST}/${_gcc_driver_version}/lto*.exe           ${pkgdir}${_pkg_prefix}/lib/gcc/${MINGW_CHOST}/${_gcc_driver_version}/
   cp lib/gcc/${MINGW_CHOST}/${_gcc_driver_version}/cc1plus.exe        ${pkgdir}${_pkg_prefix}/lib/gcc/${MINGW_CHOST}/${_gcc_driver_version}/
 
-  cp lib/libgcc*                                              ${pkgdir}${_pkg_prefix}/lib/gcc/${MINGW_CHOST}/${_gcc_driver_version}/
   cp lib/gcc/${MINGW_CHOST}/${_gcc_driver_version}/libgcc*            ${pkgdir}${_pkg_prefix}/lib/gcc/${MINGW_CHOST}/${_gcc_driver_version}/
 
   cp lib/libgomp*                                             ${pkgdir}${_pkg_prefix}/lib/gcc/${MINGW_CHOST}/${_gcc_driver_version}/
