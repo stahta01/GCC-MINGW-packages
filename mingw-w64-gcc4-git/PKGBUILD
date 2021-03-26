@@ -447,13 +447,6 @@ package_mingw-w64-gcc-git() {
 
   cp lib/gcc/${MINGW_CHOST}/${_gcc_driver_version}/libgcc*            ${pkgdir}${_pkg_prefix}/lib/gcc/${MINGW_CHOST}/${_gcc_driver_version}/
 
-  #cp lib/libitm*                                              ${pkgdir}${_pkg_prefix}/lib/gcc/${MINGW_CHOST}/${_gcc_driver_version}/
-  cp lib/libquadmath*                                         ${pkgdir}${_pkg_prefix}/lib/gcc/${MINGW_CHOST}/${_gcc_driver_version}/
-  cp lib/libssp*                                              ${pkgdir}${_pkg_prefix}/lib/gcc/${MINGW_CHOST}/${_gcc_driver_version}/
-  #cp lib/libvtv*                                              ${pkgdir}${_pkg_prefix}/lib/gcc/${MINGW_CHOST}/${_gcc_driver_version}/
-  cp lib/libstdc++*                                           ${pkgdir}${_pkg_prefix}/lib/gcc/${MINGW_CHOST}/${_gcc_driver_version}/
-  cp lib/libsupc++*                                           ${pkgdir}${_pkg_prefix}/lib/gcc/${MINGW_CHOST}/${_gcc_driver_version}/
-
   mkdir -p ${pkgdir}${_pkg_prefix}/share/{doc,info,locale,man}
   #cp -r share/doc/gcc-${_gcc_driver_version} ${pkgdir}${_pkg_prefix}/share/doc/
   if [ "$_enable_info" == "yes" ]; then
