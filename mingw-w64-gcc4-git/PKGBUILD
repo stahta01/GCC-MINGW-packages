@@ -58,8 +58,7 @@ _git_commit='edc56cde5124be76dd6ae3baff9eeb1fb61a1c41' # SVN188596 releases/gcc-
 #_git_commit='3156520d5df2a2e52b78f266cd750aa05b5ae64c' # SVN188167
 #_git_commit='95d2db2008d8ac8772cd0fd634e6228376e632eb' # SVN188122
 #_git_commit='c8f5c98afa95c15641c97672de12df0664e564ae' # SVN187205
-#_git_commit='' # SVN
-#_git_commit='' # SVN
+#_git_commit='c45a86fd95f3afecb6dc2dc99232062845f4b570' # SVN186959
 
 #_git_repo_url=git://gcc.gnu.org/git/gcc.git
 #_sourcedir=${_realname}-git
@@ -447,7 +446,6 @@ package_mingw-w64-gcc-git() {
   cp bin/${MINGW_CHOST}-gcc-ranlib.exe                  ${pkgdir}${_pkg_prefix}/bin/
 
   mkdir -p ${pkgdir}${_pkg_prefix}/lib/gcc/${MINGW_CHOST}/${_gcc_driver_version}/include
-  cp -r include/c++                                           ${pkgdir}${_pkg_prefix}/include/
   cp lib/gcc/${MINGW_CHOST}/${_gcc_driver_version}/include/*.h        ${pkgdir}${_pkg_prefix}/lib/gcc/${MINGW_CHOST}/${_gcc_driver_version}/include/
   cp -r lib/gcc/${MINGW_CHOST}/${_gcc_driver_version}/include/ssp     ${pkgdir}${_pkg_prefix}/lib/gcc/${MINGW_CHOST}/${_gcc_driver_version}/include/
   cp -r lib/gcc/${MINGW_CHOST}/${_gcc_driver_version}/include-fixed   ${pkgdir}${_pkg_prefix}/lib/gcc/${MINGW_CHOST}/${_gcc_driver_version}/
@@ -463,7 +461,6 @@ package_mingw-w64-gcc-git() {
   fi
   cp lib/gcc/${MINGW_CHOST}/${_gcc_driver_version}/libgcov*           ${pkgdir}${_pkg_prefix}/lib/gcc/${MINGW_CHOST}/${_gcc_driver_version}/
   cp lib/gcc/${MINGW_CHOST}/${_gcc_driver_version}/lto*.exe           ${pkgdir}${_pkg_prefix}/lib/gcc/${MINGW_CHOST}/${_gcc_driver_version}/
-  cp lib/gcc/${MINGW_CHOST}/${_gcc_driver_version}/cc1plus.exe        ${pkgdir}${_pkg_prefix}/lib/gcc/${MINGW_CHOST}/${_gcc_driver_version}/
 
   cp lib/gcc/${MINGW_CHOST}/${_gcc_driver_version}/libgcc*            ${pkgdir}${_pkg_prefix}/lib/gcc/${MINGW_CHOST}/${_gcc_driver_version}/
 
