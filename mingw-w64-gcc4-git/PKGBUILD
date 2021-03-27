@@ -27,7 +27,7 @@ pkgname=("${MINGW_PACKAGE_PREFIX}-${_realname}-libs-git"
          $([[ "$_enable_ada" == "yes" ]] && echo "${MINGW_PACKAGE_PREFIX}-${_realname}-ada-git")
          $([[ "$_enable_objc" == "yes" ]] && echo "${MINGW_PACKAGE_PREFIX}-${_realname}-objc-git")
         )
-pkgver=4.7.1.d20120614+45.c2.gedc56cde512
+pkgver=4.7.1.d20120604+2.c2.g3156520d5df
 pkgrel=1
 pkgdesc="GCC for the MinGW-w64"
 arch=('any')
@@ -53,9 +53,9 @@ options=('staticlibs' '!emptydirs') # '!strip' 'debug')
 
 #_git_branch=releases/gcc-4.7
 #_git_tag=releases/gcc-4.7.1
-_git_commit='edc56cde5124be76dd6ae3baff9eeb1fb61a1c41' # SVN188596 releases/gcc-4.7.1
+#_git_commit='edc56cde5124be76dd6ae3baff9eeb1fb61a1c41' # SVN188596 releases/gcc-4.7.1 Built and installed okay
 #_git_commit='050358f1954ebb05dbb5e0747ce01f3c65f8774b' # SVN188513
-#_git_commit='3156520d5df2a2e52b78f266cd750aa05b5ae64c' # SVN188167
+_git_commit='3156520d5df2a2e52b78f266cd750aa05b5ae64c' # SVN188167
 #_git_commit='95d2db2008d8ac8772cd0fd634e6228376e632eb' # SVN188122
 #_git_commit='c8f5c98afa95c15641c97672de12df0664e564ae' # SVN187205
 #_git_commit='c45a86fd95f3afecb6dc2dc99232062845f4b570' # SVN186959
