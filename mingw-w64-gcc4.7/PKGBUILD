@@ -29,7 +29,7 @@ pkgname=(
      $([[ "$_enable_objc" == "yes" ]] && echo "${MINGW_PACKAGE_PREFIX}-${_realname}-objc")
     )
 pkgbase=mingw-w64-${_basename}${_base_pkg_version}
-pkgver=${_base_pkg_version}.1
+pkgver=${_base_pkg_version}.4
 pkgrel=1
 pkgdesc="GCC for the MinGW-w64"
 arch=('any')
@@ -226,25 +226,25 @@ build() {
     ;;
   esac
 
-  case "${CARCH}" in
-    i686)
-      local _local_gcc32_prefix=/c/GreenApps32/gcc_4.6.0-mingw32_x86_generic/mingw
-      export PATH="${_local_gcc32_prefix}/bin":$PATH
-      export GNATBIND="${_local_gcc32_prefix}/bin/gnatbind"
-      export GNATMAKE="${_local_gcc32_prefix}/bin/gnatmake"
-      export CC="${_local_gcc32_prefix}/bin/gcc"
-      export CXX="${_local_gcc32_prefix}/bin/g++"
-    ;;
-
-    x86_64)
-      local _local_gcc64_prefix=/c/GreenApps64/gcc_4.6.0_mingw64_x86_64_K8+ada/mingw64
-      export PATH="${_local_gcc64_prefix}/bin":$PATH
-      export GNATBIND="${_local_gcc64_prefix}/bin/gnatbind"
-      export GNATMAKE="${_local_gcc64_prefix}/bin/gnatmake"
-      export CC="${_local_gcc64_prefix}/bin/gcc"
-      export CXX="${_local_gcc64_prefix}/bin/g++"
-    ;;
-  esac
+#  case "${CARCH}" in
+#    i686)
+#      local _local_gcc32_prefix=/c/GreenApps32/gcc_4.6.0-mingw32_x86_generic/mingw
+#      export PATH="${_local_gcc32_prefix}/bin":$PATH
+#      export GNATBIND="${_local_gcc32_prefix}/bin/gnatbind"
+#      export GNATMAKE="${_local_gcc32_prefix}/bin/gnatmake"
+#      export CC="${_local_gcc32_prefix}/bin/gcc"
+#      export CXX="${_local_gcc32_prefix}/bin/g++"
+#    ;;
+#
+#    x86_64)
+#      local _local_gcc64_prefix=/c/GreenApps64/gcc_4.6.0_mingw64_x86_64_K8+ada/mingw64
+#      export PATH="${_local_gcc64_prefix}/bin":$PATH
+#      export GNATBIND="${_local_gcc64_prefix}/bin/gnatbind"
+#      export GNATMAKE="${_local_gcc64_prefix}/bin/gnatmake"
+#      export CC="${_local_gcc64_prefix}/bin/gcc"
+#      export CXX="${_local_gcc64_prefix}/bin/g++"
+#    ;;
+#  esac
 
   pacman -Q ${MINGW_PACKAGE_PREFIX}-crt
   gcc --version
