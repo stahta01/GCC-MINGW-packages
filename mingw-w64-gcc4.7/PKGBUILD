@@ -292,7 +292,10 @@ build() {
     configure_opts+=("--disable-libgomp")
   fi
 
-  local _languages="c,lto"
+  local _languages="c"
+  if [ "$_enable_gcc_lto" == "yes" ]; then
+    _languages+=",lto"
+  fi
   if [ "$_enable_ada" == "yes" ]; then
     _languages+=",ada"
   fi
