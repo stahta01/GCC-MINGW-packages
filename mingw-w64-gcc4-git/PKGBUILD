@@ -332,18 +332,19 @@ build() {
     --host=${MINGW_CHOST} \
     --target=${MINGW_CHOST} \
     --with-native-system-header-dir=${MINGW_PREFIX}/${MINGW_CHOST}/include \
-    --with-gxx-include-dir=${MINGW_PREFIX}/include/c++/${pkgver} \
-    --enable-version-specific-runtime-libs \
     --libexecdir=${_pkg_prefix}/lib \
+    --with-gxx-include-dir=${MINGW_PREFIX}/include/c++/${pkgver} \
     --with-arch=${_arch} \
     --with-tune=generic \
     --enable-languages=${_languages} \
     --enable-shared --enable-static \
-    --enable-graphite \
+    --disable-graphite \
     --enable-fully-dynamic-string \
     --enable-libstdcxx-time=yes \
     --disable-libstdcxx-pch \
     --disable-libstdcxx-debug \
+    --enable-version-specific-runtime-libs \
+    --without-cloog --without-isl \
     --disable-multilib \
     --enable-checking=release \
     --disable-rpath \
@@ -351,9 +352,8 @@ build() {
     --disable-nls \
     --disable-werror \
     --disable-symvers \
-    --without-cloog --without-isl \
     --with-libiconv \
-    --with-system-zlib \
+    --with-zlib=${MINGW_PREFIX} \
     --with-pkgversion="Rev${pkgrel}, Built by stahta01 -- Tim S" \
     --with-bugurl="https://github.com/stahta01/GCC-MINGW-packages/issues" \
     --with-gnu-as --with-gnu-ld \
