@@ -27,7 +27,7 @@ pkgname=("${MINGW_PACKAGE_PREFIX}-${_realname}-libs-git"
          $([[ "$_enable_ada" == "yes" ]] && echo "${MINGW_PACKAGE_PREFIX}-${_realname}-ada-git")
          $([[ "$_enable_objc" == "yes" ]] && echo "${MINGW_PACKAGE_PREFIX}-${_realname}-objc-git")
         )
-pkgver=4.7.4.d20131213+1.c2.g6cda24c97b5
+pkgver=4.7.4.d20140612+45.c2.g4d1f511d7f2
 pkgrel=1
 pkgdesc="GCC for the MinGW-w64"
 arch=('any')
@@ -51,8 +51,8 @@ checkdepends=('dejagnu')
 optdepends=()
 options=('staticlibs' '!emptydirs') # '!strip' 'debug')
 
-#_git_branch=releases/gcc-4.7                           # SVN211571
- _git_commit='6cda24c97b5a1fa6cd27365c9aa90c95f45da4aa' # SVN205956
+ _git_branch=releases/gcc-4.7                           # SVN211571
+#_git_commit='6cda24c97b5a1fa6cd27365c9aa90c95f45da4aa' # SVN205956
 #_git_commit='50bf9f145c75b1fbc372e33610af14a8be328e58' # SVN199341
 #_git_commit='911595bf2d485c0d1e067d9a94a867d9b8281502' # SVN197738 releases/gcc-4.7.3
 #_git_commit='b058453f82a5dab2304c3ddf1ce646eaa748a475' # SVN191557 releases/gcc-4.7.2
