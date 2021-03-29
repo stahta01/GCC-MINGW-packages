@@ -9,6 +9,11 @@ _enable_info=no
 _enable_bootstrap=no
 _enable_threads=yes
 _threads="posix"
+if [[ "$_enable_threads" == "yes" && "$_threads" == "posix" ]]; then
+  _enable_libgomp=yes
+else
+  _enable_libgomp=no
+fi
 
 _enable_gcc_plugin=no
 _enable_gcc_lto=yes
@@ -280,8 +285,16 @@ build() {
     configure_opts+=("--disable-plugin")
   fi
 
-  if [[ ${_gcc_version:1:1} == "." && ${_gcc_version:0:1} != "9" ]]; then
-    configure_opts+=("--enable-libstdcxx-filesystem-ts=no")
+  if [ "$_enable_threads" == "yes" ]; then
+    configure_opts+=("--enable-threads=${_threads}")
+  elif [ "$_enable_threads" == "no" ]; then
+    configure_opts+=("--disable-threads")
+  fi
+
+  if [ "$_enable_libgomp" == "yes" ]; then
+    configure_opts+=("--enable-libgomp")
+  elif [ "$_enable_libgomp" == "no" ]; then
+    configure_opts+=("--disable-libgomp")
   fi
 
   local _languages="c"
@@ -326,13 +339,11 @@ build() {
     --with-tune=generic \
     --enable-languages=${_languages} \
     --enable-shared --enable-static \
-    --enable-threads=${_threads} \
     --enable-graphite \
     --enable-fully-dynamic-string \
     --enable-libstdcxx-time=yes \
     --disable-libstdcxx-pch \
     --disable-libstdcxx-debug \
-    --enable-libgomp \
     --disable-multilib \
     --enable-checking=release \
     --disable-rpath \
@@ -412,9 +423,12 @@ ENDFILE
 
   cd ${srcdir}/install-${CARCH}${_pkg_prefix}
   # libitm* and libvtv* are disbled until fixed
-  cp bin/{libgcc*,libgomp*,libquadmath*,libssp*}.dll ${pkgdir}${_pkg_prefix}/bin/
+  cp bin/{libgcc*,libquadmath*,libssp*}.dll ${pkgdir}${_pkg_prefix}/bin/
   if [ "$_enable_cxx" == "yes" ]; then
-    cp bin/libstdc*.dll ${pkgdir}${MINGW_PREFIX}/bin/
+    cp bin/libstdc*.dll ${pkgdir}${_pkg_prefix}/bin/
+  fi
+  if [ "$_enable_libgomp" == "yes" ]; then
+    cp bin/libgomp*.dll ${pkgdir}${_pkg_prefix}/bin/
   fi
   if [ "$_enable_jit" == "yes" ]; then
     rm ${pkgdir}${_pkg_prefix}/bin/libgccjit-0.dll
