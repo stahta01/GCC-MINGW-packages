@@ -14,6 +14,8 @@ if [[ "$_enable_threads" == "yes" && "$_threads" == "posix" ]]; then
 else
   _enable_libgomp=no
 fi
+_enable_gcc_plugin=no
+_enable_gcc_lto=yes
 
 _enable_ada=yes
 _enable_cxx=no
@@ -266,6 +268,18 @@ build() {
     configure_opts+=("--disable-bootstrap")
   fi
 
+  if [ "$_enable_gcc_lto" == "yes" ]; then
+    configure_opts+=("--enable-lto")
+  else
+    configure_opts+=("--disable-lto")
+  fi
+
+  if [ "$_enable_gcc_plugin" == "yes" ]; then
+    configure_opts+=("--enable-plugin")
+  else
+    configure_opts+=("--disable-plugin")
+  fi
+
   if [ "$_enable_threads" == "yes" ]; then
     configure_opts+=("--enable-threads=${_threads}")
   elif [ "$_enable_threads" == "no" ]; then
@@ -293,19 +307,18 @@ build() {
   fi
 
   ../${_sourcedir}/configure \
-    --prefix=${MINGW_PREFIX} \
+    --prefix=${_pkg_prefix} \
     --with-local-prefix=${MINGW_PREFIX}/local \
     --build=${MINGW_CHOST} \
     --host=${MINGW_CHOST} \
     --target=${MINGW_CHOST} \
     --with-native-system-header-dir=${MINGW_PREFIX}/${MINGW_CHOST}/include \
-    --libexecdir=${MINGW_PREFIX}/lib \
+    --libexecdir=${_pkg_prefix}/lib \
     --with-gxx-include-dir=${MINGW_PREFIX}/include/c++/${pkgver} \
     --with-arch=${_arch} \
     --with-tune=generic \
     --enable-languages=${_languages} \
     --enable-shared --enable-static \
-    --enable-threads=${_threads} \
     --disable-graphite \
     --enable-fully-dynamic-string \
     --enable-libstdcxx-time=yes \
@@ -313,7 +326,6 @@ build() {
     --disable-libstdcxx-debug \
     --enable-version-specific-runtime-libs \
     --without-cloog --without-isl \
-    --enable-lto \
     --disable-multilib \
     --enable-checking=release \
     --disable-rpath \
