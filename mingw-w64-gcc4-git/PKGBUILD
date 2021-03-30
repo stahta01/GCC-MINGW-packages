@@ -336,7 +336,7 @@ build() {
     --target=${MINGW_CHOST} \
     --with-native-system-header-dir=${MINGW_PREFIX}/${MINGW_CHOST}/include \
     --libexecdir=${_pkg_prefix}/lib \
-    --with-gxx-include-dir=${MINGW_PREFIX}/include/c++/${pkgver} \
+    --with-gxx-include-dir=${MINGW_PREFIX}/include/c++/${_gcc_driver_version} \
     --with-arch=${_arch} \
     --with-tune=generic \
     --enable-languages=${_languages} \
