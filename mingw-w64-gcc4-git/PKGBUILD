@@ -57,7 +57,7 @@ if [[ "$_enable_info" == "yes" ]]; then
 fi
 checkdepends=('dejagnu')
 optdepends=()
-options=('staticlibs' '!emptydirs') # '!strip' 'debug')
+options=('strip' '!debug' 'staticlibs' '!emptydirs' '!buildflags')
 
  _git_branch=releases/gcc-4.7                           # SVN211571
 #_git_commit='6cda24c97b5a1fa6cd27365c9aa90c95f45da4aa' # SVN205956
