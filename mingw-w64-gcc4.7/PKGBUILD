@@ -317,7 +317,7 @@ build() {
     --target=${MINGW_CHOST} \
     --with-native-system-header-dir=${MINGW_PREFIX}/${MINGW_CHOST}/include \
     --libexecdir=${_pkg_prefix}/lib \
-    --with-gxx-include-dir=${MINGW_PREFIX}/include/c++/${pkgver} \
+    --with-gxx-include-dir=${MINGW_PREFIX}/include/c++/${_gcc_driver_version} \
     --with-arch=${_arch} \
     --with-tune=generic \
     --enable-languages=${_languages} \
@@ -411,10 +411,15 @@ package_mingw-w64-gcc() {
   cp -r lib/gcc/${MINGW_CHOST}/${_gcc_driver_version}/include/ssp     ${pkgdir}${_pkg_prefix}/lib/gcc/${MINGW_CHOST}/${_gcc_driver_version}/include/
   cp -r lib/gcc/${MINGW_CHOST}/${_gcc_driver_version}/include-fixed   ${pkgdir}${_pkg_prefix}/lib/gcc/${MINGW_CHOST}/${_gcc_driver_version}/
   cp -r lib/gcc/${MINGW_CHOST}/${_gcc_driver_version}/install-tools   ${pkgdir}${_pkg_prefix}/lib/gcc/${MINGW_CHOST}/${_gcc_driver_version}/
+  if [ "$_enable_gcc_plugin" == "yes" ]; then
+    cp -r lib/gcc/${MINGW_CHOST}/${_gcc_driver_version}/plugin        ${pkgdir}${_pkg_prefix}/lib/gcc/${MINGW_CHOST}/${_gcc_driver_version}/
+  fi
   cp lib/gcc/${MINGW_CHOST}/${_gcc_driver_version}/cc1.exe            ${pkgdir}${_pkg_prefix}/lib/gcc/${MINGW_CHOST}/${_gcc_driver_version}/
   cp lib/gcc/${MINGW_CHOST}/${_gcc_driver_version}/collect2.exe       ${pkgdir}${_pkg_prefix}/lib/gcc/${MINGW_CHOST}/${_gcc_driver_version}/
   cp lib/gcc/${MINGW_CHOST}/${_gcc_driver_version}/crt*.o             ${pkgdir}${_pkg_prefix}/lib/gcc/${MINGW_CHOST}/${_gcc_driver_version}/
-  cp lib/gcc/${MINGW_CHOST}/${_gcc_driver_version}/liblto*            ${pkgdir}${_pkg_prefix}/lib/gcc/${MINGW_CHOST}/${_gcc_driver_version}/
+  if [ "$_enable_gcc_lto" == "yes" ]; then
+    cp lib/gcc/${MINGW_CHOST}/${_gcc_driver_version}/liblto*          ${pkgdir}${_pkg_prefix}/lib/gcc/${MINGW_CHOST}/${_gcc_driver_version}/
+  fi
   cp lib/gcc/${MINGW_CHOST}/${_gcc_driver_version}/libgcc*            ${pkgdir}${_pkg_prefix}/lib/gcc/${MINGW_CHOST}/${_gcc_driver_version}/
   cp lib/gcc/${MINGW_CHOST}/${_gcc_driver_version}/libgcov.*          ${pkgdir}${_pkg_prefix}/lib/gcc/${MINGW_CHOST}/${_gcc_driver_version}/
   if [ "$_enable_libgomp" == "yes" ]; then
