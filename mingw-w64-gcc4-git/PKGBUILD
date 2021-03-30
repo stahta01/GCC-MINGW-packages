@@ -14,15 +14,14 @@ if [[ "$_enable_threads" == "yes" && "$_threads" == "posix" ]]; then
 else
   _enable_libgomp=no
 fi
-
 _enable_gcc_plugin=no
 _enable_gcc_lto=yes
+
 _enable_ada=yes
 _enable_cxx=no
-_enable_d=no
 _enable_fortran=no
-_enable_jit=no
 _enable_objc=no
+
 _realname=gcc
 pkgbase=mingw-w64-${_realname}4-git
 pkgname=("${MINGW_PACKAGE_PREFIX}-${_realname}-libs-git"
@@ -59,7 +58,7 @@ checkdepends=('dejagnu')
 optdepends=()
 options=('strip' '!debug' 'staticlibs' '!emptydirs' '!buildflags')
 
- _git_branch=releases/gcc-4.7                           # SVN211571
+ _git_branch=releases/gcc-4.7                           # SVN211571 Built and installed okay; running it resulted in C++ preprocessor "/lib/cpp" fails sanity check
 #_git_commit='6cda24c97b5a1fa6cd27365c9aa90c95f45da4aa' # SVN205956
 #_git_commit='50bf9f145c75b1fbc372e33610af14a8be328e58' # SVN199341
 #_git_commit='911595bf2d485c0d1e067d9a94a867d9b8281502' # SVN197738 releases/gcc-4.7.3
@@ -304,9 +303,6 @@ build() {
   if [ "$_enable_gcc_lto" == "yes" ]; then
     _languages+=",lto"
   fi
-  if [ "$_enable_d" == "yes" ]; then
-    _languages+=",d"
-  fi
   if [ "$_enable_fortran" == "yes" ]; then
     _languages+=",fortran"
   fi
@@ -318,9 +314,6 @@ build() {
   fi
   if [ "$_enable_objc" == "yes" ]; then
     _languages+=",objc,obj-c++"
-  fi
-  if [ "$_enable_jit" == "yes" ]; then
-    _languages+=",jit"
   fi
 
   echo "CPPFLAGS := ${CPPFLAGS}"
@@ -431,9 +424,6 @@ ENDFILE
   fi
   if [ "$_enable_libgomp" == "yes" ]; then
     cp bin/libgomp*.dll ${pkgdir}${_pkg_prefix}/bin/
-  fi
-  if [ "$_enable_jit" == "yes" ]; then
-    rm ${pkgdir}${_pkg_prefix}/bin/libgccjit-0.dll
   fi
 }
 
