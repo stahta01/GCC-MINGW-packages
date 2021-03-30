@@ -400,7 +400,7 @@ package_mingw-w64-gcc() {
     cp bin/${MINGW_CHOST}-c++.exe                                     ${pkgdir}${_pkg_prefix}/bin/
     cp bin/${MINGW_CHOST}-g++.exe                                     ${pkgdir}${_pkg_prefix}/bin/
   fi
-  cp bin/${MINGW_CHOST}-gcc-${pkgver}.exe                             ${pkgdir}${_pkg_prefix}/bin/
+  cp bin/${MINGW_CHOST}-gcc-${_gcc_driver_version}.exe                ${pkgdir}${_pkg_prefix}/bin/
   cp bin/${MINGW_CHOST}-gcc.exe                                       ${pkgdir}${_pkg_prefix}/bin/
   cp bin/${MINGW_CHOST}-gcc-ar.exe                                    ${pkgdir}${_pkg_prefix}/bin/
   cp bin/${MINGW_CHOST}-gcc-nm.exe                                    ${pkgdir}${_pkg_prefix}/bin/
@@ -434,8 +434,8 @@ package_mingw-w64-gcc() {
   fi
 
   if [ "$_enable_cxx" == "yes" ]; then
-    mkdir -p ${pkgdir}${_pkg_prefix}/share/gcc-${pkgver}/python
-    cp -r share/gcc-${pkgver}/python/libstdcxx                        ${pkgdir}${_pkg_prefix}/share/gcc-${pkgver}/python/
+    mkdir -p ${pkgdir}${_pkg_prefix}/share/gcc-${_gcc_driver_version}/python
+    cp -r share/gcc-${_gcc_driver_version}/python/libstdcxx           ${pkgdir}${_pkg_prefix}/share/gcc-${_gcc_driver_version}/python/
   fi
 
   mkdir -p ${pkgdir}${_pkg_prefix}/share/{doc,info,locale,man}
