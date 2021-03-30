@@ -248,12 +248,6 @@ build() {
 
   _package_common
 
-  ${MINGW_PREFIX}/bin/gcc --version
-  ${MINGW_PREFIX}/bin/ld  --version
-  if [ "$_enable_ada" == "yes" ]; then
-    ${MINGW_PREFIX}/bin/gnatmake  --version
-  fi
-
   local -a configure_opts
 
   case "${CARCH}" in
@@ -268,6 +262,13 @@ build() {
       local _arch=x86-64
     ;;
   esac
+
+  pacman -Q ${MINGW_PACKAGE_PREFIX}-crt
+  gcc --version
+  ld  --version
+  if [ "$_enable_ada" == "yes" ]; then
+    gnatbind  --version
+  fi
 
   if [ "$_enable_bootstrap" == "yes" ]; then
     configure_opts+=("--enable-bootstrap")
@@ -303,14 +304,14 @@ build() {
   if [ "$_enable_gcc_lto" == "yes" ]; then
     _languages+=",lto"
   fi
-  if [ "$_enable_fortran" == "yes" ]; then
-    _languages+=",fortran"
-  fi
   if [ "$_enable_ada" == "yes" ]; then
     _languages+=",ada"
   fi
   if [ "$_enable_cxx" == "yes" ]; then
     _languages+=",c++"
+  fi
+  if [ "$_enable_fortran" == "yes" ]; then
+    _languages+=",fortran"
   fi
   if [ "$_enable_objc" == "yes" ]; then
     _languages+=",objc,obj-c++"
@@ -362,7 +363,7 @@ build() {
     sed -i 's,^STRIP_FOR_TARGET=.*$,STRIP_FOR_TARGET=true,g' Makefile
   fi
 
-  make -j1 all
+  make all
 
   rm -rf ${srcdir}${_pkg_prefix}
 
