@@ -371,12 +371,11 @@ build() {
 
   make -j1 all
 
-  rm -rf ${srcdir}/install-${CARCH}${_pkg_prefix}
-  mkdir -p ${srcdir}/install-${CARCH}
+  rm -rf ${srcdir}${_pkg_prefix}
 
-  make -j1 DESTDIR=${srcdir}/install-${CARCH} install
+  make -j1 DESTDIR=${srcdir} install
   if [ "$_enable_ada" == "yes" ]; then
-    mv ${srcdir}/install-${CARCH}${_pkg_prefix}/lib/gcc/${MINGW_CHOST}/${_gcc_driver_version}/adalib/*.dll ${srcdir}/install-${CARCH}${_pkg_prefix}/bin/
+    mv ${srcdir}${_pkg_prefix}/lib/gcc/${MINGW_CHOST}/${_gcc_driver_version}/adalib/*.dll ${srcdir}${_pkg_prefix}/bin/
   fi
 }
 
@@ -424,7 +423,7 @@ ENDFILE
 
   mkdir -p ${pkgdir}${_pkg_prefix}/bin
 
-  cd ${srcdir}/install-${CARCH}${_pkg_prefix}
+  cd ${srcdir}${_pkg_prefix}
   # libitm* and libvtv* are disbled until fixed
   cp bin/{libgcc*,libquadmath*,libssp*}.dll ${pkgdir}${_pkg_prefix}/bin/
   if [ "$_enable_cxx" == "yes" ]; then
@@ -456,7 +455,7 @@ package_mingw-w64-gcc-git() {
 
   mkdir -p ${pkgdir}${_pkg_prefix}/{bin,include,lib,share}
 
-  cd ${srcdir}/install-${CARCH}${_pkg_prefix}
+  cd ${srcdir}${_pkg_prefix}
   cp bin/cpp.exe                                                      ${pkgdir}${_pkg_prefix}/bin/
   cp bin/gcc.exe                                                      ${pkgdir}${_pkg_prefix}/bin/
   cp bin/gcc.exe                                                      ${pkgdir}${_pkg_prefix}/bin/cc.exe
@@ -499,7 +498,7 @@ package_mingw-w64-gcc-git() {
   cp lib/gcc/${MINGW_CHOST}/${_gcc_driver_version}/libssp*            ${pkgdir}${_pkg_prefix}/lib/gcc/${MINGW_CHOST}/${_gcc_driver_version}/
   cp lib/gcc/${MINGW_CHOST}/${_gcc_driver_version}/lto*.exe           ${pkgdir}${_pkg_prefix}/lib/gcc/${MINGW_CHOST}/${_gcc_driver_version}/
 
-  cp ${srcdir}/install-${CARCH}${_pkg_prefix}/lib/gcc/${MINGW_CHOST}/lib/libgcc_s.a    ${pkgdir}${_pkg_prefix}/lib/gcc/${MINGW_CHOST}/${_gcc_driver_version}/
+  cp ${srcdir}${_pkg_prefix}/lib/gcc/${MINGW_CHOST}/lib/libgcc_s.a    ${pkgdir}${_pkg_prefix}/lib/gcc/${MINGW_CHOST}/${_gcc_driver_version}/
 
   if [ "$_enable_cxx" == "yes" ]; then
     cp -r include/c++                                                 ${pkgdir}${_pkg_prefix}/include/
@@ -545,7 +544,7 @@ package_mingw-w64-gcc-libgfortran-git() {
   conflicts=("${MINGW_PACKAGE_PREFIX}-${_realname}-libgfortran")
 
   mkdir -p ${pkgdir}${_pkg_prefix}/bin
-  cd ${srcdir}/install-${CARCH}${_pkg_prefix}
+  cd ${srcdir}${_pkg_prefix}
   cp bin/libgfortran*.dll                                ${pkgdir}${_pkg_prefix}/bin/
 }
 
@@ -558,7 +557,7 @@ package_mingw-w64-gcc-fortran-git() {
 
   mkdir -p ${pkgdir}${_pkg_prefix}/{bin,lib,share}
 
-  cd ${srcdir}/install-${CARCH}${_pkg_prefix}
+  cd ${srcdir}${_pkg_prefix}
   cp bin/gfortran.exe ${pkgdir}${_pkg_prefix}/bin/
   cp bin/${MINGW_CHOST}-gfortran.exe ${pkgdir}${_pkg_prefix}/bin/
 
@@ -583,7 +582,7 @@ package_mingw-w64-gcc-ada-git() {
 
   mkdir -p ${pkgdir}${_pkg_prefix}/{bin,lib,share}
 
-  cd ${srcdir}/install-${CARCH}${_pkg_prefix}
+  cd ${srcdir}${_pkg_prefix}
   cp bin/gnat*.exe ${pkgdir}${_pkg_prefix}/bin/
 
   cp bin/{libgnarl*,libgnat*}.dll                       ${pkgdir}${_pkg_prefix}/bin/
@@ -609,7 +608,7 @@ package_mingw-w64-gcc-objc-git() {
 
   mkdir -p ${pkgdir}${_pkg_prefix}/{bin,lib}
 
-  cd ${srcdir}/install-${CARCH}${_pkg_prefix}
+  cd ${srcdir}${_pkg_prefix}
   cp bin/libobjc*.dll ${pkgdir}${_pkg_prefix}/bin/
 
   mkdir -p ${pkgdir}${_pkg_prefix}/lib/gcc/${MINGW_CHOST}/${_gcc_driver_version}/include
