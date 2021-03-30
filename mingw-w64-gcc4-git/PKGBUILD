@@ -499,7 +499,7 @@ package_mingw-w64-gcc-git() {
   cp lib/gcc/${MINGW_CHOST}/${_gcc_driver_version}/libssp*            ${pkgdir}${_pkg_prefix}/lib/gcc/${MINGW_CHOST}/${_gcc_driver_version}/
   cp lib/gcc/${MINGW_CHOST}/${_gcc_driver_version}/lto*.exe           ${pkgdir}${_pkg_prefix}/lib/gcc/${MINGW_CHOST}/${_gcc_driver_version}/
 
-  cp ${srcdir}${_pkg_prefix}/lib/gcc/${MINGW_CHOST}/lib/libgcc_s.a    ${pkgdir}${_pkg_prefix}/lib/gcc/${MINGW_CHOST}/${_gcc_driver_version}/
+  cp ${srcdir}/install-${CARCH}${_pkg_prefix}/lib/gcc/${MINGW_CHOST}/lib/libgcc_s.a    ${pkgdir}${_pkg_prefix}/lib/gcc/${MINGW_CHOST}/${_gcc_driver_version}/
 
   if [ "$_enable_cxx" == "yes" ]; then
     cp -r include/c++                                                 ${pkgdir}${_pkg_prefix}/include/
