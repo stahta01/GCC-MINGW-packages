@@ -490,10 +490,16 @@ package_mingw-w64-gcc-git() {
   if [ "$_enable_gcc_lto" == "yes" ]; then
     cp lib/gcc/${MINGW_CHOST}/${_gcc_driver_version}/liblto*          ${pkgdir}${_pkg_prefix}/lib/gcc/${MINGW_CHOST}/${_gcc_driver_version}/
   fi
-  cp lib/gcc/${MINGW_CHOST}/${_gcc_driver_version}/libgcov*           ${pkgdir}${_pkg_prefix}/lib/gcc/${MINGW_CHOST}/${_gcc_driver_version}/
+  cp lib/gcc/${MINGW_CHOST}/${_gcc_driver_version}/libgcc*            ${pkgdir}${_pkg_prefix}/lib/gcc/${MINGW_CHOST}/${_gcc_driver_version}/
+  cp lib/gcc/${MINGW_CHOST}/${_gcc_driver_version}/libgcov.*          ${pkgdir}${_pkg_prefix}/lib/gcc/${MINGW_CHOST}/${_gcc_driver_version}/
+  if [ "$_enable_libgomp" == "yes" ]; then
+    cp lib/gcc/${MINGW_CHOST}/${_gcc_driver_version}/libgomp.*        ${pkgdir}${_pkg_prefix}/lib/gcc/${MINGW_CHOST}/${_gcc_driver_version}/
+  fi
+  cp lib/gcc/${MINGW_CHOST}/${_gcc_driver_version}/libquadmath.*      ${pkgdir}${_pkg_prefix}/lib/gcc/${MINGW_CHOST}/${_gcc_driver_version}/
+  cp lib/gcc/${MINGW_CHOST}/${_gcc_driver_version}/libssp*            ${pkgdir}${_pkg_prefix}/lib/gcc/${MINGW_CHOST}/${_gcc_driver_version}/
   cp lib/gcc/${MINGW_CHOST}/${_gcc_driver_version}/lto*.exe           ${pkgdir}${_pkg_prefix}/lib/gcc/${MINGW_CHOST}/${_gcc_driver_version}/
 
-  cp lib/gcc/${MINGW_CHOST}/${_gcc_driver_version}/libgcc*            ${pkgdir}${_pkg_prefix}/lib/gcc/${MINGW_CHOST}/${_gcc_driver_version}/
+  cp ${srcdir}${_pkg_prefix}/lib/gcc/${MINGW_CHOST}/lib/libgcc_s.a    ${pkgdir}${_pkg_prefix}/lib/gcc/${MINGW_CHOST}/${_gcc_driver_version}/
 
   if [ "$_enable_cxx" == "yes" ]; then
     cp -r include/c++                                                 ${pkgdir}${_pkg_prefix}/include/
@@ -514,7 +520,9 @@ package_mingw-w64-gcc-git() {
     cp share/info/gcc.info*                                           ${pkgdir}${_pkg_prefix}/share/info/
     cp share/info/gccinstall.info*                                    ${pkgdir}${_pkg_prefix}/share/info/
     cp share/info/gccint.info*                                        ${pkgdir}${_pkg_prefix}/share/info/
-    cp share/info/libgomp.info*                                       ${pkgdir}${_pkg_prefix}/share/info/
+    if [ "$_enable_libgomp" == "yes" ]; then
+      cp share/info/libgomp.info*                                     ${pkgdir}${_pkg_prefix}/share/info/
+    fi
     cp share/info/libquadmath.info*                                   ${pkgdir}${_pkg_prefix}/share/info/
   fi
 
