@@ -451,24 +451,24 @@ package_mingw-w64-gcc-git() {
   mkdir -p ${pkgdir}${_pkg_prefix}/{bin,include,lib,share}
 
   cd ${srcdir}/install-${CARCH}${_pkg_prefix}
-  cp bin/cpp.exe                                        ${pkgdir}${_pkg_prefix}/bin/
-  cp bin/gcc.exe                                        ${pkgdir}${_pkg_prefix}/bin/
-  cp bin/gcc.exe                                        ${pkgdir}${_pkg_prefix}/bin/cc.exe
-  cp bin/gcc-ar.exe                                     ${pkgdir}${_pkg_prefix}/bin/
-  cp bin/gcc-nm.exe                                     ${pkgdir}${_pkg_prefix}/bin/
-  cp bin/gcc-ranlib.exe                                 ${pkgdir}${_pkg_prefix}/bin/
-  cp bin/gcov.exe                                       ${pkgdir}${_pkg_prefix}/bin/
+  cp bin/cpp.exe                                                      ${pkgdir}${_pkg_prefix}/bin/
+  cp bin/gcc.exe                                                      ${pkgdir}${_pkg_prefix}/bin/
+  cp bin/gcc.exe                                                      ${pkgdir}${_pkg_prefix}/bin/cc.exe
+  cp bin/gcc-ar.exe                                                   ${pkgdir}${_pkg_prefix}/bin/
+  cp bin/gcc-nm.exe                                                   ${pkgdir}${_pkg_prefix}/bin/
+  cp bin/gcc-ranlib.exe                                               ${pkgdir}${_pkg_prefix}/bin/
+  cp bin/gcov.exe                                                     ${pkgdir}${_pkg_prefix}/bin/
   if [ "$_enable_cxx" == "yes" ]; then
-    cp bin/c++.exe                                        ${pkgdir}${_pkg_prefix}/bin/
-    cp bin/g++.exe                                        ${pkgdir}${_pkg_prefix}/bin/
-    cp bin/${MINGW_CHOST}-c++.exe                         ${pkgdir}${_pkg_prefix}/bin/
-    cp bin/${MINGW_CHOST}-g++.exe                         ${pkgdir}${_pkg_prefix}/bin/
+    cp bin/c++.exe                                                    ${pkgdir}${_pkg_prefix}/bin/
+    cp bin/g++.exe                                                    ${pkgdir}${_pkg_prefix}/bin/
+    cp bin/${MINGW_CHOST}-c++.exe                                     ${pkgdir}${_pkg_prefix}/bin/
+    cp bin/${MINGW_CHOST}-g++.exe                                     ${pkgdir}${_pkg_prefix}/bin/
   fi
-  cp bin/${MINGW_CHOST}-gcc-${_gcc_driver_version}.exe          ${pkgdir}${_pkg_prefix}/bin/
-  cp bin/${MINGW_CHOST}-gcc.exe                         ${pkgdir}${_pkg_prefix}/bin/
-  cp bin/${MINGW_CHOST}-gcc-ar.exe                      ${pkgdir}${_pkg_prefix}/bin/
-  cp bin/${MINGW_CHOST}-gcc-nm.exe                      ${pkgdir}${_pkg_prefix}/bin/
-  cp bin/${MINGW_CHOST}-gcc-ranlib.exe                  ${pkgdir}${_pkg_prefix}/bin/
+  cp bin/${MINGW_CHOST}-gcc-${_gcc_driver_version}.exe                ${pkgdir}${_pkg_prefix}/bin/
+  cp bin/${MINGW_CHOST}-gcc.exe                                       ${pkgdir}${_pkg_prefix}/bin/
+  cp bin/${MINGW_CHOST}-gcc-ar.exe                                    ${pkgdir}${_pkg_prefix}/bin/
+  cp bin/${MINGW_CHOST}-gcc-nm.exe                                    ${pkgdir}${_pkg_prefix}/bin/
+  cp bin/${MINGW_CHOST}-gcc-ranlib.exe                                ${pkgdir}${_pkg_prefix}/bin/
 
   mkdir -p ${pkgdir}${_pkg_prefix}/lib/gcc/${MINGW_CHOST}/${_gcc_driver_version}/include
   cp lib/gcc/${MINGW_CHOST}/${_gcc_driver_version}/include/*.h        ${pkgdir}${_pkg_prefix}/lib/gcc/${MINGW_CHOST}/${_gcc_driver_version}/include/
@@ -476,13 +476,13 @@ package_mingw-w64-gcc-git() {
   cp -r lib/gcc/${MINGW_CHOST}/${_gcc_driver_version}/include-fixed   ${pkgdir}${_pkg_prefix}/lib/gcc/${MINGW_CHOST}/${_gcc_driver_version}/
   cp -r lib/gcc/${MINGW_CHOST}/${_gcc_driver_version}/install-tools   ${pkgdir}${_pkg_prefix}/lib/gcc/${MINGW_CHOST}/${_gcc_driver_version}/
   if [ "$_enable_gcc_plugin" == "yes" ]; then
-    cp -r lib/gcc/${MINGW_CHOST}/${_gcc_driver_version}/plugin          ${pkgdir}${_pkg_prefix}/lib/gcc/${MINGW_CHOST}/${_gcc_driver_version}/
+    cp -r lib/gcc/${MINGW_CHOST}/${_gcc_driver_version}/plugin        ${pkgdir}${_pkg_prefix}/lib/gcc/${MINGW_CHOST}/${_gcc_driver_version}/
   fi
   cp lib/gcc/${MINGW_CHOST}/${_gcc_driver_version}/cc1.exe            ${pkgdir}${_pkg_prefix}/lib/gcc/${MINGW_CHOST}/${_gcc_driver_version}/
   cp lib/gcc/${MINGW_CHOST}/${_gcc_driver_version}/collect2.exe       ${pkgdir}${_pkg_prefix}/lib/gcc/${MINGW_CHOST}/${_gcc_driver_version}/
   cp lib/gcc/${MINGW_CHOST}/${_gcc_driver_version}/crt*.o             ${pkgdir}${_pkg_prefix}/lib/gcc/${MINGW_CHOST}/${_gcc_driver_version}/
   if [ "$_enable_gcc_lto" == "yes" ]; then
-    cp lib/gcc/${MINGW_CHOST}/${_gcc_driver_version}/liblto*            ${pkgdir}${_pkg_prefix}/lib/gcc/${MINGW_CHOST}/${_gcc_driver_version}/
+    cp lib/gcc/${MINGW_CHOST}/${_gcc_driver_version}/liblto*          ${pkgdir}${_pkg_prefix}/lib/gcc/${MINGW_CHOST}/${_gcc_driver_version}/
   fi
   cp lib/gcc/${MINGW_CHOST}/${_gcc_driver_version}/libgcov*           ${pkgdir}${_pkg_prefix}/lib/gcc/${MINGW_CHOST}/${_gcc_driver_version}/
   cp lib/gcc/${MINGW_CHOST}/${_gcc_driver_version}/lto*.exe           ${pkgdir}${_pkg_prefix}/lib/gcc/${MINGW_CHOST}/${_gcc_driver_version}/
@@ -490,40 +490,37 @@ package_mingw-w64-gcc-git() {
   cp lib/gcc/${MINGW_CHOST}/${_gcc_driver_version}/libgcc*            ${pkgdir}${_pkg_prefix}/lib/gcc/${MINGW_CHOST}/${_gcc_driver_version}/
 
   if [ "$_enable_cxx" == "yes" ]; then
-    cp -r include/c++                                               ${pkgdir}${_pkg_prefix}/include/
-    cp    lib/gcc/${MINGW_CHOST}/${_gcc_driver_version}/cc1plus.exe ${pkgdir}${_pkg_prefix}/lib/gcc/${MINGW_CHOST}/${_gcc_driver_version}/
-    cp    lib/gcc/${MINGW_CHOST}/${_gcc_driver_version}/libstdc++*  ${pkgdir}${_pkg_prefix}/lib/gcc/${MINGW_CHOST}/${_gcc_driver_version}/
-    cp    lib/gcc/${MINGW_CHOST}/${_gcc_driver_version}/libsupc++*  ${pkgdir}${_pkg_prefix}/lib/gcc/${MINGW_CHOST}/${_gcc_driver_version}/
+    cp -r include/c++                                                 ${pkgdir}${_pkg_prefix}/include/
+    cp    lib/gcc/${MINGW_CHOST}/${_gcc_driver_version}/cc1plus.exe   ${pkgdir}${_pkg_prefix}/lib/gcc/${MINGW_CHOST}/${_gcc_driver_version}/
+    cp    lib/gcc/${MINGW_CHOST}/${_gcc_driver_version}/libstdc++*    ${pkgdir}${_pkg_prefix}/lib/gcc/${MINGW_CHOST}/${_gcc_driver_version}/
+    cp    lib/gcc/${MINGW_CHOST}/${_gcc_driver_version}/libsupc++*    ${pkgdir}${_pkg_prefix}/lib/gcc/${MINGW_CHOST}/${_gcc_driver_version}/
   fi
 
   if [ "$_enable_cxx" == "yes" ]; then
     mkdir -p ${pkgdir}${_pkg_prefix}/share/gcc-${_gcc_driver_version}/python
-    cp -r share/gcc-${_gcc_driver_version}/python/libstdcxx  ${pkgdir}${_pkg_prefix}/share/gcc-${_gcc_driver_version}/python/
+    cp -r share/gcc-${_gcc_driver_version}/python/libstdcxx           ${pkgdir}${_pkg_prefix}/share/gcc-${_gcc_driver_version}/python/
   fi
 
   mkdir -p ${pkgdir}${_pkg_prefix}/share/{doc,info,locale,man}
-  #cp -r share/doc/gcc-${_gcc_driver_version} ${pkgdir}${_pkg_prefix}/share/doc/
   if [ "$_enable_info" == "yes" ]; then
-    cp share/info/cpp.info*                                ${pkgdir}${_pkg_prefix}/share/info/
-    cp share/info/cppinternals.info*                       ${pkgdir}${_pkg_prefix}/share/info/
-    cp share/info/gcc.info*                                ${pkgdir}${_pkg_prefix}/share/info/
-    cp share/info/gccinstall.info*                         ${pkgdir}${_pkg_prefix}/share/info/
-    cp share/info/gccint.info*                             ${pkgdir}${_pkg_prefix}/share/info/
-    #cp share/info/libitm.info*                             ${pkgdir}${_pkg_prefix}/share/info/
-    cp share/info/libgomp.info*                            ${pkgdir}${_pkg_prefix}/share/info/
-    cp share/info/libquadmath.info*                        ${pkgdir}${_pkg_prefix}/share/info/
+    cp share/info/cpp.info*                                           ${pkgdir}${_pkg_prefix}/share/info/
+    cp share/info/cppinternals.info*                                  ${pkgdir}${_pkg_prefix}/share/info/
+    cp share/info/gcc.info*                                           ${pkgdir}${_pkg_prefix}/share/info/
+    cp share/info/gccinstall.info*                                    ${pkgdir}${_pkg_prefix}/share/info/
+    cp share/info/gccint.info*                                        ${pkgdir}${_pkg_prefix}/share/info/
+    cp share/info/libgomp.info*                                       ${pkgdir}${_pkg_prefix}/share/info/
+    cp share/info/libquadmath.info*                                   ${pkgdir}${_pkg_prefix}/share/info/
   fi
 
-  #cp share/locale/* ${pkgdir}${_pkg_prefix}/share/locale/
   mkdir -p ${pkgdir}${_pkg_prefix}/share/man/man1
-  cp share/man/man1/cpp.1*                               ${pkgdir}${_pkg_prefix}/share/man/man1/
-  cp share/man/man1/gcc.1*                               ${pkgdir}${_pkg_prefix}/share/man/man1/
-  cp share/man/man1/gcov.1*                              ${pkgdir}${_pkg_prefix}/share/man/man1/
-  cp share/man/man7/fsf-funding.7*                       ${pkgdir}${_pkg_prefix}/share/man/man1/
-  cp share/man/man7/gfdl.7*                              ${pkgdir}${_pkg_prefix}/share/man/man1/
-  cp share/man/man7/gpl.7*                               ${pkgdir}${_pkg_prefix}/share/man/man1/
+  cp share/man/man1/cpp.1*                                            ${pkgdir}${_pkg_prefix}/share/man/man1/
+  cp share/man/man1/gcc.1*                                            ${pkgdir}${_pkg_prefix}/share/man/man1/
+  cp share/man/man1/gcov.1*                                           ${pkgdir}${_pkg_prefix}/share/man/man1/
+  cp share/man/man7/fsf-funding.7*                                    ${pkgdir}${_pkg_prefix}/share/man/man1/
+  cp share/man/man7/gfdl.7*                                           ${pkgdir}${_pkg_prefix}/share/man/man1/
+  cp share/man/man7/gpl.7*                                            ${pkgdir}${_pkg_prefix}/share/man/man1/
   if [ "$_enable_cxx" == "yes" ]; then
-    cp share/man/man1/g++.1*                               ${pkgdir}${_pkg_prefix}/share/man/man1/
+    cp share/man/man1/g++.1*                                          ${pkgdir}${_pkg_prefix}/share/man/man1/
   fi
 }
 
