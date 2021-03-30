@@ -154,35 +154,6 @@ prepare() {
 
   cd ${srcdir}/${_sourcedir}
 
-#  #remove files the patches will create (so they aren't in the way the 2nd time round)
-#  [ -f gcc/testsuite/g++.dg/cpp0x/lambda/lambda-names1.C ] && rm gcc/testsuite/g++.dg/cpp0x/lambda/lambda-names1.C
-
-  #do not install libiberty
-  sed -i 's/install_to_$(INSTALL_DEST) //' libiberty/Makefile.in
-
-  # hack! - some configure tests for header files using "$CPP $CPPFLAGS"
-  sed -i "/ac_cpp=/s/\$CPPFLAGS/\$CPPFLAGS -O2/" {libiberty,gcc}/configure
-
-  # do not expect $prefix/mingw symlink - this should be superceded by
-  # 160-mingw-dont-ignore-native-system-header-dir.patch .. but isn't!
-  [[ -f configure.src ]] && {
-    rm -f configure
-    cp configure.src configure
-  } || {
-    cp configure configure.src
-  }
-  sed -i 's/${prefix}\/mingw\//${prefix}\//g' configure
-  
-  # change hardcoded /mingw prefix to the real prefix
-  [[ -f gcc/config/i386/mingw32.h.src ]] && {
-    rm -f gcc/config/i386/mingw32.h
-    cp gcc/config/i386/mingw32.h.src gcc/config/i386/mingw32.h
-  } || {
-    cp gcc/config/i386/mingw32.h gcc/config/i386/mingw32.h.src
-  }
-  local MINGW_NATIVE_PREFIX=$(cygpath -am ${MINGW_PREFIX}/${MINGW_CHOST})
-  sed -i "s/\\/mingw\\//${MINGW_NATIVE_PREFIX//\//\\/}\\//g" gcc/config/i386/mingw32.h
-
   # http://gcc.gnu.org/bugzilla//show_bug.cgi?id=56710 - commit 3d1f8279
   apply_patch_with_msg 807-gcc-4.8-lambda-ICE.patch
 
@@ -216,6 +187,32 @@ prepare() {
   apply_patch_with_msg 804-gcc-4.6.4-Fix-texi-docs-syntax-errors.patch
 
   apply_patch_with_msg 808-gcc-4.7.0-SVN-196003-PR-target-52122-add-LN_S_RECURSIVE.patch
+
+  #do not install libiberty
+  sed -i 's/install_to_$(INSTALL_DEST) //' libiberty/Makefile.in
+
+  # hack! - some configure tests for header files using "$CPP $CPPFLAGS"
+  sed -i "/ac_cpp=/s/\$CPPFLAGS/\$CPPFLAGS -O2/" {libiberty,gcc}/configure
+
+  # do not expect $prefix/mingw symlink - this should be superceded by
+  # 160-mingw-dont-ignore-native-system-header-dir.patch .. but isn't!
+  [[ -f configure.src ]] && {
+    rm -f configure
+    cp configure.src configure
+  } || {
+    cp configure configure.src
+  }
+  sed -i 's/${prefix}\/mingw\//${prefix}\//g' configure
+
+  # change hardcoded /mingw prefix to the real prefix
+  [[ -f gcc/config/i386/mingw32.h.src ]] && {
+    rm -f gcc/config/i386/mingw32.h
+    cp gcc/config/i386/mingw32.h.src gcc/config/i386/mingw32.h
+  } || {
+    cp gcc/config/i386/mingw32.h gcc/config/i386/mingw32.h.src
+  }
+  local MINGW_NATIVE_PREFIX=$(cygpath -am ${MINGW_PREFIX}/${MINGW_CHOST})
+  sed -i "s/\\/mingw\\//${MINGW_NATIVE_PREFIX//\//\\/}\\//g" gcc/config/i386/mingw32.h
 }
 
 build() {
