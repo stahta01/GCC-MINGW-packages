@@ -354,7 +354,7 @@ build() {
 
   make -j1 DESTDIR=${srcdir} install
   if [ "$_enable_ada" == "yes" ]; then
-    mv ${srcdir}${MINGW_PREFIX}/lib/gcc/${MINGW_CHOST}/${_gcc_driver_version}/adalib/*.dll ${srcdir}${MINGW_PREFIX}/bin/
+    mv ${srcdir}${_pkg_prefix}/lib/gcc/${MINGW_CHOST}/${_gcc_driver_version}/adalib/*.dll ${srcdir}${_pkg_prefix}/bin/
   fi
 }
 
@@ -366,7 +366,7 @@ package_mingw-w64-gcc-libs() {
   fi
 
   mkdir -p ${pkgdir}${_pkg_prefix}/bin
-  cd ${srcdir}${MINGW_PREFIX}
+  cd ${srcdir}${_pkg_prefix}
   cp bin/{libgcc*,libquadmath*,libssp*}.dll ${pkgdir}${_pkg_prefix}/bin/
   if [ "$_enable_cxx" == "yes" ]; then
     cp bin/libstdc*.dll ${pkgdir}${_pkg_prefix}/bin/
@@ -387,7 +387,7 @@ package_mingw-w64-gcc() {
 
   mkdir -p ${pkgdir}${_pkg_prefix}/{bin,include,lib,share}
 
-  cd ${srcdir}${MINGW_PREFIX}
+  cd ${srcdir}${_pkg_prefix}
   cp bin/cpp.exe                                                      ${pkgdir}${_pkg_prefix}/bin/
   cp bin/gcc.exe                                                      ${pkgdir}${_pkg_prefix}/bin/
   cp bin/gcc-ar.exe                                                   ${pkgdir}${_pkg_prefix}/bin/
@@ -424,7 +424,7 @@ package_mingw-w64-gcc() {
   cp lib/gcc/${MINGW_CHOST}/${_gcc_driver_version}/libssp*            ${pkgdir}${_pkg_prefix}/lib/gcc/${MINGW_CHOST}/${_gcc_driver_version}/
   cp lib/gcc/${MINGW_CHOST}/${_gcc_driver_version}/lto*.exe           ${pkgdir}${_pkg_prefix}/lib/gcc/${MINGW_CHOST}/${_gcc_driver_version}/
 
-  cp ${srcdir}${MINGW_PREFIX}/lib/gcc/${MINGW_CHOST}/lib/libgcc_s.a   ${pkgdir}${_pkg_prefix}/lib/gcc/${MINGW_CHOST}/${_gcc_driver_version}/
+  cp ${srcdir}${_pkg_prefix}/lib/gcc/${MINGW_CHOST}/lib/libgcc_s.a    ${pkgdir}${_pkg_prefix}/lib/gcc/${MINGW_CHOST}/${_gcc_driver_version}/
 
   if [ "$_enable_cxx" == "yes" ]; then
     cp -r include/c++                                                 ${pkgdir}${_pkg_prefix}/include/
@@ -468,7 +468,7 @@ package_mingw-w64-gcc-libgfortran() {
   depends=("${MINGW_PACKAGE_PREFIX}-${_realname}-libs=${pkgver}")
   
   mkdir -p ${pkgdir}${_pkg_prefix}/bin
-  cd ${srcdir}${MINGW_PREFIX}
+  cd ${srcdir}${_pkg_prefix}
   cp bin/libgfortran*.dll ${pkgdir}${_pkg_prefix}/bin/
 }
 
@@ -478,7 +478,7 @@ package_mingw-w64-gcc-fortran() {
   
   mkdir -p ${pkgdir}${_pkg_prefix}/{bin,lib,share}
   
-  cd ${srcdir}${MINGW_PREFIX}
+  cd ${srcdir}${_pkg_prefix}
   cp bin/gfortran.exe ${pkgdir}${_pkg_prefix}/bin/
   cp bin/${MINGW_CHOST}-gfortran.exe ${pkgdir}${_pkg_prefix}/bin/
   
@@ -503,7 +503,7 @@ package_mingw-w64-gcc-ada() {
 
   mkdir -p ${pkgdir}${_pkg_prefix}/{bin,lib,share}
   
-  cd ${srcdir}${MINGW_PREFIX}
+  cd ${srcdir}${_pkg_prefix}
   cp bin/gnat*.exe ${pkgdir}${_pkg_prefix}/bin/
   # cp bin/gnatbind.exe ${pkgdir}${_pkg_prefix}/bin/
   # cp bin/gnatchop.exe ${pkgdir}${_pkg_prefix}/bin/
@@ -539,7 +539,7 @@ package_mingw-w64-gcc-objc() {
   
   mkdir -p ${pkgdir}${_pkg_prefix}/{bin,lib}
   
-  cd ${srcdir}${MINGW_PREFIX}
+  cd ${srcdir}${_pkg_prefix}
   cp bin/libobjc*.dll ${pkgdir}${_pkg_prefix}/bin/
   
   mkdir -p ${pkgdir}${_pkg_prefix}/lib/gcc/${MINGW_CHOST}/${_gcc_driver_version}/include
