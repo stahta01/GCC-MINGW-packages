@@ -57,8 +57,6 @@ if [[ "$_enable_info" == "yes" ]]; then
 fi
 #checkdepends=('dejagnu')
 optdepends=()
-replaces=()
-backup=()
 options=('strip' '!debug' 'staticlibs' '!emptydirs' '!buildflags')
 MPFR_VERSION=mpfr-2.4.2
 GMP_VERSION=gmp-4.3.2
@@ -154,10 +152,6 @@ prepare() {
 
   cd ${srcdir}/${_sourcedir}
 
-  # http://gcc.gnu.org/bugzilla//show_bug.cgi?id=56710 - commit 3d1f8279
-  apply_patch_with_msg 807-gcc-4.8-lambda-ICE.patch
-
-  apply_patch_with_msg 806-gcc-4.8-libgcc-references.patch
   apply_patch_with_msg 001-gcc-4.8-libstdc++export.patch
   apply_patch_with_msg 002-gcc-4.7-stdthreads.patch
 
@@ -179,12 +173,17 @@ prepare() {
   # Kai's libgomp fix.
   apply_patch_with_msg 210-gcc-4.4-ktietz-libgomp.patch
 
-  # Build aextra tools for Ada
+  # Build extra tools for Ada
   apply_patch_with_msg 230-build-more-gnattools.mingw.patch
 
   apply_patch_with_msg 802-handle-use-mingw-ansi-stdio.patch
 
   apply_patch_with_msg 804-gcc-4.6.4-Fix-texi-docs-syntax-errors.patch
+
+  apply_patch_with_msg 806-gcc-4.8-libgcc-references.patch
+
+  # http://gcc.gnu.org/bugzilla//show_bug.cgi?id=56710 - commit 3d1f8279
+  apply_patch_with_msg 807-gcc-4.8-lambda-ICE.patch
 
   apply_patch_with_msg 808-gcc-4.7.0-SVN-196003-PR-target-52122-add-LN_S_RECURSIVE.patch
 
@@ -258,7 +257,7 @@ build() {
   gcc --version
   ld  --version
   if [ "$_enable_ada" == "yes" ]; then
-    gnatmake  --version
+    gnatbind  --version
   fi
 
   if [ "$_enable_bootstrap" == "yes" ]; then
@@ -308,6 +307,11 @@ build() {
     _languages+=",objc,obj-c++"
   fi
 
+  echo "CPPFLAGS := ${CPPFLAGS}"
+  echo "CFLAGS := ${CFLAGS}"
+  echo "CXXFLAGS := ${CXXFLAGS}"
+  echo "LDFLAGS := ${LDFLAGS}"
+
   ../${_sourcedir}/configure \
     --prefix=${_pkg_prefix} \
     --with-local-prefix=${MINGW_PREFIX}/local \
@@ -350,6 +354,8 @@ build() {
   fi
 
   make all
+
+  rm -rf ${srcdir}${_pkg_prefix}
 
   make -j1 DESTDIR=${srcdir} install
   if [ "$_enable_ada" == "yes" ]; then
