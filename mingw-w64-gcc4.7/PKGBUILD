@@ -150,7 +150,7 @@ prepare() {
   _extract_to_source_folder       $GMP_VERSION.tar.bz2
   _extract_to_source_folder       $MPC_VERSION.tar.gz
 
-  cd ${srcdir}/${_realname}-${pkgver}
+  cd ${srcdir}/${_sourcedir}
 
 #  #remove files the patches will create (so they aren't in the way the 2nd time round)
 #  [ -f gcc/testsuite/g++.dg/cpp0x/lambda/lambda-names1.C ] && rm gcc/testsuite/g++.dg/cpp0x/lambda/lambda-names1.C
