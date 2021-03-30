@@ -49,6 +49,9 @@ makedepends=("${MINGW_PACKAGE_PREFIX}-${_realname}"
              "${MINGW_PACKAGE_PREFIX}-winpthreads"
              "${MINGW_PACKAGE_PREFIX}-zlib"
              'git' 'patch')
+if [[ "$_enable_threads" == "yes" && "$_threads" == "posix" ]]; then
+  makedepends+=("${MINGW_PACKAGE_PREFIX}-winpthreads")
+fi
 if [[ "$_enable_info" == "yes" ]]; then
   makedepends+=('texinfo')
 fi
@@ -445,6 +448,9 @@ package_mingw-w64-gcc-git() {
            "${MINGW_PACKAGE_PREFIX}-windows-default-manifest"
            "${MINGW_PACKAGE_PREFIX}-winpthreads"
            "${MINGW_PACKAGE_PREFIX}-zlib")
+  if [[ "$_enable_threads" == "yes" && "$_threads" == "posix" ]]; then
+    depends+=("${MINGW_PACKAGE_PREFIX}-winpthreads")
+  fi
   provides=("${MINGW_PACKAGE_PREFIX}-${_realname}")
   conflicts=("${MINGW_PACKAGE_PREFIX}-${_realname}")
 
