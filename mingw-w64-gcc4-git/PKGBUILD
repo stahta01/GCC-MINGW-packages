@@ -24,6 +24,7 @@ _enable_cxx=no
 _enable_fortran=no
 _enable_objc=no
 
+_basename=gcc
 _realname=gcc
 pkgbase=mingw-w64-${_realname}4-git
 pkgname=("${MINGW_PACKAGE_PREFIX}-${_realname}-libs-git"
@@ -40,8 +41,8 @@ arch=('any')
 url="https://gcc.gnu.org"
 license=('GPL' 'LGPL' 'FDL' 'custom')
 groups=("${MINGW_PACKAGE_PREFIX}-toolchain")
-makedepends=("${MINGW_PACKAGE_PREFIX}-${_realname}"
-#             $([[ "$_enable_ada" == "yes" ]] && echo "${MINGW_PACKAGE_PREFIX}-${_realname}-ada")
+makedepends=("${MINGW_PACKAGE_PREFIX}-${_basename}"
+#             $([[ "$_enable_ada" == "yes" ]] && echo "${MINGW_PACKAGE_PREFIX}-${_basename}-ada")
              "${MINGW_PACKAGE_PREFIX}-binutils"
              "${MINGW_PACKAGE_PREFIX}-crt"
              "${MINGW_PACKAGE_PREFIX}-headers"
