@@ -41,21 +41,26 @@ _gcc_driver_version=${pkgver}
 pkgrel=1
 pkgdesc="GCC for the MinGW-w64"
 arch=('any')
-url="http://gcc.gnu.org"
+url="https://gcc.gnu.org"
 license=('GPL' 'LGPL' 'FDL' 'custom')
-groups=("${MINGW_PACKAGE_PREFIX}-toolchain" "${MINGW_PACKAGE_PREFIX}")
-depends=("${MINGW_PACKAGE_PREFIX}-zlib" "${MINGW_PACKAGE_PREFIX}-crt" "${MINGW_PACKAGE_PREFIX}-binutils" "${MINGW_PACKAGE_PREFIX}-headers")
-makedepends=(
-#  $([[ "$_enable_ada" == "yes" ]] && echo "${MINGW_PACKAGE_PREFIX}-${_realname}-ada") 
-#  "${MINGW_PACKAGE_PREFIX}-${_realname}"
-  'lndir' 'make' 'patch' 'bison' 'flex' 'tar' 'diffutils') # 'texinfo')
+groups=("${MINGW_PACKAGE_PREFIX}-toolchain")
+makedepends=("${MINGW_PACKAGE_PREFIX}-${_basename}"
+#             $([[ "$_enable_ada" == "yes" ]] && echo "${MINGW_PACKAGE_PREFIX}-${_basename}-ada")
+             "${MINGW_PACKAGE_PREFIX}-binutils"
+             "${MINGW_PACKAGE_PREFIX}-crt"
+             "${MINGW_PACKAGE_PREFIX}-headers"
+             "${MINGW_PACKAGE_PREFIX}-libiconv"
+             "${MINGW_PACKAGE_PREFIX}-windows-default-manifest"
+             "${MINGW_PACKAGE_PREFIX}-winpthreads"
+             "${MINGW_PACKAGE_PREFIX}-zlib"
+              'bison' 'diffutils' 'flex' 'lndir' 'make' 'patch' 'tar')
 if [[ "$_enable_threads" == "yes" && "$_threads" == "posix" ]]; then
   makedepends+=("${MINGW_PACKAGE_PREFIX}-winpthreads")
 fi
 if [[ "$_enable_info" == "yes" ]]; then
   makedepends+=('texinfo')
 fi
-#checkdepends=('dejagnu')
+checkdepends=('dejagnu')
 optdepends=()
 options=('strip' '!debug' 'staticlibs' '!emptydirs' '!buildflags')
 MPFR_VERSION=mpfr-2.4.2
@@ -227,7 +232,7 @@ build() {
       LDFLAGS+=" -Wl,--large-address-aware"
       local _arch=i686
     ;;
-    
+
     x86_64)
       local _arch=x86-64
     ;;
@@ -383,7 +388,11 @@ package_mingw-w64-gcc-libs() {
 
 package_mingw-w64-gcc() {
   pkgdesc="GNU Compiler Collection (C,C++,OpenMP) for MinGW-w64"
-  depends=("${MINGW_PACKAGE_PREFIX}-crt" "${MINGW_PACKAGE_PREFIX}-binutils" "${MINGW_PACKAGE_PREFIX}-headers" "${MINGW_PACKAGE_PREFIX}-zlib" "${MINGW_PACKAGE_PREFIX}-${_realname}-libs=${pkgver}") 
+  depends=("${MINGW_PACKAGE_PREFIX}-binutils"
+           "${MINGW_PACKAGE_PREFIX}-crt"
+           "${MINGW_PACKAGE_PREFIX}-headers"
+           "${MINGW_PACKAGE_PREFIX}-${_basename}-libs=${pkgver}"
+           "${MINGW_PACKAGE_PREFIX}-zlib")
   if [[ "$_enable_threads" == "yes" && "$_threads" == "posix" ]]; then
     depends+=("${MINGW_PACKAGE_PREFIX}-winpthreads")
   fi
@@ -476,7 +485,7 @@ package_mingw-w64-gcc() {
 package_mingw-w64-gcc-libgfortran() {
   pkgdesc="GNU Compiler Collection (libgfortran) for MinGW-w64"
   depends=("${MINGW_PACKAGE_PREFIX}-${_realname}-libs=${pkgver}")
-  
+
   mkdir -p ${pkgdir}${_pkg_prefix}/bin
   cd ${srcdir}${_pkg_prefix}
   cp bin/libgfortran*.dll ${pkgdir}${_pkg_prefix}/bin/
@@ -485,15 +494,15 @@ package_mingw-w64-gcc-libgfortran() {
 package_mingw-w64-gcc-fortran() {
   pkgdesc="GNU Compiler Collection (Fortran) for MinGW-w64"
   depends=("${MINGW_PACKAGE_PREFIX}-${_realname}=${pkgver}" "${MINGW_PACKAGE_PREFIX}-${_realname}-libgfortran=${pkgver}")
-  
+
   mkdir -p ${pkgdir}${_pkg_prefix}/{bin,lib,share}
-  
+
   cd ${srcdir}${_pkg_prefix}
   cp bin/gfortran.exe ${pkgdir}${_pkg_prefix}/bin/
   cp bin/${MINGW_CHOST}-gfortran.exe ${pkgdir}${_pkg_prefix}/bin/
-  
+
   #cp bin/libgfortran*.dll ${pkgdir}${_pkg_prefix}/bin/
-  
+
   mkdir -p ${pkgdir}${_pkg_prefix}/lib/gcc/${MINGW_CHOST}/${pkgver}
   cp -r lib/gcc/${MINGW_CHOST}/${_gcc_driver_version}/finclude  ${pkgdir}${_pkg_prefix}/lib/gcc/${MINGW_CHOST}/${_gcc_driver_version}/
   cp lib/gcc/${MINGW_CHOST}/${_gcc_driver_version}/f951.exe  ${pkgdir}${_pkg_prefix}/lib/gcc/${MINGW_CHOST}/${_gcc_driver_version}/
@@ -512,7 +521,7 @@ package_mingw-w64-gcc-ada() {
   depends=("${MINGW_PACKAGE_PREFIX}-${_realname}=${pkgver}")
 
   mkdir -p ${pkgdir}${_pkg_prefix}/{bin,lib,share}
-  
+
   cd ${srcdir}${_pkg_prefix}
   cp bin/gnat*.exe ${pkgdir}${_pkg_prefix}/bin/
   # cp bin/gnatbind.exe ${pkgdir}${_pkg_prefix}/bin/
@@ -527,14 +536,14 @@ package_mingw-w64-gcc-ada() {
   # cp bin/gnatname.exe ${pkgdir}${_pkg_prefix}/bin/
   # cp bin/gnatprep.exe ${pkgdir}${_pkg_prefix}/bin/
   # cp bin/gnatxref.exe ${pkgdir}${_pkg_prefix}/bin/
-  
+
   cp bin/{libgnarl*,libgnat*}.dll ${pkgdir}${_pkg_prefix}/bin/
-  
+
   mkdir -p ${pkgdir}${_pkg_prefix}/lib/gcc/${MINGW_CHOST}/${pkgver}
   cp -r lib/gcc/${MINGW_CHOST}/${_gcc_driver_version}/adainclude ${pkgdir}${_pkg_prefix}/lib/gcc/${MINGW_CHOST}/${_gcc_driver_version}/
   cp -r lib/gcc/${MINGW_CHOST}/${_gcc_driver_version}/adalib ${pkgdir}${_pkg_prefix}/lib/gcc/${MINGW_CHOST}/${_gcc_driver_version}/
   cp lib/gcc/${MINGW_CHOST}/${_gcc_driver_version}/gnat1.exe ${pkgdir}${_pkg_prefix}/lib/gcc/${MINGW_CHOST}/${_gcc_driver_version}/
-  
+
   if [ "$_enable_info" == "yes" ]; then
     mkdir -p ${pkgdir}${_pkg_prefix}/share/info
     cp share/info/gnat-style.info* ${pkgdir}${_pkg_prefix}/share/info/
@@ -546,12 +555,12 @@ package_mingw-w64-gcc-ada() {
 package_mingw-w64-gcc-objc() {
   pkgdesc="GNU Compiler Collection (ObjC,Obj-C++) for MinGW-w64"
   depends=("${MINGW_PACKAGE_PREFIX}-${_realname}=${pkgver}")
-  
+
   mkdir -p ${pkgdir}${_pkg_prefix}/{bin,lib}
-  
+
   cd ${srcdir}${_pkg_prefix}
   cp bin/libobjc*.dll ${pkgdir}${_pkg_prefix}/bin/
-  
+
   mkdir -p ${pkgdir}${_pkg_prefix}/lib/gcc/${MINGW_CHOST}/${_gcc_driver_version}/include
   cp -r lib/gcc/${MINGW_CHOST}/${_gcc_driver_version}/include/objc ${pkgdir}${_pkg_prefix}/lib/gcc/${MINGW_CHOST}/${_gcc_driver_version}/include/
   cp lib/gcc/${MINGW_CHOST}/${_gcc_driver_version}/cc1obj.exe ${pkgdir}${_pkg_prefix}/lib/gcc/${MINGW_CHOST}/${_gcc_driver_version}/
