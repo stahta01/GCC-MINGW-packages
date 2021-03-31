@@ -237,7 +237,6 @@ _package_common() {
   echo "_gcc_driver_version := ${_gcc_driver_version}"
 
   _pkg_prefix=${MINGW_PREFIX}
-  #_pkg_prefix=/opt${MINGW_PREFIX}/${_realname}
 
   echo "_pkg_prefix := ${_pkg_prefix}"
 }
