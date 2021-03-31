@@ -47,7 +47,7 @@ makedepends=("${MINGW_PACKAGE_PREFIX}-${_realname}"
              "${MINGW_PACKAGE_PREFIX}-windows-default-manifest"
              "${MINGW_PACKAGE_PREFIX}-winpthreads"
              "${MINGW_PACKAGE_PREFIX}-zlib"
-             'git' 'patch')
+              'bison' 'diffutils' 'flex' 'lndir' 'make' 'patch' 'tar' 'git')
 if [[ "$_enable_threads" == "yes" && "$_threads" == "posix" ]]; then
   makedepends+=("${MINGW_PACKAGE_PREFIX}-winpthreads")
 fi
