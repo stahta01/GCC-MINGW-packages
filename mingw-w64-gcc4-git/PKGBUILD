@@ -5,6 +5,8 @@
 # Contributor: Renato Silva <br.renatosilva@gmail.com>
 # Contributor: Liu Hao <lh_mouse@126.com>
 
+_pkg_prefix=${MINGW_PREFIX}
+
 _enable_info=no
 _enable_bootstrap=yes
 _enable_threads=no
@@ -214,6 +216,9 @@ prepare() {
   apply_patch_with_msg 807-gcc-4.8-lambda-ICE.patch
   apply_patch_with_msg 808-gcc-4.7.0-SVN-196003-PR-target-52122-add-LN_S_RECURSIVE.patch
 
+  #do not install libiberty
+  sed -i 's/install_to_$(INSTALL_DEST) //' libiberty/Makefile.in
+
   # hack! - some configure tests for header files using "$CPP $CPPFLAGS"
   sed -i "/ac_cpp=/s/\$CPPFLAGS/\$CPPFLAGS -O2/" {libiberty,gcc}/configure
 
@@ -235,9 +240,6 @@ _package_common() {
   _gcc_driver_version=`eval "cat ${srcdir}/${_sourcedir}/gcc/BASE-VER"`
 
   echo "_gcc_driver_version := ${_gcc_driver_version}"
-
-  _pkg_prefix=${MINGW_PREFIX}
-
   echo "_pkg_prefix := ${_pkg_prefix}"
 }
 
@@ -435,7 +437,6 @@ package_mingw-w64-gcc-git() {
            "${MINGW_PACKAGE_PREFIX}-libiconv"
            "${MINGW_PACKAGE_PREFIX}-${_realname}-libs-git=${pkgver}-${pkgrel}"
            "${MINGW_PACKAGE_PREFIX}-windows-default-manifest"
-           "${MINGW_PACKAGE_PREFIX}-winpthreads"
            "${MINGW_PACKAGE_PREFIX}-zlib")
   if [[ "$_enable_threads" == "yes" && "$_threads" == "posix" ]]; then
     depends+=("${MINGW_PACKAGE_PREFIX}-winpthreads")
