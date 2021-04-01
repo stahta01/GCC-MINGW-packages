@@ -49,6 +49,15 @@ fi
 if [[ "$_enable_info" == "yes" ]]; then
   makedepends+=('texinfo')
 fi
+depends=(
+  "${MINGW_PACKAGE_PREFIX}-crt"       # Should I move this package to /opt?
+  "${MINGW_PACKAGE_PREFIX}-binutils" 
+  "${MINGW_PACKAGE_PREFIX}-headers"   # Should I move this package to /opt?
+  "${MINGW_PACKAGE_PREFIX}-zlib"      # Does it really depend on zlib?
+)
+if [[ "$_enable_threads" == "yes" && "$_threads" == "posix" ]]; then
+  depends+=("${MINGW_PACKAGE_PREFIX}-winpthreads")  # Should I move this package to /opt?
+fi
 provides=("${MINGW_PACKAGE_PREFIX}-${_realname}")
 conflicts=("${MINGW_PACKAGE_PREFIX}-${_realname}")
 checkdepends=('dejagnu')
@@ -265,6 +274,13 @@ build() {
       export CXX="${_local_gcc64_prefix}/bin/g++"
     ;;
   esac
+
+#      local _local_gcc_prefix=${MINGW_PREFIX}/opt
+#      export PATH="${_local_gcc_prefix}/bin":$PATH
+#      export GNATBIND="${_local_gcc_prefix}/bin/gnatbind"
+#      export GNATMAKE="${_local_gcc_prefix}/bin/gnatmake"
+#      export CC="${_local_gcc_prefix}/bin/gcc"
+#      export CXX="${_local_gcc_prefix}/bin/g++"
 
   pacman -Q ${MINGW_PACKAGE_PREFIX}-crt
   gcc --version
