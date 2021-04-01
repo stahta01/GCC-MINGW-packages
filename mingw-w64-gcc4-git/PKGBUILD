@@ -20,7 +20,7 @@ _enable_gcc_plugin=no
 _enable_gcc_lto=yes
 
 _enable_ada=yes
-_enable_cxx=no
+_enable_cxx=yes
 _enable_fortran=no
 _enable_objc=no
 
