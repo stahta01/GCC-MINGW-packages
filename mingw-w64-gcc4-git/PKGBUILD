@@ -50,6 +50,7 @@ if [[ "$_enable_info" == "yes" ]]; then
   makedepends+=('texinfo')
 fi
 provides=("${MINGW_PACKAGE_PREFIX}-${_realname}")
+conflicts=("${MINGW_PACKAGE_PREFIX}-${_realname}")
 checkdepends=('dejagnu')
 optdepends=()
 options=('strip' '!debug' 'staticlibs' '!emptydirs' '!buildflags')
