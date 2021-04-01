@@ -130,8 +130,8 @@ sha256sums=('SKIP'
             'dbbb202cd36aea01f3671997d4e53aad6674de5b774812d6a6460e58997a8117'
             'ceb22c62c285b550f8a6d65d8a30580e2aa0e283b80fb1586665d6ce37181d34')
 
-# Helper macros to help make tasks easier #
-apply_patch_with_msg() {
+# common package macros #
+_apply_patch_with_msg() {
   for _patch in "$@"
   do
     if patch --dry-run -Nbp1 -i "${srcdir}/${_patch}" > /dev/null 2>&1 ; then
@@ -182,34 +182,34 @@ prepare() {
   cd ${srcdir}/${_sourcedir}
   GIT_AM="git am --committer-date-is-author-date"
 
-  apply_patch_with_msg 001-gcc-4.8-libstdc++export.patch
-  apply_patch_with_msg 002-gcc-4.7-stdthreads.patch
+  _apply_patch_with_msg 001-gcc-4.8-libstdc++export.patch
+  _apply_patch_with_msg 002-gcc-4.7-stdthreads.patch
 
   # Don't waste valuable commandline chars on double-quotes around "arguments"
   #  that don't need them.
-  apply_patch_with_msg 130-dont-escape-arguments-that-dont-need-it-in-pex-win32.c.patch
+  _apply_patch_with_msg 130-dont-escape-arguments-that-dont-need-it-in-pex-win32.c.patch
 
   # Make Windows behave the same as Posix in the consideration of whether folder
   # "/exists/doesnt-exist/.." is a valid path.. in Posix, it isn't.
-  apply_patch_with_msg 140-fix-for-windows-not-minding-non-existant-parent-dirs.patch
+  _apply_patch_with_msg 140-fix-for-windows-not-minding-non-existant-parent-dirs.patch
 
   # Don't make a lowercase backslashed path from argv[0]
   #  that then fail to strcmp with prefix(es) .. they're also ugly.
-  apply_patch_with_msg 150-windows-lrealpath-no-force-lowercase-nor-backslash.patch
+  _apply_patch_with_msg 150-windows-lrealpath-no-force-lowercase-nor-backslash.patch
 
   # Don't ignore values passed via --with-native-system-header-dir=
-  # apply_patch_with_msg 160-mingw-dont-ignore-native-system-header-dir.patch
+  # _apply_patch_with_msg 160-mingw-dont-ignore-native-system-header-dir.patch
 
   ${GIT_AM} ${srcdir}/210-gcc-4.4-ktietz-libgomp.patch
 
   # Build extra tools for Ada
-  apply_patch_with_msg 230-build-more-gnattools.mingw.patch
+  _apply_patch_with_msg 230-build-more-gnattools.mingw.patch
 
-  apply_patch_with_msg 802-handle-use-mingw-ansi-stdio.patch
+  _apply_patch_with_msg 802-handle-use-mingw-ansi-stdio.patch
   ${GIT_AM} ${srcdir}/804-gcc-4.6.4-Fix-texi-docs-syntax-errors.patch
-  apply_patch_with_msg 806-gcc-4.8-libgcc-references.patch
-  apply_patch_with_msg 807-gcc-4.8-lambda-ICE.patch
-  apply_patch_with_msg 808-gcc-4.7.0-SVN-196003-PR-target-52122-add-LN_S_RECURSIVE.patch
+  _apply_patch_with_msg 806-gcc-4.8-libgcc-references.patch
+  _apply_patch_with_msg 807-gcc-4.8-lambda-ICE.patch
+  _apply_patch_with_msg 808-gcc-4.7.0-SVN-196003-PR-target-52122-add-LN_S_RECURSIVE.patch
 
   #do not install libiberty
   sed -i 's/install_to_$(INSTALL_DEST) //' libiberty/Makefile.in
