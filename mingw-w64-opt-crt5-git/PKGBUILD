@@ -4,7 +4,7 @@ _pkg_prefix=${MINGW_PREFIX}
 
 _basename=crt
 _realname=${_basename}
-pkgbase=mingw-w64-${_basename}5-git
+pkgbase=mingw-w64-opt-${_basename}5-git
 pkgname=(
   "${MINGW_PACKAGE_PREFIX}-${_realname}-git" 
   "${MINGW_PACKAGE_PREFIX}-headers-git" 
