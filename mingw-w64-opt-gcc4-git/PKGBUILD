@@ -23,7 +23,7 @@ _basename=gcc
 _realname=opt-gcc
 pkgbase=mingw-w64-opt-${_basename}4-git
 pkgname=("${MINGW_PACKAGE_PREFIX}-${_realname}-git")
-pkgver=4.7.4.d20140612+45.c2.g4d1f511d7f2
+pkgver=4.7.1.d20120614+45.c2.gedc56cde512
 pkgrel=1
 pkgdesc="GCC for the MinGW-w64"
 arch=('any')
@@ -111,7 +111,7 @@ source+=(
   '130-dont-escape-arguments-that-dont-need-it-in-pex-win32.c.patch'
   '140-fix-for-windows-not-minding-non-existant-parent-dirs.patch'
   '150-windows-lrealpath-no-force-lowercase-nor-backslash.patch'
-  '160-mingw-dont-ignore-native-system-header-dir.patch'
+  '160-mingw-dont-ignore-native-system-header-dir.patch' # Not Used
   '210-gcc-4.4-ktietz-libgomp.patch'
   '230-build-more-gnattools.mingw.patch'
   '802-handle-use-mingw-ansi-stdio.patch'
