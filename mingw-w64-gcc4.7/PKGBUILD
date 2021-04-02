@@ -258,12 +258,12 @@ build() {
 #    ;;
 #  esac
 
-  local _local_gcc_prefix=${MINGW_PREFIX}/opt
-  export PATH="${_local_gcc_prefix}/bin":$PATH
-  export GNATBIND="${_local_gcc_prefix}/bin/gnatbind"
-  export GNATMAKE="${_local_gcc_prefix}/bin/gnatmake"
-  export CC="${_local_gcc_prefix}/bin/gcc"
-  export CXX="${_local_gcc_prefix}/bin/g++"
+#  local _local_gcc_prefix=${MINGW_PREFIX}/opt
+#  export PATH="${_local_gcc_prefix}/bin":$PATH
+#  export GNATBIND="${_local_gcc_prefix}/bin/gnatbind"
+#  export GNATMAKE="${_local_gcc_prefix}/bin/gnatmake"
+#  export CC="${_local_gcc_prefix}/bin/gcc"
+#  export CXX="${_local_gcc_prefix}/bin/g++"
 
   pacman -Q ${MINGW_PACKAGE_PREFIX}-crt
   gcc --version
