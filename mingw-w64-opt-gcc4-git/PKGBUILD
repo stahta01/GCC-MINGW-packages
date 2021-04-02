@@ -75,9 +75,9 @@ options=('strip' '!debug' 'staticlibs' '!emptydirs' '!buildflags')
 #_git_commit='412d31f03a14be123bb01a7a33a93fd8a68e23e6' # SVN188623
 #_git_commit='' # SVN
 #_git_commit='' # SVN
- _git_commit='edc56cde5124be76dd6ae3baff9eeb1fb61a1c41' # SVN188596 releases/gcc-4.7.1
+#_git_commit='edc56cde5124be76dd6ae3baff9eeb1fb61a1c41' # SVN188596 releases/gcc-4.7.1
 #_git_commit='050358f1954ebb05dbb5e0747ce01f3c65f8774b' # SVN188513
-#_git_commit='3156520d5df2a2e52b78f266cd750aa05b5ae64c' # SVN188167
+ _git_commit='3156520d5df2a2e52b78f266cd750aa05b5ae64c' # SVN188167
 #_git_commit='95d2db2008d8ac8772cd0fd634e6228376e632eb' # SVN188122
 #_git_commit='c8f5c98afa95c15641c97672de12df0664e564ae' # SVN187205
 #_git_commit='c45a86fd95f3afecb6dc2dc99232062845f4b570' # SVN186959
@@ -239,32 +239,32 @@ build() {
     ;;
   esac
 
-  case "${CARCH}" in
-    i686)
-      local _local_gcc32_prefix=/c/GreenApps32/gcc_4.6.0-mingw32_x86_generic/mingw
-      export PATH="${_local_gcc32_prefix}/bin":$PATH
-      export GNATBIND="${_local_gcc32_prefix}/bin/gnatbind"
-      export GNATMAKE="${_local_gcc32_prefix}/bin/gnatmake"
-      export CC="${_local_gcc32_prefix}/bin/gcc"
-      export CXX="${_local_gcc32_prefix}/bin/g++"
-    ;;
+#  case "${CARCH}" in
+#    i686)
+#      local _local_gcc32_prefix=/c/GreenApps32/gcc_4.6.0-mingw32_x86_generic/mingw
+#      export PATH="${_local_gcc32_prefix}/bin":$PATH
+#      export GNATBIND="${_local_gcc32_prefix}/bin/gnatbind"
+#      export GNATMAKE="${_local_gcc32_prefix}/bin/gnatmake"
+#      export CC="${_local_gcc32_prefix}/bin/gcc"
+#      export CXX="${_local_gcc32_prefix}/bin/g++"
+#    ;;
+#
+#    x86_64)
+#      local _local_gcc64_prefix=/c/GreenApps64/gcc_4.6.0_mingw64_x86_64_K8+ada/mingw64
+#      export PATH="${_local_gcc64_prefix}/bin":$PATH
+#      export GNATBIND="${_local_gcc64_prefix}/bin/gnatbind"
+#      export GNATMAKE="${_local_gcc64_prefix}/bin/gnatmake"
+#      export CC="${_local_gcc64_prefix}/bin/gcc"
+#      export CXX="${_local_gcc64_prefix}/bin/g++"
+#    ;;
+#  esac
 
-    x86_64)
-      local _local_gcc64_prefix=/c/GreenApps64/gcc_4.6.0_mingw64_x86_64_K8+ada/mingw64
-      export PATH="${_local_gcc64_prefix}/bin":$PATH
-      export GNATBIND="${_local_gcc64_prefix}/bin/gnatbind"
-      export GNATMAKE="${_local_gcc64_prefix}/bin/gnatmake"
-      export CC="${_local_gcc64_prefix}/bin/gcc"
-      export CXX="${_local_gcc64_prefix}/bin/g++"
-    ;;
-  esac
-
-#  local _local_gcc_prefix=${MINGW_PREFIX}/opt
-#  export PATH="${_local_gcc_prefix}/bin":$PATH
-#  export GNATBIND="${_local_gcc_prefix}/bin/gnatbind"
-#  export GNATMAKE="${_local_gcc_prefix}/bin/gnatmake"
-#  export CC="${_local_gcc_prefix}/bin/gcc"
-#  export CXX="${_local_gcc_prefix}/bin/g++"
+  local _local_gcc_prefix=${MINGW_PREFIX}/opt
+  export PATH="${_local_gcc_prefix}/bin":$PATH
+  export GNATBIND="${_local_gcc_prefix}/bin/gnatbind"
+  export GNATMAKE="${_local_gcc_prefix}/bin/gnatmake"
+  export CC="${_local_gcc_prefix}/bin/gcc"
+  export CXX="${_local_gcc_prefix}/bin/g++"
 
   pacman -Q ${MINGW_PACKAGE_PREFIX}-crt
   gcc --version
