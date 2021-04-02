@@ -26,7 +26,7 @@ _enable_objc=no
 
 _basename=gcc
 _realname=opt-gcc
-pkgbase=mingw-w64-${_basename}4-git
+pkgbase=mingw-w64-opt-${_basename}4-git
 pkgname=("${MINGW_PACKAGE_PREFIX}-${_realname}-git")
 pkgver=4.7.4.d20140612+45.c2.g4d1f511d7f2
 pkgrel=1
