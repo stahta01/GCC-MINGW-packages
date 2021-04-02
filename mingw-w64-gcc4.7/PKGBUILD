@@ -20,7 +20,7 @@ _enable_gcc_plugin=no
 _enable_gcc_lto=yes
 
 _enable_ada=yes
-_enable_cxx=no
+_enable_cxx=yes
 _enable_fortran=no
 _enable_objc=no
 
@@ -36,7 +36,7 @@ pkgname=(
      $([[ "$_enable_objc" == "yes" ]] && echo "${MINGW_PACKAGE_PREFIX}-${_realname}-objc")
     )
 pkgbase=mingw-w64-${_basename}${_base_pkg_version}
-pkgver=${_base_pkg_version}.4
+pkgver=${_base_pkg_version}.3
 _gcc_driver_version=${pkgver}
 pkgrel=1
 pkgdesc="GCC for the MinGW-w64"
@@ -257,6 +257,13 @@ build() {
 #      export CXX="${_local_gcc64_prefix}/bin/g++"
 #    ;;
 #  esac
+
+  local _local_gcc_prefix=${MINGW_PREFIX}/opt
+  export PATH="${_local_gcc_prefix}/bin":$PATH
+  export GNATBIND="${_local_gcc_prefix}/bin/gnatbind"
+  export GNATMAKE="${_local_gcc_prefix}/bin/gnatmake"
+  export CC="${_local_gcc_prefix}/bin/gcc"
+  export CXX="${_local_gcc_prefix}/bin/g++"
 
   pacman -Q ${MINGW_PACKAGE_PREFIX}-crt
   gcc --version
