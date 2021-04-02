@@ -59,8 +59,8 @@ checkdepends=('dejagnu')
 optdepends=()
 options=('strip' '!debug' 'staticlibs' '!emptydirs' '!buildflags')
 
-# resulted in C++ preprocessor "/lib/cpp" fails sanity check was caused by a build without C++ compiler
-# Some time during versio 4.7 the requirement for a working C++ happenend!
+# resulted in C++ preprocessor "/lib/cpp" fails sanity check was caused by a build without C++ compiler in the build compiler.
+# Some time during version 4.7 or the patch files the requirement for a working C++ happened!
 
 #_git_branch=releases/gcc-4.7                           # SVN211571 Built and installed okay; running it resulted in C++ preprocessor "/lib/cpp" fails sanity check
 #_git_commit='6cda24c97b5a1fa6cd27365c9aa90c95f45da4aa' # SVN205956
