@@ -1,9 +1,4 @@
 # Maintainer:  Tim Stahlhut <stahta01@gmail.com>
-# Contributor: Alexey Pavlov <alexpux@gmail.com>
-# Contributor: Ray Donnelly <mingw.android@gmail.com>
-# Contributor: Alexey Borzenkov <snaury@gmail.com>
-# Contributor: Renato Silva <br.renatosilva@gmail.com>
-# Contributor: Liu Hao <lh_mouse@126.com>
 
 _pkg_prefix=${MINGW_PREFIX}/opt
 
@@ -244,32 +239,32 @@ build() {
     ;;
   esac
 
-#  case "${CARCH}" in
-#    i686)
-#      local _local_gcc32_prefix=/c/GreenApps32/gcc_4.6.0-mingw32_x86_generic/mingw
-#      export PATH="${_local_gcc32_prefix}/bin":$PATH
-#      export GNATBIND="${_local_gcc32_prefix}/bin/gnatbind"
-#      export GNATMAKE="${_local_gcc32_prefix}/bin/gnatmake"
-#      export CC="${_local_gcc32_prefix}/bin/gcc"
-#      export CXX="${_local_gcc32_prefix}/bin/g++"
-#    ;;
-#
-#    x86_64)
-#      local _local_gcc64_prefix=/c/GreenApps64/gcc_4.6.0_mingw64_x86_64_K8+ada/mingw64
-#      export PATH="${_local_gcc64_prefix}/bin":$PATH
-#      export GNATBIND="${_local_gcc64_prefix}/bin/gnatbind"
-#      export GNATMAKE="${_local_gcc64_prefix}/bin/gnatmake"
-#      export CC="${_local_gcc64_prefix}/bin/gcc"
-#      export CXX="${_local_gcc64_prefix}/bin/g++"
-#    ;;
-#  esac
+  case "${CARCH}" in
+    i686)
+      local _local_gcc32_prefix=/c/GreenApps32/gcc_4.6.0-mingw32_x86_generic/mingw
+      export PATH="${_local_gcc32_prefix}/bin":$PATH
+      export GNATBIND="${_local_gcc32_prefix}/bin/gnatbind"
+      export GNATMAKE="${_local_gcc32_prefix}/bin/gnatmake"
+      export CC="${_local_gcc32_prefix}/bin/gcc"
+      export CXX="${_local_gcc32_prefix}/bin/g++"
+    ;;
 
-  local _local_gcc_prefix=${MINGW_PREFIX}/opt
-  export PATH="${_local_gcc_prefix}/bin":$PATH
-  export GNATBIND="${_local_gcc_prefix}/bin/gnatbind"
-  export GNATMAKE="${_local_gcc_prefix}/bin/gnatmake"
-  export CC="${_local_gcc_prefix}/bin/gcc"
-  export CXX="${_local_gcc_prefix}/bin/g++"
+    x86_64)
+      local _local_gcc64_prefix=/c/GreenApps64/gcc_4.6.0_mingw64_x86_64_K8+ada/mingw64
+      export PATH="${_local_gcc64_prefix}/bin":$PATH
+      export GNATBIND="${_local_gcc64_prefix}/bin/gnatbind"
+      export GNATMAKE="${_local_gcc64_prefix}/bin/gnatmake"
+      export CC="${_local_gcc64_prefix}/bin/gcc"
+      export CXX="${_local_gcc64_prefix}/bin/g++"
+    ;;
+  esac
+
+#  local _local_gcc_prefix=${MINGW_PREFIX}/opt
+#  export PATH="${_local_gcc_prefix}/bin":$PATH
+#  export GNATBIND="${_local_gcc_prefix}/bin/gnatbind"
+#  export GNATMAKE="${_local_gcc_prefix}/bin/gnatmake"
+#  export CC="${_local_gcc_prefix}/bin/gcc"
+#  export CXX="${_local_gcc_prefix}/bin/g++"
 
   pacman -Q ${MINGW_PACKAGE_PREFIX}-crt
   gcc --version
