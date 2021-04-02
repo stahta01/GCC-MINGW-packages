@@ -67,7 +67,7 @@ options=('strip' '!debug' 'staticlibs' '!emptydirs' '!buildflags')
 # resulted in C++ preprocessor "/lib/cpp" fails sanity check was caused by a build without C++ compiler
 # Some time during versio 4.7 the requirement for a working C++ happenend!
 
- _git_branch=releases/gcc-4.7                           # SVN211571 Built and installed okay; running it resulted in C++ preprocessor "/lib/cpp" fails sanity check
+#_git_branch=releases/gcc-4.7                           # SVN211571 Built and installed okay; running it resulted in C++ preprocessor "/lib/cpp" fails sanity check
 #_git_commit='6cda24c97b5a1fa6cd27365c9aa90c95f45da4aa' # SVN205956
 #_git_commit='50bf9f145c75b1fbc372e33610af14a8be328e58' # SVN199341
 #_git_commit='911595bf2d485c0d1e067d9a94a867d9b8281502' # SVN197738 releases/gcc-4.7.3
@@ -80,7 +80,7 @@ options=('strip' '!debug' 'staticlibs' '!emptydirs' '!buildflags')
 #_git_commit='412d31f03a14be123bb01a7a33a93fd8a68e23e6' # SVN188623
 #_git_commit='' # SVN
 #_git_commit='' # SVN
-#_git_commit='edc56cde5124be76dd6ae3baff9eeb1fb61a1c41' # SVN188596 releases/gcc-4.7.1 Built and installed okay; running it resulted in C++ preprocessor "/lib/cpp" fails sanity check
+ _git_commit='edc56cde5124be76dd6ae3baff9eeb1fb61a1c41' # SVN188596 releases/gcc-4.7.1
 #_git_commit='050358f1954ebb05dbb5e0747ce01f3c65f8774b' # SVN188513
 #_git_commit='3156520d5df2a2e52b78f266cd750aa05b5ae64c' # SVN188167
 #_git_commit='95d2db2008d8ac8772cd0fd634e6228376e632eb' # SVN188122
@@ -197,24 +197,14 @@ prepare() {
   _apply_patch_with_msg 001-gcc-4.8-libstdc++export.patch
   _apply_patch_with_msg 002-gcc-4.7-stdthreads.patch
 
-  # Don't waste valuable commandline chars on double-quotes around "arguments"
-  #  that don't need them.
   _apply_patch_with_msg 130-dont-escape-arguments-that-dont-need-it-in-pex-win32.c.patch
 
-  # Make Windows behave the same as Posix in the consideration of whether folder
-  # "/exists/doesnt-exist/.." is a valid path.. in Posix, it isn't.
   _apply_patch_with_msg 140-fix-for-windows-not-minding-non-existant-parent-dirs.patch
 
-  # Don't make a lowercase backslashed path from argv[0]
-  #  that then fail to strcmp with prefix(es) .. they're also ugly.
   _apply_patch_with_msg 150-windows-lrealpath-no-force-lowercase-nor-backslash.patch
-
-  # Don't ignore values passed via --with-native-system-header-dir=
-  # _apply_patch_with_msg 160-mingw-dont-ignore-native-system-header-dir.patch
 
   ${GIT_AM} ${srcdir}/210-gcc-4.4-ktietz-libgomp.patch
 
-  # Build extra tools for Ada
   _apply_patch_with_msg 230-build-more-gnattools.mingw.patch
 
   _apply_patch_with_msg 802-handle-use-mingw-ansi-stdio.patch
@@ -229,12 +219,8 @@ prepare() {
   # hack! - some configure tests for header files using "$CPP $CPPFLAGS"
   sed -i "/ac_cpp=/s/\$CPPFLAGS/\$CPPFLAGS -O2/" {libiberty,gcc}/configure
 
-  # do not expect $prefix/mingw symlink - this should be superceded by
-  # Windows-Don-t-ignore-native-system-header-dir.patch .. but isn't!
   sed -i 's/${prefix}\/mingw\//${prefix}\//g' configure
 
-  # change hardcoded /mingw prefix to the real prefix .. isn't this rubbish?
-  # it might work at build time and could be important there but beyond that?!
   local MINGW_NATIVE_PREFIX=$(cygpath -am ${MINGW_PREFIX}/${MINGW_CHOST})
   sed -i "s#\\/mingw\\/#${MINGW_NATIVE_PREFIX//\//\\/}\\/#g" gcc/config/i386/mingw32.h
 }
@@ -258,32 +244,32 @@ build() {
     ;;
   esac
 
-  case "${CARCH}" in
-    i686)
-      local _local_gcc32_prefix=/c/GreenApps32/gcc_4.6.0-mingw32_x86_generic/mingw
-      export PATH="${_local_gcc32_prefix}/bin":$PATH
-      export GNATBIND="${_local_gcc32_prefix}/bin/gnatbind"
-      export GNATMAKE="${_local_gcc32_prefix}/bin/gnatmake"
-      export CC="${_local_gcc32_prefix}/bin/gcc"
-      export CXX="${_local_gcc32_prefix}/bin/g++"
-    ;;
+#  case "${CARCH}" in
+#    i686)
+#      local _local_gcc32_prefix=/c/GreenApps32/gcc_4.6.0-mingw32_x86_generic/mingw
+#      export PATH="${_local_gcc32_prefix}/bin":$PATH
+#      export GNATBIND="${_local_gcc32_prefix}/bin/gnatbind"
+#      export GNATMAKE="${_local_gcc32_prefix}/bin/gnatmake"
+#      export CC="${_local_gcc32_prefix}/bin/gcc"
+#      export CXX="${_local_gcc32_prefix}/bin/g++"
+#    ;;
+#
+#    x86_64)
+#      local _local_gcc64_prefix=/c/GreenApps64/gcc_4.6.0_mingw64_x86_64_K8+ada/mingw64
+#      export PATH="${_local_gcc64_prefix}/bin":$PATH
+#      export GNATBIND="${_local_gcc64_prefix}/bin/gnatbind"
+#      export GNATMAKE="${_local_gcc64_prefix}/bin/gnatmake"
+#      export CC="${_local_gcc64_prefix}/bin/gcc"
+#      export CXX="${_local_gcc64_prefix}/bin/g++"
+#    ;;
+#  esac
 
-    x86_64)
-      local _local_gcc64_prefix=/c/GreenApps64/gcc_4.6.0_mingw64_x86_64_K8+ada/mingw64
-      export PATH="${_local_gcc64_prefix}/bin":$PATH
-      export GNATBIND="${_local_gcc64_prefix}/bin/gnatbind"
-      export GNATMAKE="${_local_gcc64_prefix}/bin/gnatmake"
-      export CC="${_local_gcc64_prefix}/bin/gcc"
-      export CXX="${_local_gcc64_prefix}/bin/g++"
-    ;;
-  esac
-
-#      local _local_gcc_prefix=${MINGW_PREFIX}/opt
-#      export PATH="${_local_gcc_prefix}/bin":$PATH
-#      export GNATBIND="${_local_gcc_prefix}/bin/gnatbind"
-#      export GNATMAKE="${_local_gcc_prefix}/bin/gnatmake"
-#      export CC="${_local_gcc_prefix}/bin/gcc"
-#      export CXX="${_local_gcc_prefix}/bin/g++"
+  local _local_gcc_prefix=${MINGW_PREFIX}/opt
+  export PATH="${_local_gcc_prefix}/bin":$PATH
+  export GNATBIND="${_local_gcc_prefix}/bin/gnatbind"
+  export GNATMAKE="${_local_gcc_prefix}/bin/gnatmake"
+  export CC="${_local_gcc_prefix}/bin/gcc"
+  export CXX="${_local_gcc_prefix}/bin/g++"
 
   pacman -Q ${MINGW_PACKAGE_PREFIX}-crt
   gcc --version
