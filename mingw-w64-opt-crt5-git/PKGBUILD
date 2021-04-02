@@ -1,5 +1,6 @@
-# Maintainer:  Alexey Pavlov <alexpux@gmail.com>
-# Contributor: Tim Stahlhut <stahta01@gmail.com>
+# Maintainer:  Tim Stahlhut <stahta01@gmail.com>
+
+_pkg_prefix=${MINGW_PREFIX}
 
 _basename=crt
 _realname=${_basename}
@@ -110,42 +111,42 @@ build() {
     --build=${MINGW_CHOST} \
     --host=${MINGW_CHOST} \
     --target=${MINGW_CHOST} \
-    --prefix=${MINGW_PREFIX}/${MINGW_CHOST} \
+    --prefix=${_pkg_prefix}/${MINGW_CHOST} \
     --enable-sdk=all \
     --enable-idl \
     --without-widl
 
   msg "Installing local copy of ${MINGW_CHOST} headers"
   cd ${srcdir}/headers-${MINGW_CHOST}
-  rm -fr ${srcdir}/${MINGW_PREFIX}/${MINGW_CHOST}/include
+  rm -fr ${srcdir}/${_pkg_prefix}/${MINGW_CHOST}/include
   make DESTDIR=${srcdir} install
 
   msg "Building ${MINGW_CHOST} CRT"
   [[ -d ${srcdir}/crt-${MINGW_CHOST} ]] && rm -rf ${srcdir}/crt-${MINGW_CHOST}
   mkdir -p ${srcdir}/crt-${MINGW_CHOST} && cd ${srcdir}/crt-${MINGW_CHOST}
-  CFLAGS+=" -I${srcdir}/${MINGW_PREFIX}/${MINGW_CHOST}/include" \
+  CFLAGS+=" -I${srcdir}/${_pkg_prefix}/${MINGW_CHOST}/include" \
   ${srcdir}/${_sourcedir}/mingw-w64-crt/configure \
-    --prefix=${MINGW_PREFIX}/${MINGW_CHOST} \
+    --prefix=${_pkg_prefix}/${MINGW_CHOST} \
     --build=${MINGW_CHOST} \
     --host=${MINGW_CHOST} \
     --target=${MINGW_CHOST} \
-    --with-sysroot=${MINGW_PREFIX}/${MINGW_CHOST} \
+    --with-sysroot=${_pkg_prefix}/${MINGW_CHOST} \
     --enable-wildcard \
     ${_crt_configure_args}
   make
 
   msg "Installing local copy of ${MINGW_CHOST} CRT"
   cd ${srcdir}/crt-${MINGW_CHOST}
-  rm -fr ${srcdir}${MINGW_PREFIX}/${MINGW_CHOST}/lib
+  rm -fr ${srcdir}${_pkg_prefix}/${MINGW_CHOST}/lib
   make DESTDIR=${srcdir} install-strip
 
   msg "Building ${MINGW_CHOST} libmangle"
   [[ -d ${srcdir}/mangle-${MINGW_CHOST} ]] && rm -rf ${srcdir}/mangle-${MINGW_CHOST}
   mkdir -p ${srcdir}/mangle-${MINGW_CHOST} && cd ${srcdir}/mangle-${MINGW_CHOST}
-  LDFLAGS+=" -L${srcdir}/${MINGW_PREFIX}/${MINGW_CHOST}/lib" \
-  CFLAGS+=" -I${srcdir}/${MINGW_PREFIX}/${MINGW_CHOST}/include" \
+  LDFLAGS+=" -L${srcdir}/${_pkg_prefix}/${MINGW_CHOST}/lib" \
+  CFLAGS+=" -I${srcdir}/${_pkg_prefix}/${MINGW_CHOST}/include" \
   ${srcdir}/${_sourcedir}/mingw-w64-libraries/libmangle/configure \
-    --prefix=${MINGW_PREFIX} \
+    --prefix=${_pkg_prefix} \
     --build=${MINGW_CHOST} \
     --host=${MINGW_CHOST}
   make
@@ -157,18 +158,18 @@ package_headers() {
   conflicts=("${MINGW_PACKAGE_PREFIX}-headers")
   options=('!strip' '!libtool' '!emptydirs')
   msg "Copying ${MINGW_CHOST} headers"
-  mkdir -p ${pkgdir}${MINGW_PREFIX}/${MINGW_CHOST}
-  cp --recursive ${srcdir}${MINGW_PREFIX}/${MINGW_CHOST}/include ${pkgdir}${MINGW_PREFIX}/${MINGW_CHOST}/
+  mkdir -p ${pkgdir}${_pkg_prefix}/${MINGW_CHOST}
+  cp --recursive ${srcdir}${_pkg_prefix}/${MINGW_CHOST}/include ${pkgdir}${_pkg_prefix}/${MINGW_CHOST}/
 
-  rm ${pkgdir}${MINGW_PREFIX}/${MINGW_CHOST}/include/pthread_signal.h
-  rm ${pkgdir}${MINGW_PREFIX}/${MINGW_CHOST}/include/pthread_time.h
-  rm ${pkgdir}${MINGW_PREFIX}/${MINGW_CHOST}/include/pthread_unistd.h
+  rm ${pkgdir}${_pkg_prefix}/${MINGW_CHOST}/include/pthread_signal.h
+  rm ${pkgdir}${_pkg_prefix}/${MINGW_CHOST}/include/pthread_time.h
+  rm ${pkgdir}${_pkg_prefix}/${MINGW_CHOST}/include/pthread_unistd.h
 
   msg "Installing MinGW-w64 licenses"
-  install -Dm644 ${srcdir}/${_sourcedir}/mingw-w64-headers/ddk/readme.txt ${pkgdir}${MINGW_PREFIX}/share/licenses/headers/ddk-readme.txt
-  install -Dm644 ${srcdir}/${_sourcedir}/COPYING ${pkgdir}${MINGW_PREFIX}/share/licenses/headers/COPYING
-  install -Dm644 ${srcdir}/${_sourcedir}/COPYING.MinGW-w64/COPYING.MinGW-w64.txt ${pkgdir}${MINGW_PREFIX}/share/licenses/headers/COPYING.MinGW-w64.txt
-  install -Dm644 ${srcdir}/${_sourcedir}/COPYING.MinGW-w64-runtime/COPYING.MinGW-w64-runtime.txt ${pkgdir}${MINGW_PREFIX}/share/licenses/headers/COPYING.MinGW-w64-runtime.txt
+  install -Dm644 ${srcdir}/${_sourcedir}/mingw-w64-headers/ddk/readme.txt ${pkgdir}${_pkg_prefix}/share/licenses/headers/ddk-readme.txt
+  install -Dm644 ${srcdir}/${_sourcedir}/COPYING ${pkgdir}${_pkg_prefix}/share/licenses/headers/COPYING
+  install -Dm644 ${srcdir}/${_sourcedir}/COPYING.MinGW-w64/COPYING.MinGW-w64.txt ${pkgdir}${_pkg_prefix}/share/licenses/headers/COPYING.MinGW-w64.txt
+  install -Dm644 ${srcdir}/${_sourcedir}/COPYING.MinGW-w64-runtime/COPYING.MinGW-w64-runtime.txt ${pkgdir}${_pkg_prefix}/share/licenses/headers/COPYING.MinGW-w64-runtime.txt
 }
 
 package_pthread_stub_headers() {
@@ -177,11 +178,11 @@ package_pthread_stub_headers() {
     conflicts=("${MINGW_PACKAGE_PREFIX}-pthread-stub-headers" "${MINGW_PACKAGE_PREFIX}-winpthreads")
     msg "Copying ${MINGW_CHOST} pthread stub headers"
 
-    mkdir -p ${pkgdir}${MINGW_PREFIX}/${MINGW_CHOST}/include
+    mkdir -p ${pkgdir}${_pkg_prefix}/${MINGW_CHOST}/include
 
-    cp ${srcdir}${MINGW_PREFIX}/${MINGW_CHOST}/include/pthread_signal.h ${pkgdir}${MINGW_PREFIX}/${MINGW_CHOST}/include/
-    cp ${srcdir}${MINGW_PREFIX}/${MINGW_CHOST}/include/pthread_time.h   ${pkgdir}${MINGW_PREFIX}/${MINGW_CHOST}/include/
-    cp ${srcdir}${MINGW_PREFIX}/${MINGW_CHOST}/include/pthread_unistd.h ${pkgdir}${MINGW_PREFIX}/${MINGW_CHOST}/include/
+    cp ${srcdir}${_pkg_prefix}/${MINGW_CHOST}/include/pthread_signal.h ${pkgdir}${_pkg_prefix}/${MINGW_CHOST}/include/
+    cp ${srcdir}${_pkg_prefix}/${MINGW_CHOST}/include/pthread_time.h   ${pkgdir}${_pkg_prefix}/${MINGW_CHOST}/include/
+    cp ${srcdir}${_pkg_prefix}/${MINGW_CHOST}/include/pthread_unistd.h ${pkgdir}${_pkg_prefix}/${MINGW_CHOST}/include/
 }
 
 package_crt() {
@@ -190,13 +191,13 @@ package_crt() {
   options=('!strip' 'staticlibs' '!buildflags' '!emptydirs')
   depends=("${MINGW_PACKAGE_PREFIX}-headers-git")
   msg "Copying ${MINGW_CHOST} crt"
-  mkdir -p ${pkgdir}${MINGW_PREFIX}/${MINGW_CHOST}
-  cp --recursive ${srcdir}${MINGW_PREFIX}/${MINGW_CHOST}/lib ${pkgdir}${MINGW_PREFIX}/${MINGW_CHOST}/
+  mkdir -p ${pkgdir}${_pkg_prefix}/${MINGW_CHOST}
+  cp --recursive ${srcdir}${_pkg_prefix}/${MINGW_CHOST}/lib ${pkgdir}${_pkg_prefix}/${MINGW_CHOST}/
 
   msg "Installing MinGW-w64 licenses"
-  install -Dm644 ${srcdir}/${_sourcedir}/COPYING ${pkgdir}${MINGW_PREFIX}/share/licenses/${_realname}/COPYING
-  install -Dm644 ${srcdir}/${_sourcedir}/COPYING.MinGW-w64/COPYING.MinGW-w64.txt ${pkgdir}${MINGW_PREFIX}/share/licenses/${_realname}/COPYING.MinGW-w64.txt
-  install -Dm644 ${srcdir}/${_sourcedir}/COPYING.MinGW-w64-runtime/COPYING.MinGW-w64-runtime.txt ${pkgdir}${MINGW_PREFIX}/share/licenses/${_realname}/COPYING.MinGW-w64-runtime.txt
+  install -Dm644 ${srcdir}/${_sourcedir}/COPYING ${pkgdir}${_pkg_prefix}/share/licenses/${_realname}/COPYING
+  install -Dm644 ${srcdir}/${_sourcedir}/COPYING.MinGW-w64/COPYING.MinGW-w64.txt ${pkgdir}${_pkg_prefix}/share/licenses/${_realname}/COPYING.MinGW-w64.txt
+  install -Dm644 ${srcdir}/${_sourcedir}/COPYING.MinGW-w64-runtime/COPYING.MinGW-w64-runtime.txt ${pkgdir}${_pkg_prefix}/share/licenses/${_realname}/COPYING.MinGW-w64-runtime.txt
 }
 
 package_libmangle() {
@@ -206,7 +207,7 @@ package_libmangle() {
   options=('strip' 'staticlibs' '!emptydirs')
   cd ${srcdir}/mangle-${MINGW_CHOST}
   make DESTDIR=${pkgdir} install
-  install -Dm644 ${srcdir}/${_sourcedir}/mingw-w64-libraries/libmangle/COPYING ${pkgdir}${MINGW_PREFIX}/share/licenses/mingw-w64-libraries/COPYING.libmangle
+  install -Dm644 ${srcdir}/${_sourcedir}/mingw-w64-libraries/libmangle/COPYING ${pkgdir}${_pkg_prefix}/share/licenses/mingw-w64-libraries/COPYING.libmangle
 }
 
 # Wrappers for package functions
