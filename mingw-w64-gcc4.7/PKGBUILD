@@ -36,7 +36,7 @@ pkgname=(
      $([[ "$_enable_objc" == "yes" ]] && echo "${MINGW_PACKAGE_PREFIX}-${_realname}-objc")
     )
 pkgbase=mingw-w64-${_basename}${_base_pkg_version}
-pkgver=${_base_pkg_version}.1
+pkgver=${_base_pkg_version}.0
 _gcc_driver_version=${pkgver}
 pkgrel=1
 pkgdesc="GCC for the MinGW-w64"
@@ -44,14 +44,14 @@ arch=('any')
 url="https://gcc.gnu.org"
 license=('GPL' 'LGPL' 'FDL' 'custom')
 groups=("${MINGW_PACKAGE_PREFIX}-toolchain")
-makedepends=("${MINGW_PACKAGE_PREFIX}-${_basename}"
+makedepends=(
+#             "${MINGW_PACKAGE_PREFIX}-${_basename}"
 #             $([[ "$_enable_ada" == "yes" ]] && echo "${MINGW_PACKAGE_PREFIX}-${_basename}-ada")
              "${MINGW_PACKAGE_PREFIX}-binutils"
              "${MINGW_PACKAGE_PREFIX}-crt"
              "${MINGW_PACKAGE_PREFIX}-headers"
              "${MINGW_PACKAGE_PREFIX}-libiconv"
              "${MINGW_PACKAGE_PREFIX}-windows-default-manifest"
-             "${MINGW_PACKAGE_PREFIX}-winpthreads"
              "${MINGW_PACKAGE_PREFIX}-zlib"
               'bison' 'diffutils' 'flex' 'lndir' 'make' 'patch' 'tar')
 if [[ "$_enable_threads" == "yes" && "$_threads" == "posix" ]]; then
