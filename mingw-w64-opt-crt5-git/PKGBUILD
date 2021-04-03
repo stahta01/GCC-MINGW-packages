@@ -1,15 +1,15 @@
 # Maintainer:  Tim Stahlhut <stahta01@gmail.com>
 
-_pkg_prefix=${MINGW_PREFIX}
+_pkg_prefix=${MINGW_PREFIX}/opt
 
 _basename=crt
 _realname=${_basename}
 pkgbase=mingw-w64-opt-${_basename}5-git
 pkgname=(
-  "${MINGW_PACKAGE_PREFIX}-${_realname}-git" 
-  "${MINGW_PACKAGE_PREFIX}-headers-git" 
-  "${MINGW_PACKAGE_PREFIX}-pthread-stub-headers-git"
-  "${MINGW_PACKAGE_PREFIX}-libmangle-git"
+  "${MINGW_PACKAGE_PREFIX}-opt-${_basename}-git" 
+  "${MINGW_PACKAGE_PREFIX}-opt-headers-git" 
+  "${MINGW_PACKAGE_PREFIX}-opt-pthread-stub-headers-git"
+#  "${MINGW_PACKAGE_PREFIX}-opt-libmangle-git"
 )
 pkgver=5.0.0.4742.fb1deb11
 pkgrel=1
@@ -22,10 +22,10 @@ pkgdesc='MinGW-w64 CRT for Windows'
 arch=('any')
 url='https://mingw-w64.sourceforge.io/'
 license=('custom')
-groups=("${MINGW_PACKAGE_PREFIX}-toolchain")
+groups=("${MINGW_PACKAGE_PREFIX}-opt-toolchain")
 makedepends=('git' 'make'
-             "${MINGW_PACKAGE_PREFIX}-tools"
-#             "${MINGW_PACKAGE_PREFIX}-gcc"
+#             "${MINGW_PACKAGE_PREFIX}-tools"
+#             "${MINGW_PACKAGE_PREFIX}-opt-gcc"
              "${MINGW_PACKAGE_PREFIX}-binutils")
 options=('!strip' 'staticlibs' '!buildflags' '!emptydirs')
 _sourcedir=mingw-w64-git
@@ -104,6 +104,13 @@ build() {
 #    ;;
 #  esac
 
+  local _local_gcc_prefix=${MINGW_PREFIX}/opt
+  export PATH="${_local_gcc_prefix}/bin":$PATH
+  export GNATBIND="${_local_gcc_prefix}/bin/gnatbind"
+  export GNATMAKE="${_local_gcc_prefix}/bin/gnatmake"
+  export CC="${_local_gcc_prefix}/bin/gcc"
+  export CXX="${_local_gcc_prefix}/bin/g++"
+
   msg "Configuring ${MINGW_CHOST} headers"
   [[ -d ${srcdir}/headers-${MINGW_CHOST} ]] && rm -rf ${srcdir}/headers-${MINGW_CHOST}
   mkdir -p ${srcdir}/headers-${MINGW_CHOST} && cd ${srcdir}/headers-${MINGW_CHOST}
@@ -140,22 +147,22 @@ build() {
   rm -fr ${srcdir}${_pkg_prefix}/${MINGW_CHOST}/lib
   make DESTDIR=${srcdir} install-strip
 
-  msg "Building ${MINGW_CHOST} libmangle"
-  [[ -d ${srcdir}/mangle-${MINGW_CHOST} ]] && rm -rf ${srcdir}/mangle-${MINGW_CHOST}
-  mkdir -p ${srcdir}/mangle-${MINGW_CHOST} && cd ${srcdir}/mangle-${MINGW_CHOST}
-  LDFLAGS+=" -L${srcdir}/${_pkg_prefix}/${MINGW_CHOST}/lib" \
-  CFLAGS+=" -I${srcdir}/${_pkg_prefix}/${MINGW_CHOST}/include" \
-  ${srcdir}/${_sourcedir}/mingw-w64-libraries/libmangle/configure \
-    --prefix=${_pkg_prefix} \
-    --build=${MINGW_CHOST} \
-    --host=${MINGW_CHOST}
-  make
+#  msg "Building ${MINGW_CHOST} libmangle"
+#  [[ -d ${srcdir}/mangle-${MINGW_CHOST} ]] && rm -rf ${srcdir}/mangle-${MINGW_CHOST}
+#  mkdir -p ${srcdir}/mangle-${MINGW_CHOST} && cd ${srcdir}/mangle-${MINGW_CHOST}
+#  LDFLAGS+=" -L${srcdir}/${_pkg_prefix}/${MINGW_CHOST}/lib" \
+#  CFLAGS+=" -I${srcdir}/${_pkg_prefix}/${MINGW_CHOST}/include" \
+#  ${srcdir}/${_sourcedir}/mingw-w64-libraries/libmangle/configure \
+#    --prefix=${_pkg_prefix} \
+#    --build=${MINGW_CHOST} \
+#    --host=${MINGW_CHOST}
+#  make
 }
 
 package_headers() {
   pkgdesc="MinGW-w64 headers for Windows"
-  provides=("${MINGW_PACKAGE_PREFIX}-headers")
-  conflicts=("${MINGW_PACKAGE_PREFIX}-headers")
+  provides=("${MINGW_PACKAGE_PREFIX}-opt-headers")
+  conflicts=("${MINGW_PACKAGE_PREFIX}-opt-headers")
   options=('!strip' '!libtool' '!emptydirs')
   msg "Copying ${MINGW_CHOST} headers"
   mkdir -p ${pkgdir}${_pkg_prefix}/${MINGW_CHOST}
@@ -174,8 +181,8 @@ package_headers() {
 
 package_pthread_stub_headers() {
     pkgdesc="MinGW-w64 pthread stub headers for Windows"
-    provides=("${MINGW_PACKAGE_PREFIX}-pthread-stub-headers")
-    conflicts=("${MINGW_PACKAGE_PREFIX}-pthread-stub-headers" "${MINGW_PACKAGE_PREFIX}-winpthreads")
+    provides=("${MINGW_PACKAGE_PREFIX}-opt-pthread-stub-headers")
+    conflicts=("${MINGW_PACKAGE_PREFIX}-opt-pthread-stub-headers" "${MINGW_PACKAGE_PREFIX}-opt-winpthreads")
     msg "Copying ${MINGW_CHOST} pthread stub headers"
 
     mkdir -p ${pkgdir}${_pkg_prefix}/${MINGW_CHOST}/include
@@ -186,10 +193,10 @@ package_pthread_stub_headers() {
 }
 
 package_crt() {
-  provides=("${MINGW_PACKAGE_PREFIX}-${_realname}")
-  conflicts=("${MINGW_PACKAGE_PREFIX}-${_realname}")
+  provides=("${MINGW_PACKAGE_PREFIX}-opt-${_basename}")
+  conflicts=("${MINGW_PACKAGE_PREFIX}-opt-${_basename}")
   options=('!strip' 'staticlibs' '!buildflags' '!emptydirs')
-  depends=("${MINGW_PACKAGE_PREFIX}-headers-git")
+  depends=("${MINGW_PACKAGE_PREFIX}-opt-headers-git")
   msg "Copying ${MINGW_CHOST} crt"
   mkdir -p ${pkgdir}${_pkg_prefix}/${MINGW_CHOST}
   cp --recursive ${srcdir}${_pkg_prefix}/${MINGW_CHOST}/lib ${pkgdir}${_pkg_prefix}/${MINGW_CHOST}/
@@ -202,8 +209,8 @@ package_crt() {
 
 package_libmangle() {
   pkgdesc="MinGW-w64 libmangle"
-  provides=("${MINGW_PACKAGE_PREFIX}-libmangle")
-  conflicts=("${MINGW_PACKAGE_PREFIX}-libmangle")
+  provides=("${MINGW_PACKAGE_PREFIX}-opt-libmangle")
+  conflicts=("${MINGW_PACKAGE_PREFIX}-opt-libmangle")
   options=('strip' 'staticlibs' '!emptydirs')
   cd ${srcdir}/mangle-${MINGW_CHOST}
   make DESTDIR=${pkgdir} install
@@ -213,29 +220,29 @@ package_libmangle() {
 # Wrappers for package functions
 
 # 32-bit wrappers
-package_mingw-w64-i686-crt-git() {
+package_mingw-w64-i686-opt-crt-git() {
   package_crt
 }
-package_mingw-w64-i686-headers-git() {
+package_mingw-w64-i686-opt-headers-git() {
   package_headers
 }
-package_mingw-w64-i686-pthread-stub-headers-git() {
+package_mingw-w64-i686-opt-pthread-stub-headers-git() {
   package_pthread_stub_headers
 }
-package_mingw-w64-i686-libmangle-git() {
+package_mingw-w64-i686-opt-libmangle-git() {
   package_libmangle
 }
 
 # 64-bit wrappers
-package_mingw-w64-x86_64-crt-git() {
+package_mingw-w64-x86_64-opt-crt-git() {
   package_crt
 }
-package_mingw-w64-x86_64-headers-git() {
+package_mingw-w64-x86_64-opt-headers-git() {
   package_headers
 }
-package_mingw-w64-x86_64-pthread-stub-headers-git() {
+package_mingw-w64-x86_64-opt-pthread-stub-headers-git() {
   package_pthread_stub_headers
 }
-package_mingw-w64-x86_64-libmangle-git() {
+package_mingw-w64-x86_64-opt-libmangle-git() {
   package_libmangle
 }
