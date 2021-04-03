@@ -370,7 +370,7 @@ build() {
   rm -rf ${srcdir}${_pkg_prefix}
 
   make -j1 DESTDIR=${srcdir} install
-  if [ "$_enable_ada" == "yes" ]; then
+  if [[ "$_enable_ada" == "yes" && "${_gcc_driver_version}" != "4.7.0" ]]; then
     mv ${srcdir}${_pkg_prefix}/lib/gcc/${MINGW_CHOST}/${_gcc_driver_version}/adalib/*.dll ${srcdir}${_pkg_prefix}/bin/
   fi
 }
