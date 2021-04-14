@@ -88,8 +88,9 @@ sha256sums=('23bd0013d76ac6fb4537e5e8f4e5947129362dcc32f0d08563b7d4d9e44c0e17'
             'efd0d90eda577db320f1ed704efa5be87c4da09f1c95c3d067e0b563e477e579'
             'e0442e147448bd725d39bb8ce82b8e939ccc5b33b228388b43138022f1452b4c'
             '748a921674a663532426bfca61856517610154564cfed6949629ba62fdeb8de3'
-            '1744d742761dba9b53b02273b90aa33d53b3dd2b363bf5cdbe4a40f7e14e61fa'
-            '2cafd273a667f1130e9cd20c87cd5c83cda1100de9958b9dbbf656dcf29fd2bb')
+            '2cafd273a667f1130e9cd20c87cd5c83cda1100de9958b9dbbf656dcf29fd2bb'
+            'b7342afe39135cbfecf1c80e539d2465a18d68788e8e7f8b79cdd8b5dcaccea9'
+            '88fc796cc48653e27dab3f3ec85e3935e5f0f7c05ec5e4dc1da912cdcced774d')
 
 # Helper macros to help make tasks easier #
 apply_patch_with_msg() {
@@ -224,12 +225,12 @@ build() {
       configure_opts+=("--disable-sjlj-exceptions")
       configure_opts+=("--with-dwarf2")
       LDFLAGS+=" -Wl,--large-address-aware"
-#      local _local_gcc32_prefix=/c/GreenApps32/gcc_4.6.0-mingw32_x86_generic/mingw
-#      export PATH="${_local_gcc32_prefix}/bin":$PATH
-#      export GNATBIND="${_local_gcc32_prefix}/bin/gnatbind"
-#      export GNATMAKE="${_local_gcc32_prefix}/bin/gnatmake"
-#      export CC="${_local_gcc32_prefix}/bin/gcc"
-#      export CXX="${_local_gcc32_prefix}/bin/g++"
+      local _local_gcc32_prefix=/c/GreenApps32/gcc_4.6.0-mingw32_x86_generic/mingw
+      export PATH="${_local_gcc32_prefix}/bin":$PATH
+      export GNATBIND="${_local_gcc32_prefix}/bin/gnatbind"
+      export GNATMAKE="${_local_gcc32_prefix}/bin/gnatmake"
+      export CC="${_local_gcc32_prefix}/bin/gcc"
+      export CXX="${_local_gcc32_prefix}/bin/g++"
       local _arch=i686
     ;;
 
