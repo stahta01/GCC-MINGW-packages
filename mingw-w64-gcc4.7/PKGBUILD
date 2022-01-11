@@ -20,7 +20,6 @@ _enable_gcc_plugin=no
 _enable_gcc_lto=yes
 
 _enable_ada=yes
-_enable_cxx=yes
 _enable_fortran=no
 _enable_objc=no
 
@@ -36,7 +35,7 @@ pkgname=(
      $([[ "$_enable_objc" == "yes" ]] && echo "${MINGW_PACKAGE_PREFIX}-${_realname}-objc")
     )
 pkgbase=mingw-w64-${_basename}${_base_pkg_version}
-pkgver=${_base_pkg_version}.0
+pkgver=${_base_pkg_version}.4
 _gcc_driver_version=${pkgver}
 pkgrel=1
 pkgdesc="GCC for the MinGW-w64"
@@ -302,15 +301,12 @@ build() {
     configure_opts+=("--disable-libgomp")
   fi
 
-  local _languages="c"
+  local _languages="c,c++"
   if [ "$_enable_gcc_lto" == "yes" ]; then
     _languages+=",lto"
   fi
   if [ "$_enable_ada" == "yes" ]; then
     _languages+=",ada"
-  fi
-  if [ "$_enable_cxx" == "yes" ]; then
-    _languages+=",c++"
   fi
   if [ "$_enable_fortran" == "yes" ]; then
     _languages+=",fortran"
@@ -385,9 +381,7 @@ package_mingw-w64-gcc-libs() {
   mkdir -p ${pkgdir}${_pkg_prefix}/bin
   cd ${srcdir}${_pkg_prefix}
   cp bin/{libgcc*,libquadmath*,libssp*}.dll ${pkgdir}${_pkg_prefix}/bin/
-  if [ "$_enable_cxx" == "yes" ]; then
-    cp bin/libstdc*.dll ${pkgdir}${_pkg_prefix}/bin/
-  fi
+  cp bin/libstdc*.dll ${pkgdir}${_pkg_prefix}/bin/
   if [ "$_enable_libgomp" == "yes" ]; then
     cp bin/libgomp*.dll ${pkgdir}${_pkg_prefix}/bin/
   fi
@@ -415,12 +409,10 @@ package_mingw-w64-gcc() {
   cp bin/gcc-nm.exe                                                   ${pkgdir}${_pkg_prefix}/bin/
   cp bin/gcc-ranlib.exe                                               ${pkgdir}${_pkg_prefix}/bin/
   cp bin/gcov.exe                                                     ${pkgdir}${_pkg_prefix}/bin/
-  if [ "$_enable_cxx" == "yes" ]; then
     cp bin/c++.exe                                                    ${pkgdir}${_pkg_prefix}/bin/
     cp bin/g++.exe                                                    ${pkgdir}${_pkg_prefix}/bin/
     cp bin/${MINGW_CHOST}-c++.exe                                     ${pkgdir}${_pkg_prefix}/bin/
     cp bin/${MINGW_CHOST}-g++.exe                                     ${pkgdir}${_pkg_prefix}/bin/
-  fi
   cp bin/${MINGW_CHOST}-gcc-${_gcc_driver_version}.exe                ${pkgdir}${_pkg_prefix}/bin/
   cp bin/${MINGW_CHOST}-gcc.exe                                       ${pkgdir}${_pkg_prefix}/bin/
   cp bin/${MINGW_CHOST}-gcc-ar.exe                                    ${pkgdir}${_pkg_prefix}/bin/
@@ -452,17 +444,13 @@ package_mingw-w64-gcc() {
 
   cp ${srcdir}${_pkg_prefix}/lib/gcc/${MINGW_CHOST}/lib/libgcc_s.a    ${pkgdir}${_pkg_prefix}/lib/gcc/${MINGW_CHOST}/${_gcc_driver_version}/
 
-  if [ "$_enable_cxx" == "yes" ]; then
     cp -r include/c++                                                 ${pkgdir}${_pkg_prefix}/include/
     cp    lib/gcc/${MINGW_CHOST}/${_gcc_driver_version}/cc1plus.exe   ${pkgdir}${_pkg_prefix}/lib/gcc/${MINGW_CHOST}/${_gcc_driver_version}/
     cp    lib/gcc/${MINGW_CHOST}/${_gcc_driver_version}/libstdc++*    ${pkgdir}${_pkg_prefix}/lib/gcc/${MINGW_CHOST}/${_gcc_driver_version}/
     cp    lib/gcc/${MINGW_CHOST}/${_gcc_driver_version}/libsupc++*    ${pkgdir}${_pkg_prefix}/lib/gcc/${MINGW_CHOST}/${_gcc_driver_version}/
-  fi
 
-  if [ "$_enable_cxx" == "yes" ]; then
     mkdir -p ${pkgdir}${_pkg_prefix}/share/gcc-${_gcc_driver_version}/python
     cp -r share/gcc-${_gcc_driver_version}/python/libstdcxx           ${pkgdir}${_pkg_prefix}/share/gcc-${_gcc_driver_version}/python/
-  fi
 
   mkdir -p ${pkgdir}${_pkg_prefix}/share/{doc,info,locale,man}
   if [ "$_enable_info" == "yes" ]; then
@@ -484,9 +472,7 @@ package_mingw-w64-gcc() {
   cp share/man/man7/fsf-funding.7*                                    ${pkgdir}${_pkg_prefix}/share/man/man1/
   cp share/man/man7/gfdl.7*                                           ${pkgdir}${_pkg_prefix}/share/man/man1/
   cp share/man/man7/gpl.7*                                            ${pkgdir}${_pkg_prefix}/share/man/man1/
-  if [ "$_enable_cxx" == "yes" ]; then
-    cp share/man/man1/g++.1*                                          ${pkgdir}${_pkg_prefix}/share/man/man1/
-  fi
+  cp share/man/man1/g++.1*                                            ${pkgdir}${_pkg_prefix}/share/man/man1/
 }
 
 package_mingw-w64-gcc-libgfortran() {
